@@ -1,4 +1,4 @@
-const Joi = require('joi');
+const Joi = require('joi')
 
 const wordValidation = Joi.object({
     word: Joi.string()
@@ -40,4 +40,4 @@ const userValidation = Joi.object({
         .required()
 })
 
-module.exports = {userValidation, wordValidation, wordAdditionalDataValidation};
+module.exports = {userValidation, wordValidation, wordAdditionalDataValidation}

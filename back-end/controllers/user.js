@@ -1,5 +1,3 @@
-//          --------     Controlleur    ----------
-
 const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcrypt')
@@ -7,8 +5,6 @@ const jwt = require('jsonwebtoken')
 const validator =  require('validator')
 const { userValidation } = require('../validators/validators.js')
 require('dotenv').config()
-
-// Importation des schémas pour envoyer des objets vers les collections de MongoDb
 const {user} = require('../schemas.js')
 
 router.signup = (req, res) => {
@@ -71,13 +67,14 @@ router.signin = (req, res) => {
             })
         })
         .catch(error => {
-            return res.status(500).json({ error : 'Impossible de comparer les hashs'})}
-        )
+            return res.status(500).json({ error : 'Impossible de comparer les hashs'})
+        })
 
     })
     .catch(error =>  {
         console.log(error)
-        return res.status(500).json({ error : 'Utilisateur inexistant'}) })
+        return res.status(500).json({ error : 'Utilisateur inexistant'}) 
+    })
     
 }
 

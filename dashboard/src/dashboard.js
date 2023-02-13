@@ -1,18 +1,14 @@
 import './App.css';
-//import moment from 'moment';
-import 'moment/locale/oc-lnc';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import React from 'react';
 import {
-    Modal,  ModalBody,    Button, 
+    Modal,  ModalBody, Button,
     Row, Col, Card, CardBody, CardTitle,  CardText,
     Table, Collapse
 } from 'reactstrap';
 import axios from 'axios';
 import Select from 'react-select';
 import WordModal from './wordModal';
-import blasonNice from './img/blasonNice';
-
 import Classes from './enum/classes';
 // import Categories from './enum/categories';
 import Sources from './enum/sources';
@@ -24,26 +20,22 @@ class Dashboard extends React.Component {
 
         this.state = {
             loading: true,
-            date: null,
-
             words: [],
             addModal: false,
             editModal: false,
             deleteModal: false,
             selectedWord: undefined, 
-
             showNativeDefinition: false,
             showTranslatedWord: true,
         }
         
-        this.apiUrl = process.env.API_URL;
+        this.apiUrl = process.env.API_URL || 'http://localhost:3001/';
         this.handleChange = this.handleChange.bind(this);
         this.delete = this.delete.bind(this);
     }
 
     componentDidMount(){
         this.onFetchDictionnary();
-        //this.clock = setInterval(() => this.setState({ date: moment().locale('oc-lnc').format('MMMM Do YYYY, H:mm') }), 60000);
     }
 
     componentDidUpdate(){
@@ -52,9 +44,9 @@ class Dashboard extends React.Component {
     }
     
     onFetchDictionnary(){
-        axios.get(this.apiUrl + 'api/fetch/nissartDictionnary', {  headers: { 'Authorization': this.props.token } } )
+        axios.get(this.apiUrl + 'dictionnary', {  headers: { 'Authorization': this.props.token } } )
         .then(res => {
-           // console.log("dictionnaire", res.data.message)
+           // console.log(res.data.message)
             let setWords = [];
             let newDictionnary =  res.data.message.slice();
             newDictionnary.map(w => setWords.push({label: w.word, value:w._id}));
@@ -75,11 +67,11 @@ class Dashboard extends React.Component {
 
         let word = this.state.dictionnary.find(w => w._id === id);
         axios.get(
-            this.apiUrl + '/api/fetch/oneWord/_id/' + id,
+            this.apiUrl + 'word/_id/' + id,
             { headers: { 'Authorization': this.props.token } } 
         )
         .then(res => { 
-            //console.log("Requête mot sélectionné = ", res.data.message)
+            //console.log(res.data.message)
             this.setState({ 
                 selectedWordData: res.data.message, 
                 loading: false,
@@ -92,15 +84,15 @@ class Dashboard extends React.Component {
     handleChange = (event) => {
         const {name, value} = event.currentTarget;
         // console.log(name, value)
-       // if([name] === "")
+        // if([name] === "")
         this.setState({ [name] : value });
     }
 
     swapModal = (name) =>{
         // console.log("swapModal")
-
-        if(this.state[name]){this.onFetchDictionnary();}
-
+        if(this.state[name]){
+            this.onFetchDictionnary();
+        }
         this.setState({[name]: !this.state[name]});
     }
 
@@ -111,7 +103,7 @@ class Dashboard extends React.Component {
 
     delete(){
         axios.delete(
-            this.apiUrl + '/api/save/deleteWord',              
+            this.apiUrl + 'word',              
             {
                 headers: { "Authorization": this.props.token },
                 data: { word_id: this.state.selectedWord.value, userId: this.props.userId }, // req.data = req.body dans le serveur
@@ -137,18 +129,12 @@ class Dashboard extends React.Component {
     }
 
     openCrossWord () {
-        window.open(process.env.API_URL + 'crossword/')
+        window.open(this.apiUrl + 'crossword/')
     }
 
     render() {
         return (
             <div className="App">
-                {this.state.date}
-
-                <img class=""
-                    src={blasonNice}
-                    alt="Armoiries de Nice"></img>
-
                 <Row md='6' className='m-auto mt-4 mx-5'>
                     <Col md='6'>
                         <Select     
@@ -157,8 +143,8 @@ class Dashboard extends React.Component {
                             options={this.state.words} 
                             noOptionsMessage={() => null}
                             value={this.state.selectedWord}
-                            onChange={this.handleSelectChange.bind(this, 'selectedWord')}
-                            />  
+                            onChange={this.handleSelectChange.bind(this, 'selectedWord')} /> 
+
                             {!this.state.loading &&                            
                                 <Table className='mt-2' style={{borderRadius:10 }} bordered hover responsive >
                                     <thead>
@@ -197,7 +183,7 @@ class Dashboard extends React.Component {
                                         { this.state.selectedWordData.word}{', '}{ this.state.selectedWordData.class && Classes.getName(this.state.selectedWordData.class)} <br/>
                                         <span className="font-weight-bold">Définition en français : </span> 
                                         { this.state.selectedWordData.translated_definition} <br/>
-                                        <span className="font-weight-bold">Définition en niçois : </span> 
+                                        <span className="font-weight-bold">Définition : </span> 
                                         { this.state.selectedWordData.definition} <br/>
                                         <span className="font-weight-bold">Niveau de langage : </span> 
                                         { this.state.selectedWordData.level} <br/>
@@ -205,7 +191,7 @@ class Dashboard extends React.Component {
                                         { this.state.selectedWordData.categories} <br/>
                                         <span className="font-weight-bold">Source : </span> 
                                         { (this.state.selectedWordData.source !== null) && Sources.getName(this.state.selectedWordData.source)} <br/>
-                                        <span className="font-weight-bold">Devinette en niçois : </span> 
+                                        <span className="font-weight-bold">Devinette : </span> 
                                         { this.state.selectedWordData.additionalData.riddle} <br/>
                                         <span className="font-weight-bold">Devinette en français : </span> 
                                         { this.state.selectedWordData.additionalData.translated_riddle} <br/>
@@ -216,8 +202,7 @@ class Dashboard extends React.Component {
                                     </CardText>
                                 </CardBody>
                             </Card>  
-                        </Collapse>
-                        }
+                        </Collapse>}
 
                         <Col className='text-right'>
                             <Button className='text-right mt-1' onClick={this.swapModal.bind(this, "addModal")}>

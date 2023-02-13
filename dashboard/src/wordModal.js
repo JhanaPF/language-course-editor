@@ -16,8 +16,6 @@ class WordModal extends React.Component {
         this.categoriesOptions = Categories.values();
         this.sourceOptions = Sources.values();
         this.classOptions = Classes.values();
-
-        //if(this.props.editModal) console.log(this.props.wordData);
        
         if(this.props.editModal){
 
@@ -31,23 +29,23 @@ class WordModal extends React.Component {
             if(this.props.wordData)
             {
                 this.state= {
-                  // "translated" = langue pivot, ici le français
-                  fieldError: false,
-                    
-                  word: this.props.wordData ? this.props.wordData.word : undefined,
-                  class: this.props.wordData.class ? {value: this.props.wordData.class, label: Classes.getName(this.props.wordData.class)} : undefined,
-                  definition: this.props.wordData ? this.props.wordData.definition : undefined, 
-                  translated_word: this.props.wordData ? this.props.wordData.translated_word : undefined,
-                  translated_definition: this.props.wordData ? this.props.wordData.translated_definition : undefined,
-                  level: this.props.wordData.level ? this.props.wordData.level : '1',
-                  categories,
-                  source: this.props.wordData.source ? {value: this.props.wordData.source, label: Sources.getName(this.props.wordData.source)} : {},
-                    
-                    
-                  story: this.props.wordData.additionalData ? this.props.wordData.additionalData.story : undefined, // Anecdotes
-                  riddle: this.props.wordData.additionalData ? this.props.wordData.additionalData.riddle : undefined, // Devinette en niçois
-                  translated_riddle: this.props.wordData.additionalData ? this.props.wordData.additionalData.translated_riddle : undefined, // Devinette en français
-                  sentence: this.props.wordData.additionalData ? this.props.wordData.additionalData.sentence : undefined, // Mot en contexte dans une phrase
+                    // "translated" = langue pivot, ici le français
+                    fieldError: false,
+
+                    word: this.props.wordData ? this.props.wordData.word : undefined,
+                    class: this.props.wordData.class ? {value: this.props.wordData.class, label: Classes.getName(this.props.wordData.class)} : undefined,
+                    definition: this.props.wordData ? this.props.wordData.definition : undefined, 
+                    translated_word: this.props.wordData ? this.props.wordData.translated_word : undefined,
+                    translated_definition: this.props.wordData ? this.props.wordData.translated_definition : undefined,
+                    level: this.props.wordData.level ? this.props.wordData.level : '1',
+                    categories,
+                    source: this.props.wordData.source ? {value: this.props.wordData.source, label: Sources.getName(this.props.wordData.source)} : {},
+
+
+                    story: this.props.wordData.additionalData ? this.props.wordData.additionalData.story : undefined, // Anecdotes
+                    riddle: this.props.wordData.additionalData ? this.props.wordData.additionalData.riddle : undefined, // Devinette 
+                    translated_riddle: this.props.wordData.additionalData ? this.props.wordData.additionalData.translated_riddle : undefined, // Devinette en langue pivot
+                    sentence: this.props.wordData.additionalData ? this.props.wordData.additionalData.sentence : undefined, // Mot en contexte dans une phrase
                 }
                 
             }
@@ -66,7 +64,7 @@ class WordModal extends React.Component {
             };
         }
 
-        this.apiUrl = process.env.API_URL;
+        this.apiUrl = process.env.API_URL || 'http://localhost:3001/';
 
         this.handleChange = this.handleChange.bind(this);
         this.save = this.save.bind(this);
@@ -137,11 +135,9 @@ class WordModal extends React.Component {
         const save = this.getData();
         //console.log(save.word, this.state.translated_definition)
         axios.post(
-            this.apiUrl + 'api/save/updateWord', 
+            this.apiUrl + 'word',
             save, 
-            { 
-                headers: { 'Authorization': this.props.token },
-            }
+            { headers: { 'Authorization': this.props.token,  'Content-Type': 'multipart/form-data' } }
         )
         .then( () => {  this.props.swapModal();  })
         .catch(function (error) {console.log(error);});     
@@ -151,10 +147,10 @@ class WordModal extends React.Component {
         if(this.isValid() === false) return; 
         
         const save = this.getData();
-        axios.post(
-            this.apiUrl + 'api/save/word/', 
+        axios.put(
+            this.apiUrl + 'word', 
             save, 
-            { headers: { 'Authorization': this.props.token } },
+            { headers: { 'Authorization': this.props.token,  'Content-Type': 'multipart/form-data' } },
         )
         .then( () => {
 
@@ -187,7 +183,7 @@ class WordModal extends React.Component {
                     </Row>
                         <FormGroup className='mx-2'>
                             <Label className='text-left mr-4' for="word">
-                                Mot (en niçois)*:
+                                Mot:
                             </Label>
                             <Input
                                 id="word"
@@ -213,7 +209,7 @@ class WordModal extends React.Component {
                         </FormGroup>
                         <FormGroup className='mx-2 mb-3'>
                             <Label className='text-left' for="definition">
-                                Définition (en français):
+                                Définition (en langue pivot):
                             </Label>                  
                             <Input
                                 id="translated_definition"
@@ -226,7 +222,7 @@ class WordModal extends React.Component {
                         </FormGroup>
                         <FormGroup className='mx-2 mb-3'>
                             <Label className='text-left' for="definition">
-                                Définition (en niçois):
+                                Définition:
                             </Label>                  
                             <Input
                                 id="definition"
@@ -239,7 +235,7 @@ class WordModal extends React.Component {
                         </FormGroup>
                         <FormGroup className='mx-2'>
                             <Label className='text-left' for="riddle">
-                                Devinette (pour le mot-croisé) en niçois:
+                                Devinette (pour le mot-croisé):
                             </Label>
                             <Input
                                 id="riddle"
@@ -251,7 +247,7 @@ class WordModal extends React.Component {
                         </FormGroup>
                         <FormGroup className='mx-2'>
                             <Label className='text-left' for="riddle">
-                                Devinette (pour le mot-croisé) en français:
+                                Devinette (pour le mot-croisé) en langue pivot:
                             </Label>
                             <Input
                                 id="translated_riddle"
@@ -289,12 +285,12 @@ class WordModal extends React.Component {
                                 Niveau de langage:
                             </Label>                  
                             <Input
-                              id="level"
-                              name="level"
-                              type="select" 
-                              value={this.state.level}
-                              onChange={this.handleChange} 
-                              className="ml-1"
+                                id="level"
+                                name="level"
+                                type="select" 
+                                value={this.state.level}
+                                onChange={this.handleChange} 
+                                className="ml-1"
                             >                                   
                                 <option value={1}>
                                   1 
@@ -329,8 +325,8 @@ class WordModal extends React.Component {
                                 name="source"
                                 value={this.state.source}
                                 onChange={this.handleSelectChange.bind(this, 'source')} 
-                                options={this.sourceOptions}  
-                                placeholder=""/>
+                                options={this.sourceOptions} 
+                                placeholder="" />
                         </FormGroup>
 
                     <Col className='text-right mt-4'>

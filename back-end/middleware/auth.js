@@ -1,5 +1,3 @@
-// Midlleware à placer en intermédiaires dans les routes pour sécuriser leurs accès
-
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
@@ -9,13 +7,13 @@ module.exports = (req, res, next) => {
         const token = req.headers.authorization
         const decodedToken = jwt.verify(token, process.env.SECRET)
         const tokenUserId = decodedToken.userId
-        req.decodedToken = decodedToken // Nécessaire au middleware isAdmin
+        req.decodedToken = decodedToken // Used by isAdmin middleware
 
-        if(req.body.userId && req.body.userId === tokenUserId) { next()} // Si l'id de l'utilisateur est le même que celui encodé dans le token
-        else {throw 'Id non valable'}
+        if(req.body.userId && req.body.userId === tokenUserId) { next()} // Is encoded id in token the same as given user id
+        else {throw 'Invalid id'}
     }
     catch (error) {
-        console.log("Requête non authentifiée", error)
-        res.status(401).json({error: "Requête non authentifiée"})
+        console.log("Authentification error", error)
+        res.status(401).json({error: "Authentification error"})
     }
 }

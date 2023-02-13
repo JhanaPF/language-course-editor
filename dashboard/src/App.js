@@ -16,7 +16,7 @@ class App extends React.Component {
             loggedin: false,
         }
 
-        this.apiUrl = process.env.API_URL;
+        this.apiUrl = process.env.API_URL || "http://localhost:3001/";
 
         this.signIn = this.signIn.bind(this);
         this.signUp = this.signUp.bind(this);
@@ -24,9 +24,9 @@ class App extends React.Component {
 
     signIn = (mail, password) => {
         console.log({ mail, password })
-        axios.post(this.apiUrl + 'api/auth/signin', { mail, password })
+        axios.post(this.apiUrl + 'auth/signin', { mail, password })
         .then(res => { 
-            //console.log(res)
+            console.log("Logged in")
             this.setState({token : res.data.token, userId: res.data.userId, loggedin: true}); 
         })
         .catch(error => console.log(error));
@@ -34,11 +34,11 @@ class App extends React.Component {
 
     signUp = (mail, password) => {   
         axios.post(
-            this.apiUrl + 'api/auth/signup', 
+            this.apiUrl + 'auth/signup', 
             { mail, password }, 
             { headers: { 'Authorization': this.state.token },
         })
-        .then(console.log('Inscrit'))
+        .then(console.log('Subscribed'))
         .catch(error => console.log(error));
     }
 

@@ -1,10 +1,7 @@
-//          --------     Controlleurs    ----------
-
 const express = require('express')
 const mongoose = require('mongoose')
 const router = express.Router()
-const {nissart} = require('../schemas.js') 
-
+const {french_from_french} = require('../schemas.js') 
 
 router.fetchOneWord =  (req, res) => {   
     
@@ -12,11 +9,11 @@ router.fetchOneWord =  (req, res) => {
     if(!isValid) return res.status(400).json({})
   
     
-    nissart.aggregate([
+    french_from_french.aggregate([
         {   $match: {_id: mongoose.Types.ObjectId(req.params._id)}  },
         {   
             $lookup:{
-                from: 'NissartAdditionalData',
+                from: 'french_from_french_additional_data',
                 localField: '_id',
                 foreignField: 'word_id',
                 as: 'additionalData'
@@ -31,7 +28,7 @@ router.fetchOneWord =  (req, res) => {
 
 router.fetchOneDictionnary =  (req, res) => {    
 
-    nissart.find()
+    french_from_french.find()
     .then(dic => res.status(200).json({message: dic}))
     .catch(error => res.status(400).json({error}))
 } 

@@ -1,62 +1,71 @@
 const mongoose = require('mongoose')
-const uniqueValidator = require('mongoose-unique-validator') //mongoose-unique-validator is a plugin which adds pre-save validation for unique fields within a Mongoose schema.
+const uniqueValidator = require('mongoose-unique-validator')
+const path = require('path')
+require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') })
+
+const updates = [
+    {
+        user_id: {type: mongoose.Schema.ObjectId}, 
+        date: {type: Date},
+    }
+]
+
+const dictionnarySchema = mongoose.Schema({
+    name: {type: String, required: true, unique: true},
+    language: {type: String},
+    pivot_tongue: {type: String},
+    flag: {type: String}, // url
+})
 
 const wordSchema = mongoose.Schema({
     word : {type: String, required: true, unique: true}, 
-    class : {type: Number}, // Classe du mot : nom, verbe, adjectif, etc
-    definition : {type: String}, // Défini dans le même idiome    
-    // Les champs suivant correspondent à la traduction dans la langue pivot
-    translated_definition : {type: String}, // Définition en français (langue pivot)
-    level: {type: String}, // Niveau de langage => 0: parlé de tous les jours dans le français, 1: connu des niçois, 2: familier, 3: soutenu
-    categories: [Number], // Champ lexical
-    source: {type: Number}, // Si le mot a été ajouté    
+    class : {type: Number}, // noun, verb, adjective, etc
+    definition : {type: String}, 
+    // Pivot tongue
+    translated_definition : {type: String}, // Definition in pivot tongue
+    level: {type: String}, // Current, familiar, sustained
+    categories: [Number], 
+    source: {type: Number}, // If word comes from external source
     phonetic: {type: String},
-    checked: {type: Boolean, default: false}, // Approuvé par un admin (si des mots ont été ajoutés automatiquement avec de potentielles erreurs par exemple) depuis un dictionnaire externe
+    vocal: {type: String}, // Url 
+    updates,
 })
 
 const additionalDataSchema = mongoose.Schema({
-    word_id: {type: mongoose.Schema.ObjectId, unique: true},
-    sentence: {type: String}, // Phrase en contexte
-    sentence_vocal: {type: String}, // Url du chemin de stockage
-
-    riddle: {type: String}, // Devinette pour mot-croisé en niçois
-    translated_riddle: {type: String}, // Devinette en français
-    story: {type: String}, // Anecdotes historiques, littéraires, etc...
-    vocal: {type: String}, // Url du fichier vocal du mot stocké sur le serveur
-
-    //updates: [
-    //    {
-    //        user_id: {type: mongoose.Schema.ObjectId}, 
-    //        date: {type: Date}
-    //    }
-    //] // Modifications apportées par les utilisateurs (date + id)
+    word_id: {type: mongoose.Schema.ObjectId, unique: true}, // Relation to word schema
+    sentence: {type: String}, // Sentence in context. Phrase en contexte
+    sentence_vocal: {type: String}, // Url
+    riddle: {type: String}, 
+    translated_riddle: {type: String}, 
+    story: {type: String}, // Anecdotes
+    updates,
 })
 
-// Schema for both players and dahsbiard's users
+// Schema for both players and dahsboard's users
 const userSchema = mongoose.Schema({
     name : {type: String},
     mail : {type: String, required: true, unique: true},
     password : {type: String},
-    role:{type: String, enum: ['guest, admin, superAdmin']}, // SuperAdmin, Admin, Joueur, etc...
-    //dialects: {type: Array}, // Langue dans lesquelles le joueur a joué
-    // partiesPlayed: {type: Array} // Une clef pour chaque dialecte, un tableau par catégorie contenant le nombre de parties classées par difficultées
+    role:{type: String, enum: ['guest, admin, superAdmin', 'player']}, // SuperAdmin, Admin, Joueur, etc...
+    dialects: {type: Array}, // Langue dans lesquelles le joueur a joué
 })
-
 
 userSchema.plugin(uniqueValidator)
 wordSchema.plugin(uniqueValidator)
+dictionnarySchema.plugin(uniqueValidator)
 
-const languages = ["nissart"] // Définir la liste de dialectes 
+
+// Define list of dialects with this syntax "languageToLearn_from_pivotTongue" to generate all the models and collections for each dictionnary
+const languages = process.env["DICTIONARIES"].split(", ")
 let models = {}
-for (const language of languages) { // Générer dynamiquement les schémas Mongo (Idiome + Mots de l'idiome en contexte dans une phrase)
-    let collectionName = language.charAt(0).toUpperCase() + language.slice(1)
-    models[language] = mongoose.model(language, wordSchema, language) // 3ème paramètre pour définir le nom de la collection
+for (const language of languages) { // Dynamic generation of Mongo models
+    models[language] = mongoose.model(language, wordSchema, language) // 3rd parameter define name of collection
     
-    const languageSentences = language + "AdditionalData"
+    const languageSentences = language + "additional_data"
     collectionName = languageSentences.charAt(0).toUpperCase() + languageSentences.slice(1) 
-    models[languageSentences] = mongoose.model(languageSentences, additionalDataSchema, languageSentences.charAt(0).toUpperCase() + languageSentences.slice(1))
+    models[languageSentences] = mongoose.model(languageSentences, additionalDataSchema)
 }
 
 const user = mongoose.model('User', userSchema) 
 
-module.exports = {...models, user}
+module.exports = {...models, user, wordSchema, additionalDataSchema}

@@ -1,10 +1,8 @@
-//          --------     Controlleur    ----------
-
 const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
 const { wordValidation, wordAdditionalDataValidation } = require('../validators/validators.js')
-const {nissart, nissartAdditionalData} = require('../schemas.js') // Importation des schémas pour envoyer des objets vers les collections de MongoDb
+const {wordSchema, additionalDataSchema} = require('../schemas.js') // Importation des schémas pour envoyer des objets vers les collections de MongoDb
 
 const isValid = (word, additionalData) => {
 
@@ -23,15 +21,19 @@ const isValid = (word, additionalData) => {
 }
 
 router.saveWord = (req, res) => {
-    console.log("Ajout d'un nouveau mot", req.body)
-    
     if(!isValid(req.body.word, req.body.additionalData)) return res.status(500).json({})
+    console.log("Adding word ", req.body)
 
-    const newWord = new nissart({
+    const {collection} = req.body
+
+    const wordModel = mongoose.model(collection, wordSchema, collection)
+    const additionalDataModel = mongoose.model(collection + "_additional_data" + additionalDataSchema)
+
+    const newWord = new wordModel({
         ...req.body.word
     })
 
-    let newAdditionalData = new nissartAdditionalData({
+    let newAdditionalData = new additionalDataModel({
         ...req.body.additionalData,
     })
 
@@ -42,7 +44,7 @@ router.saveWord = (req, res) => {
         newAdditionalData.save()
     })
     .then(() => {
-        console.log('Nouveau mot ' + req.body.word.word + ' enregistré')
+        console.log(req.body.word.word + ' saved')
         res.status(201).json({})
     })
     .catch(error => {
@@ -60,15 +62,14 @@ router.updateWord = (req, res) => {
     console.log("Updating word", req.body.word_id)  
     nissart.updateOne({_id: req.body.word_id}, req.body.word) 
     .then(() => nissartAdditionalData.updateOne({word_id: req.body.word_id}, req.body.additionalData))
-    .then((result) => {
-        console.log('Le mot ' + req.body.word + ' a été mis à jour')
+    .then(() => {
+        console.log(req.body.word + ' updated')
         res.status(201)
     })
     .catch(error => {
         res.status(400)
         console.log(error)
     })
-
 }
 
 router.deleteWord = (req, res) => {
@@ -85,7 +86,7 @@ router.deleteWord = (req, res) => {
         res.status(201).json({})
     })
     .catch(error => {
-        const errorMsg = "Failed to delete" + word_id
+        const errorMsg = "Failed to delete " + word_id
         console.log(errorMsg)
         res.status(400).json({errorMsg})
     })

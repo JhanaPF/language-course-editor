@@ -4,12 +4,10 @@ export const validString = new RegExp('[abcdefghijklmnopqrstuvwxyzAZERTYUIOPQSDF
 
 /**
  * 
- 
     A propos de la regex pour le mot de passe:
         Au moins une lettre majuscule, (?=.*?[A-Z])
         Au moins une lettre minuscule, (?=.*?[a-z])
         Au moins un chiffre, (?=.*?[0-9])
         Au moins un caractère spécial, (?=.*?[#?!@$%^&*-])
         8 caractères minimum .{8,} (avec les ancrages)
-
 */
