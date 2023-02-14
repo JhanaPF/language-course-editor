@@ -1,14 +1,11 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
-const path = require('path')
-require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') })
+//require('dotenv').config()
 
-const updates = [
-    {
-        user_id: {type: mongoose.Schema.ObjectId}, 
-        date: {type: Date},
-    }
-]
+const updates = [{
+    user_id: {type: mongoose.Schema.ObjectId}, 
+    date: {type: Date},
+}]  
 
 const dictionnarySchema = mongoose.Schema({
     name: {type: String, required: true, unique: true},
@@ -56,12 +53,12 @@ dictionnarySchema.plugin(uniqueValidator)
 
 
 // Define list of dialects with this syntax "languageToLearn_from_pivotTongue" to generate all the models and collections for each dictionnary
-const languages = process.env["DICTIONARIES"].split(", ")
+const languages = process.env.DICTIONARIES.split(", ")
 let models = {}
 for (const language of languages) { // Dynamic generation of Mongo models
     models[language] = mongoose.model(language, wordSchema, language) // 3rd parameter define name of collection
     
-    const languageSentences = language + "additional_data"
+    const languageSentences = language + "additional"
     collectionName = languageSentences.charAt(0).toUpperCase() + languageSentences.slice(1) 
     models[languageSentences] = mongoose.model(languageSentences, additionalDataSchema)
 }

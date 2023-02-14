@@ -20,9 +20,9 @@ const isValid = (word, additionalData) => {
 
 }
 
-router.saveWord = (req, res) => {
-    if(!isValid(req.body.word, req.body.additionalData)) return res.status(500).json({})
+router.addWord = (req, res) => {
     console.log("Adding word ", req.body)
+    if(!isValid(req.body.word, req.body.additionalData)) return res.status(500).json({})
 
     const {collection} = req.body
 

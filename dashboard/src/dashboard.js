@@ -88,8 +88,8 @@ class Dashboard extends React.Component {
         this.setState({ [name] : value });
     }
 
-    swapModal = (name) =>{
-        // console.log("swapModal")
+    toggleModal = (name) =>{
+        // console.log("toggleModal")
         if(this.state[name]){
             this.onFetchDictionnary();
         }
@@ -175,9 +175,9 @@ class Dashboard extends React.Component {
                                         Détail du mot sélectionné
                                     </CardTitle>  
                                     <CardText className="p-2"> 
-                                        <i onClick={this.swapModal.bind(this, "editModal")} 
+                                        <i onClick={this.toggleModal.bind(this, "editModal")} 
                                             className="fas fa-edit position-absolute mr-3 fa-xl" style={{right: 15, top: 0}}/>
-                                        <i onClick={this.swapModal.bind(this, 'deleteModal')} 
+                                        <i onClick={this.toggleModal.bind(this, 'deleteModal')} 
                                             className="fas fa-trash-alt fa-xl position-absolute mr-1" style={{right: 0, top: 0}}/>
                                         <span className="font-weight-bold"> Mot : </span>
                                         { this.state.selectedWordData.word}{', '}{ this.state.selectedWordData.class && Classes.getName(this.state.selectedWordData.class)} <br/>
@@ -205,7 +205,7 @@ class Dashboard extends React.Component {
                         </Collapse>}
 
                         <Col className='text-right'>
-                            <Button className='text-right mt-1' onClick={this.swapModal.bind(this, "addModal")}>
+                            <Button className='text-right mt-1' onClick={this.toggleModal.bind(this, "addModal")}>
                                 Ajouter un mot 
                             </Button>          
                         </Col> 
@@ -226,7 +226,7 @@ class Dashboard extends React.Component {
                 <Modal size='sm' isOpen={this.state.deleteModal} >   {/* Modale de confirmation de suppression */}             
                     <ModalBody>
                         <Col className='text-center'>
-                            <Button onClick={this.swapModal.bind(this, "deleteModal")} >
+                            <Button onClick={this.toggleModal.bind(this, "deleteModal")} >
                                 Annuler
                             </Button>
                             {'  '}
@@ -240,7 +240,7 @@ class Dashboard extends React.Component {
                 {this.state.addModal &&
                     <WordModal
                         addModal
-                        swapModal={this.swapModal.bind(this, "addModal")}
+                        toggleModal={this.toggleModal.bind(this, "addModal")}
                         token={this.props.token}
                         userId={this.props.userId}
                         reloadModal={this.reloadModal.bind(this, "addModal")}
@@ -251,7 +251,7 @@ class Dashboard extends React.Component {
                     <WordModal
                         editModal
                         wordData={this.state.selectedWordData}
-                        swapModal={this.swapModal.bind(this, "editModal")}
+                        toggleModal={this.toggleModal.bind(this, "editModal")}
                         token={this.props.token}
                         userId={this.props.userId}
                         reloadModal={this.reloadModal.bind(this, "editModal")}

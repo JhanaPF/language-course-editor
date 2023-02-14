@@ -13,7 +13,7 @@ router.fetchOneWord =  (req, res) => {
         {   $match: {_id: mongoose.Types.ObjectId(req.params._id)}  },
         {   
             $lookup:{
-                from: 'french_from_french_additional_data',
+                from: 'french_from_french_additionals',
                 localField: '_id',
                 foreignField: 'word_id',
                 as: 'additionalData'

@@ -7,7 +7,7 @@ import {validString} from './rgx/regex'
 import Classes from './enum/classes';
 import Categories from './enum/categories';
 import Sources from './enum/sources';
-
+import AudioRecorder from './components/audioRecorder';
 class WordModal extends React.Component {
 
     constructor(props){
@@ -46,13 +46,16 @@ class WordModal extends React.Component {
                     riddle: this.props.wordData.additionalData ? this.props.wordData.additionalData.riddle : undefined, // Devinette 
                     translated_riddle: this.props.wordData.additionalData ? this.props.wordData.additionalData.translated_riddle : undefined, // Devinette en langue pivot
                     sentence: this.props.wordData.additionalData ? this.props.wordData.additionalData.sentence : undefined, // Mot en contexte dans une phrase
+
+                    audioFile: null,
                 }
                 
             }
             else {
                 this.state = {
                     level: '1', 
-                    source: 0
+                    source: 0,
+                    audioFile: null,
                 };
             }
             //console.log(this.state)
@@ -122,10 +125,12 @@ class WordModal extends React.Component {
                 translated_riddle: this.state.translated_riddle ? this.state.translated_riddle : null, 
                 story: this.state.story ? this.state.story : null,
             },
-            userId: this.props.userId
+            userId: this.props.userId,
+            collection: "french_from_french",
+            audioFile: this.state.audioFile,
         }
         
-        //console.log(save)
+        console.log(save)
         return save;
     }
     
@@ -139,30 +144,37 @@ class WordModal extends React.Component {
             save, 
             { headers: { 'Authorization': this.props.token,  'Content-Type': 'multipart/form-data' } }
         )
-        .then( () => {  this.props.swapModal();  })
-        .catch(function (error) {console.log(error);});     
+        .then( () => this.props.toggleModal())
+        .catch(function (error) {console.log(error)});     
     }
 
     save = (next) =>{  
         if(this.isValid() === false) return; 
         
         const save = this.getData();
+        console.log(save)
+        const formData = new FormData();
+        formData.append("audio", this.state.audioFile, "recorded-audio.mpeg");
+
         axios.put(
-            this.apiUrl + 'word', 
-            save, 
-            { headers: { 'Authorization': this.props.token,  'Content-Type': 'multipart/form-data' } },
+            this.apiUrl + 'dictionaries/word', 
+            formData, 
+            { headers: { 'Authorization': this.props.token, 'Content-Type': 'multipart/form-data'} },
         )
         .then( () => {
 
             if(next)
                 this.props.reloadModal();
             else 
-                this.props.swapModal();
+                this.props.toggleModal();
         })
         .catch(function (error) {
-            console.log(error);
+            //console.log(error);
         });
+    }
 
+    saveAudio (file) {
+        this.setState({audioFile: file});
     }
 
     render() {
@@ -178,7 +190,7 @@ class WordModal extends React.Component {
                     
                         </Col>
                         <Col className='text-right ml-auto'>
-                            <button onClick={this.props.swapModal.bind(this, this.type)} type="button" className="btn btn-outline-secondary text-right ml-auto">X</button>
+                            <button onClick={this.props.toggleModal.bind(this, this.type)} type="button" className="btn btn-outline-secondary text-right ml-auto">X</button>
                         </Col>                        
                     </Row>
                         <FormGroup className='mx-2'>
@@ -190,9 +202,9 @@ class WordModal extends React.Component {
                                 name="word"
                                 value={this.state.word}
                                 onChange={this.handleChange}
-                                required
-                            />
-
+                                required />
+                        </FormGroup>
+                        <FormGroup className='mx-2 mb-3'>
                             <Label className='text-left' for="class">
                                 Classe:
                             </Label>
@@ -203,9 +215,12 @@ class WordModal extends React.Component {
                                 onChange={this.handleSelectChange.bind(this, 'class')} 
                                 options={this.classOptions}  
                                 placeholder=""/>
-
                         </FormGroup>
                         <FormGroup className='mx-2'>
+                            <Label className='text-left mr-4' for="word">
+                                Enregistrement vocal du mot:
+                            </Label>
+                            <AudioRecorder saveAudio={this.saveAudio.bind(this)}/>
                         </FormGroup>
                         <FormGroup className='mx-2 mb-3'>
                             <Label className='text-left' for="definition">
@@ -217,8 +232,7 @@ class WordModal extends React.Component {
                                 value={this.state.translated_definition}
                                 onChange={this.handleChange}  
                                 type='textarea'
-                                required                              
-                            />
+                                required />
                         </FormGroup>
                         <FormGroup className='mx-2 mb-3'>
                             <Label className='text-left' for="definition">
@@ -235,18 +249,6 @@ class WordModal extends React.Component {
                         </FormGroup>
                         <FormGroup className='mx-2'>
                             <Label className='text-left' for="riddle">
-                                Devinette (pour le mot-croisé):
-                            </Label>
-                            <Input
-                                id="riddle"
-                                name="riddle"
-                                value={this.state.riddle}
-                                onChange={this.handleChange}   
-                                type='textarea'                             
-                            />
-                        </FormGroup>
-                        <FormGroup className='mx-2'>
-                            <Label className='text-left' for="riddle">
                                 Devinette (pour le mot-croisé) en langue pivot:
                             </Label>
                             <Input
@@ -254,8 +256,18 @@ class WordModal extends React.Component {
                                 name="translated_riddle"
                                 value={this.state.translated_riddle}
                                 onChange={this.handleChange}
-                                type='textarea'
-                            />
+                                type='textarea'/>
+                        </FormGroup>
+                        <FormGroup className='mx-2'>
+                            <Label className='text-left' for="riddle">
+                                Devinette (pour le mot-croisé):
+                            </Label>
+                            <Input
+                                id="riddle"
+                                name="riddle"
+                                value={this.state.riddle}
+                                onChange={this.handleChange}   
+                                type='textarea'                             />
                         </FormGroup>
                         <FormGroup className='mx-2'>
                             <Label className='text-left' for="story">
@@ -266,8 +278,7 @@ class WordModal extends React.Component {
                                 name="story"
                                 value={this.state.story}
                                 onChange={this.handleChange}
-                                type='textarea'
-                            />                         
+                                type='textarea'/>                         
                         </FormGroup>
                         <FormGroup className='mx-2'>
                             <Label className='text-left' for="sentence">
@@ -277,8 +288,7 @@ class WordModal extends React.Component {
                                 id="sentence"
                                 name="sentence"
                                 value={this.state.sentence}
-                                onChange={this.handleChange}                                
-                            />
+                                onChange={this.handleChange}/>
                         </FormGroup>
                         <FormGroup className='mx-2'>
                             <Label className='text-left' for="level">
@@ -290,17 +300,10 @@ class WordModal extends React.Component {
                                 type="select" 
                                 value={this.state.level}
                                 onChange={this.handleChange} 
-                                className="ml-1"
-                            >                                   
-                                <option value={1}>
-                                  1 
-                                </option>
-                                <option value={2}>
-                                  2 
-                                </option>
-                                <option value={3}>
-                                  3 
-                                </option>
+                                className="ml-1">                                   
+                                    <option value={1}>1</option>
+                                    <option value={2}>2</option>
+                                    <option value={3}>3</option>
                             </Input>
                         </FormGroup>
                         <FormGroup className='mx-2'>
@@ -332,7 +335,7 @@ class WordModal extends React.Component {
                     <Col className='text-right mt-4'>
                         {this.props.addModal &&
                             <>
-                                <Button onClick={this.props.swapModal.bind(this, this.type)}>
+                                <Button onClick={this.props.toggleModal.bind(this, this.type)}>
                                     Quitter
                                 </Button>
                                 {' '}

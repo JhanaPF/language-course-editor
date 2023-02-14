@@ -4,7 +4,7 @@ const saveCtrl = require('../controllers/save')
 const isAdmin = require('../middleware/isAdmin')
 const auth = require('../middleware/auth')
 
-router.post('/word', auth, isAdmin, saveCtrl.saveWord)
+router.put('/word', auth, isAdmin, saveCtrl.addWord)
 router.post('/word', auth, isAdmin, saveCtrl.updateWord)
 router.delete('/word', auth, isAdmin, saveCtrl.deleteWord)
 
