@@ -13,7 +13,7 @@ class AudioRecorder extends Component {
     }
 
     componentDidUpdate(){
-        console.log(this.state)
+       // console.log(this.state)
     }
 
     handleStartRecording = () => {
@@ -40,9 +40,9 @@ class AudioRecorder extends Component {
         this.setState({ isRecording: false });
 
         const audioBlob = new Blob(this.state.audioChunks, { type: "audio/wav" });
-        if(this.props.saveAudio) this.props.saveAudio(audioBlob);
-return
-        const file = new File([audioBlob], "recorded-audio.wav", { type: "audio/wav" })
+//        if(this.props.saveAudio) this.props.saveAudio(audioBlob);
+        const file = new File([audioBlob], "audio.wav", { type: "audio/wav" })
+        console.log(file)
         if(this.props.saveAudio) this.props.saveAudio(file);
     }
 

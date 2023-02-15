@@ -2,9 +2,9 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import React from 'react';
 import {
-    Modal,  ModalBody, Button,
-    Row, Col, Card, CardBody, CardTitle,  CardText,
-    Table, Collapse
+    Modal, ModalBody, Button,
+    Row, Col, Card, CardBody, CardTitle,  
+    CardText, Table, Collapse
 } from 'reactstrap';
 import axios from 'axios';
 import Select from 'react-select';
@@ -44,9 +44,9 @@ class Dashboard extends React.Component {
     }
     
     onFetchDictionnary(){
-        axios.get(this.apiUrl + 'dictionnary', {  headers: { 'Authorization': this.props.token } } )
+        axios.get(this.apiUrl + 'dictionaries/dictionnary', {  headers: { 'Authorization': this.props.token } } )
         .then(res => {
-           // console.log(res.data.message)
+            // console.log(res.data.message)
             let setWords = [];
             let newDictionnary =  res.data.message.slice();
             newDictionnary.map(w => setWords.push({label: w.word, value:w._id}));
@@ -106,8 +106,7 @@ class Dashboard extends React.Component {
             this.apiUrl + 'word',              
             {
                 headers: { "Authorization": this.props.token },
-                data: { word_id: this.state.selectedWord.value, userId: this.props.userId }, // req.data = req.body dans le serveur
-               
+                data: { word_id: this.state.selectedWord.value, userId: this.props.userId }, // req.data = req.body dans le serveur   
             },
         )
         .then( (res) => {

@@ -11,7 +11,7 @@ const dictionnarySchema = mongoose.Schema({
     name: {type: String, required: true, unique: true},
     language: {type: String},
     pivot_tongue: {type: String},
-    flag: {type: String}, // url
+    flag_url: {type: String}, // url
 })
 
 const wordSchema = mongoose.Schema({
@@ -24,14 +24,14 @@ const wordSchema = mongoose.Schema({
     categories: [Number], 
     source: {type: Number}, // If word comes from external source
     phonetic: {type: String},
-    vocal: {type: String}, // Url 
+    vocal_url: {type: String}, // Url 
     updates,
 })
 
 const additionalDataSchema = mongoose.Schema({
     word_id: {type: mongoose.Schema.ObjectId, unique: true}, // Relation to word schema
     sentence: {type: String}, // Sentence in context. Phrase en contexte
-    sentence_vocal: {type: String}, // Url
+    sentence_vocal_url: {type: String}, // Url
     riddle: {type: String}, 
     translated_riddle: {type: String}, 
     story: {type: String}, // Anecdotes

@@ -2,12 +2,12 @@
     ***     Node server     ***
 */
 
-const http = require('http') 
+const http = require('http')
 const app = require('./app')
 //const path = require('path')
 //require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') }) 
 require('dotenv').config()
-
+const serverUtil = require('./utils/serverUtils')
 const mongoose = require('mongoose')
 const {user} = require('./schemas.js')
 const isProduction = process.env.NODE_ENV === 'production' 
@@ -22,6 +22,7 @@ mongoose.connect( isProduction ? process.env.DATABASE : 'mongodb://localhost:270
     //     name: "admin",
     //     mail: "admin@gmail.com",
     //     password: "$2a$12$ZU.b4rN0S4Eu0xPnLPN79u9BgUOCxYE9BQk.2YNkdXmlPU9HQRiyW", // Rthyu--77
+    //     role: 'admin',
     // }
     // const newAdmin = new user(admin)
     // newAdmin.save()
@@ -32,36 +33,11 @@ mongoose.connect( isProduction ? process.env.DATABASE : 'mongodb://localhost:270
     process.exit(1)
 })
 
-const normalizePort = val => { // Return valid port
-    const port = parseInt(val, 10)
-   
-    if (isNaN(port))  return val
-    else if (port >= 0) return port
-    else return false
-}
-
-const port = normalizePort(process.env.PORT || '3001')
+const port = serverUtil.normalizePort(process.env.PORT || '3001')
 app.set('port', port) 
 
-const errorHandler = error => {
-    if (error.syscall !== 'listen') throw error
-
-    const address = server.address()
-    const bind = typeof address === 'string' ? 'pipe ' + address : 'port: ' + port
-    switch (error.code) {
-        case 'EACCES':
-            console.error(bind + ' requires elevated privileges.')
-            process.exit(1)
-        case 'EADDRINUSE':
-            console.error(bind + ' is already in use.')
-            process.exit(1)
-        default:
-            throw error
-    }
-}
-
 const server = http.createServer(app)
-server.on('error', errorHandler)
+server.on('error', serverUtil.errorHandler)
 server.on('listening', () => {
     const address = server.address()
     const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port

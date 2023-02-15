@@ -23,7 +23,6 @@ router.fetchOneWord =  (req, res) => {
     ])
     .then(word => res.status(200).json({message: word[0]}))
     .catch(error => res.status(400).json({ error }))
-
 } 
 
 router.fetchOneDictionnary =  (req, res) => {    
