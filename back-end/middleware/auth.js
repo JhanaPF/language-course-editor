@@ -3,7 +3,7 @@ require('dotenv').config()
 
 module.exports = (req, res, next) => {
     try{
-        //console.log(req.headers.authorization)
+        // console.log(req.headers.authorization)
         console.log(req)
         if(!req.body.userId) throw 'no user id'
         const token = req.headers.authorization
@@ -12,7 +12,9 @@ module.exports = (req, res, next) => {
         const tokenUserId = decodedToken.userId
         req.decodedToken = decodedToken // Used by isAdmin middleware
         console.log(req.body.userId, tokenUserId)
-        if(req.body.userId === tokenUserId) { next()} // Is encoded id in token the same as given user id
+        if(req.body.userId === tokenUserId) { // Is encoded id in token the same as given user id
+            next()
+        } 
         else throw 'Invalid id'
     }
     catch (error) {

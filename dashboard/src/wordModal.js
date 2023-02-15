@@ -1,6 +1,6 @@
 import './App.css';
 import React from 'react';
-import {Modal, ModalBody, FormGroup, Input, Label, Button, Row, Col} from 'reactstrap';
+import {Modal, ModalBody, ModalFooter, FormGroup, Input, Label, Button, Row, Col, UncontrolledAccordion, AccordionItem, AccordionHeader, AccordionBody} from 'reactstrap';
 import axios from 'axios';
 import Select from 'react-select';
 import {validString} from './rgx/regex'
@@ -184,10 +184,10 @@ class WordModal extends React.Component {
                    <Row className='border-bottom pb-3'>
                         <Col md='10'>
                             <h4>
-                                {this.props.addModal && 'Ajouter un mot'} 
-                                {this.props.editModal && 'Modifier un mot'}                             
+                                {this.props.addModal && 'Ajouter '} 
+                                {this.props.editModal && 'Modifier '}  
+                                un mot dans le dictionnaire                           
                             </h4>
-                    
                         </Col>
                         <Col className='text-right ml-auto'>
                             <button onClick={this.props.toggleModal.bind(this, this.type)} type="button" className="btn btn-outline-secondary text-right ml-auto">X</button>
@@ -244,31 +244,10 @@ class WordModal extends React.Component {
                                 value={this.state.definition}
                                 onChange={this.handleChange}
                                 type='textarea'
-                                required                            
-                            />
+                                required />
                         </FormGroup>
-                        <FormGroup className='mx-2'>
-                            <Label className='text-left' for="riddle">
-                                Devinette (pour le mot-croisé) en langue pivot:
-                            </Label>
-                            <Input
-                                id="translated_riddle"
-                                name="translated_riddle"
-                                value={this.state.translated_riddle}
-                                onChange={this.handleChange}
-                                type='textarea'/>
-                        </FormGroup>
-                        <FormGroup className='mx-2'>
-                            <Label className='text-left' for="riddle">
-                                Devinette (pour le mot-croisé):
-                            </Label>
-                            <Input
-                                id="riddle"
-                                name="riddle"
-                                value={this.state.riddle}
-                                onChange={this.handleChange}   
-                                type='textarea'                             />
-                        </FormGroup>
+
+
                         <FormGroup className='mx-2'>
                             <Label className='text-left' for="story">
                                 Anecdote(s):
@@ -331,6 +310,40 @@ class WordModal extends React.Component {
                                 options={this.sourceOptions} 
                                 placeholder="" />
                         </FormGroup>
+                        <UncontrolledAccordion stayOpen >
+                            <AccordionItem>
+                                <AccordionHeader targetId="1">
+                                    Jeu de mots-croisés
+                                </AccordionHeader>
+                                <AccordionBody accordionId="1">
+                                    <FormGroup className='mx-2'>
+                                        <Label className='text-left' for="riddle">
+                                            Devinette (pour le mot-croisé) en langue pivot:
+                                        </Label>
+                                        <Input
+                                            id="translated_riddle"
+                                            name="translated_riddle"
+                                            value={this.state.translated_riddle}
+                                            onChange={this.handleChange}
+                                            type='textarea'/>
+                                    </FormGroup>
+                                    <FormGroup className='mx-2'>
+                                        <Label className='text-left' for="riddle">
+                                            Devinette (pour le mot-croisé):
+                                        </Label>
+                                        <Input
+                                            id="riddle"
+                                            name="riddle"
+                                            value={this.state.riddle}
+                                            onChange={this.handleChange}   
+                                            type='textarea' />
+                                    </FormGroup>
+                                </AccordionBody>
+                            </AccordionItem>
+                        </UncontrolledAccordion>
+
+                </ModalBody>
+                <ModalFooter>
 
                     <Col className='text-right mt-4'>
                         {this.props.addModal &&
@@ -357,7 +370,7 @@ class WordModal extends React.Component {
                             </Col>
                         }                    
                     </Col>                          
-                </ModalBody>
+                </ModalFooter>
             </Modal>                
        
         );
