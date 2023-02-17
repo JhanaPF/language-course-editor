@@ -28,16 +28,22 @@ class CoursesOverview extends React.Component {
             },
         ]
 
+        const frenchFlagUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Flag_of_France.svg/langfr-225px-Flag_of_France.svg.png";
+        const spanishFlag = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Bandera_de_Espa%C3%B1a.svg/1200px-Bandera_de_Espa%C3%B1a.svg.png";
+        const englishFlag = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_the_United_Kingdom_%283-5%29.svg/1200px-Flag_of_the_United_Kingdom_%283-5%29.svg.png";
         this.courses = [
             {
                 language: "espanol",
                 pivot_tongue: "français",
-                released: true
+                released: true,
+                flag_url: spanishFlag
             },
             {
                 language: "français",
                 pivot_tongue: "english",
-                released: false
+                released: false,
+                flag_url: frenchFlagUrl,
+                pivot_tongue_flag_url: englishFlag
             },
         ]
 
