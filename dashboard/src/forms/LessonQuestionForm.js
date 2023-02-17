@@ -104,7 +104,7 @@ class LessonQuestionForm extends React.Component {
         const data = this.getData();
         //console.log(save.word, this.state.translated_definition)
         axios.post(
-            this.apiUrl + 'word',
+            this.apiUrl + 'lesson-questions',
             data, 
             { headers: { 'Authorization': this.props.token,  'Content-Type': 'multipart/form-data' } }
         )

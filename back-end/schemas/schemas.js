@@ -7,12 +7,71 @@ const updates = [{
     date: {type: Date},
 }]  
 
+const fileUrl = {type: String}
+const mongoId = {type: mongoose.Schema.ObjectId}
+const uniqueMongoId = {type: mongoose.Schema.ObjectId, unique: true}
+
+const courseSchema = mongoose.Schema({ 
+    description: {type: String},
+    name: {type: String, required: true, unique: true},
+    dictionnary_id: {type: mongoose.Schema.ObjectId, unique: true}, // Relation to dictionaries
+})
+
+const pictureChoice = [{
+    picture_id: mongoId, 
+    url: fileUrl,
+}] 
+
+
+const textChoice =  {
+    type: [Array]
+}
+
+
+const lessonSchema = mongoose.Schema({
+        // Une photo
+        // Une phrase/ un mot
+        // Un enregistrement audio
+        // Enregistrer la phrase sous forme d'array
+        
+        // La réponse:
+        // Une traduction
+        // Choix de quatre phrases/mots
+        // Choix de quatre images
+        // Un champs pour le type de réponse
+        // L'index du mot à sélectionner pour les phrases à compléter
+
+        // langage, ex french_to_french
+        // Index de la question dans la leçon
+
+    answerIndex: {type: Number, min: 0, max: 100},
+    course_id: {type: mongoose.Schema.ObjectId, unique: true}, // Relation to dictionaries
+    picture: fileUrl,
+    sentence: {type: Array},
+    sentence_audio: fileUrl, // Il devrait y avoir plusieurs enregistrements
+    translation: {type: Array},
+    pictureChoice,
+    textChoice,
+    answerIndex: {type: Number, min: 0, max: 100},
+    answerType: {type: String, enum: ["translation", "pictureChoice", "textChoice", ""]},
+})
+
+const fileSchema = mongoose.Schema({ 
+    description: {type: String},
+    url: fileUrl,
+})
+
+const audioRecordingSchema = fileSchema // Des enregistrements audio des collections word, additionals et lesson
+const pictureSchema = fileSchema // Des images de la collection lesson
+
 const dictionnarySchema = mongoose.Schema({
     name: {type: String, required: true, unique: true},
     language: {type: String},
     pivot_tongue: {type: String},
     flag_url: {type: String}, // url
+    released: {type: Boolean},
 })
+
 
 const wordSchema = mongoose.Schema({
     word : {type: String, required: true, unique: true}, 
@@ -24,14 +83,14 @@ const wordSchema = mongoose.Schema({
     categories: [Number], 
     source: {type: Number}, // If word comes from external source
     phonetic: {type: String},
-    vocal_url: {type: String}, // Url 
+    vocal_url: fileUrl, 
     updates,
 })
 
 const additionalDataSchema = mongoose.Schema({
     word_id: {type: mongoose.Schema.ObjectId, unique: true}, // Relation to word schema
     sentence: {type: String}, // Sentence in context. Phrase en contexte
-    sentence_vocal_url: {type: String}, // Url
+    sentence_vocal_url: fileUrl, 
     riddle: {type: String}, 
     translated_riddle: {type: String}, 
     story: {type: String}, // Anecdotes

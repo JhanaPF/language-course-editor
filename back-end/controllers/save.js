@@ -2,9 +2,9 @@ const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
 const { wordValidation, wordAdditionalDataValidation } = require('../validators/validators.js')
-const {wordSchema, additionalDataSchema} = require('../schemas.js') // Importation des schémas pour envoyer des objets vers les collections de MongoDb
+const {wordSchema, additionalDataSchema} = require('../schemas/schemas.js') // Importation des schémas pour envoyer des objets vers les collections de MongoDb
 const fs = require('fs');
-const schemas = require('../schemas')
+const schemas = require('../schemas/schemas')
 
 const isValid = (word, additionalData) => {
 

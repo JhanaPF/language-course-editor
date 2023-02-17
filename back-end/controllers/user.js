@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 const validator =  require('validator')
 const { userValidation } = require('../validators/validators.js')
 require('dotenv').config()
-const {user} = require('../schemas.js')
+const {user} = require('../schemas/schemas.js')
 
 router.signup = (req, res) => {
     console.log("Sign up", req.body)

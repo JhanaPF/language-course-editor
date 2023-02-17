@@ -9,7 +9,7 @@ const app = require('./app')
 require('dotenv').config()
 const serverUtil = require('./utils/serverUtils')
 const mongoose = require('mongoose')
-const {user} = require('./schemas.js')
+const {user} = require('./schemas/schemas.js')
 const isProduction = process.env.NODE_ENV === 'production' 
 if(!isProduction) process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0 // Delete Tls encryption, security failure for devlopment
 

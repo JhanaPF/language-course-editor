@@ -12,6 +12,7 @@ import WordModal from './wordModal';
 import Classes from './enum/classes';
 // import Categories from './enum/categories';
 import Sources from './enum/sources';
+import CoursesOverview from './views/CoursesOverview';
 
 class Dashboard extends React.Component {
 
@@ -27,6 +28,7 @@ class Dashboard extends React.Component {
             selectedWord: undefined, 
             showNativeDefinition: false,
             showTranslatedWord: true,
+            dictionnary: null,
         }
         
         this.apiUrl = process.env.API_URL || 'http://localhost:3001/';
@@ -218,6 +220,10 @@ class Dashboard extends React.Component {
 
                 </Row>  
 
+
+                <Row>
+                    <CoursesOverview/>
+                </Row>
 
 
                 {/********** MODALES ***********/}

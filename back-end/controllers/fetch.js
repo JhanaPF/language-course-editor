@@ -1,7 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const router = express.Router()
-const {french_from_french} = require('../schemas.js') 
+const {french_from_french} = require('../schemas/schemas.js') 
 
 router.fetchOneWord =  (req, res) => {   
     
