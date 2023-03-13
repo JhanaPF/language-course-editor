@@ -1,3 +1,5 @@
+import mongoose from "mongoose"
+
 const errorHandler = error => {
     if (error.syscall !== 'listen') throw error
 
@@ -23,7 +25,12 @@ const normalizePort = val => { // Return valid port
     else return false
 }
 
+const isIdValid = (id) => {
+    return mongoose.Types.ObjectId.isValid(id)
+}
+
 module.exports = {
     normalizePort,
     errorHandler,
+    isIdValid,
 };

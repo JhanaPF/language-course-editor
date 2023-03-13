@@ -25,8 +25,7 @@ const checkFileType = (req, file, cbk) => {
     } else {
         cbk(new Error('Le fichier doit être un MP3'), false);
     }
-  }
-  
+}  
 
 const upload = multer({ 
     dest: 'uploads/', 

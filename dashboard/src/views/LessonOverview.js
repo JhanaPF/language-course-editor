@@ -8,38 +8,19 @@ class LessonsOverview extends React.Component {
     constructor(props){
         super(props);
 
-        this.questions = [
-            {
-                sentence: "Bonjour"
-            },
-            {
-                sentence: "Comment allez-vous ?"
-            },
-        ]
-
         this.lessons = [
             {
+                _id: "fdslkj67575",
                 name: "Se présenter",
                 description: "Se présenter à quelqu'un"
             },
             {
+                _id: "fd77hhdgdgd75",
                 name: "Réserver un hôtel",
                 description: "Dialogue avec un receptionniste pour louer un chambre"
             },
         ]
 
-        this.courses = [
-            {
-                language: "espanol",
-                pivot_tongue: "français",
-                released: true
-            },
-            {
-                language: "français",
-                pivot_tongue: "english",
-                released: false
-            },
-        ]
 
         this.state = {
             course: this.props.course
@@ -105,7 +86,10 @@ class LessonsOverview extends React.Component {
         return(
             this.lessons.map((lesson) => 
                 <Card style={{ width: '18rem' }}>
-                    <img alt="Sample" src={course.flag_url} />
+                    {this.props.course.flag_url &&
+                        <img src={this.props.course.flag_url} />
+                    }
+
                     <CardBody>
                         <CardTitle tag="h5">
                             {lesson.name}

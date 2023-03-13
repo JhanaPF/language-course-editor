@@ -1,7 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const router = express.Router()
-const {french_from_french} = require('../schemas/schemas.js') 
+const {spanish_from_french} = require('../schemas/schemas.js') 
 
 router.fetchOneWord =  (req, res) => {   
     
@@ -9,11 +9,11 @@ router.fetchOneWord =  (req, res) => {
     if(!isValid) return res.status(400).json({})
   
     
-    french_from_french.aggregate([
+    spanish_from_french.aggregate([
         {   $match: {_id: mongoose.Types.ObjectId(req.params._id)}  },
         {   
             $lookup:{
-                from: 'french_from_french_additionals',
+                from: 'spanish_from_french_additionals',
                 localField: '_id',
                 foreignField: 'word_id',
                 as: 'additionalData'
@@ -27,7 +27,7 @@ router.fetchOneWord =  (req, res) => {
 
 router.fetchOneDictionnary =  (req, res) => {    
 
-    french_from_french.find()
+    spanish_from_french.find()
     .then(dic => res.status(200).json({message: dic}))
     .catch(error => res.status(400).json({error}))
 } 

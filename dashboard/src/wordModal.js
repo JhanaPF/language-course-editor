@@ -7,7 +7,7 @@ import {validString} from './rgx/regex'
 import Classes from './enum/classes';
 import Categories from './enum/categories';
 import Sources from './enum/sources';
-import AudioRecorder from './components/audioRecorder';
+import AudioRecorder from './components/AudioRecorder';
 
 class WordModal extends React.Component {
 

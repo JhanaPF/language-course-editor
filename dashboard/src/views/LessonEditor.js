@@ -3,13 +3,12 @@ import React from 'react';
 import {Modal, ModalBody, ModalFooter, Form, FormText, FormGroup, Input, Label, Button, Row, Col, UncontrolledAccordion, AccordionItem, AccordionHeader, AccordionBody} from 'reactstrap';
 import axios from 'axios';
 import Select from 'react-select';
-import {validString} from './rgx/regex'
+import {validString} from './rgx/regex';
 
 class LessonEditor extends React.Component {
 
     constructor(props){
         super(props);
-        
     }
 
     handleSelectChange = (param, e) =>{
@@ -73,6 +72,7 @@ class LessonEditor extends React.Component {
     }
 
     formValidation () {
+
     }
 
     render() {

@@ -222,7 +222,7 @@ class Dashboard extends React.Component {
 
 
                 <Row>
-                    <CoursesOverview/>
+                    <CoursesOverview course={1}/>
                 </Row>
 
 

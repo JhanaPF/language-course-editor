@@ -3,7 +3,7 @@ const router = express.Router()
 const mongoose = require('mongoose')
 const { wordValidation, wordAdditionalDataValidation } = require('../validators/validators.js')
 const {wordSchema, additionalDataSchema} = require('../schemas/schemas.js') // Importation des schémas pour envoyer des objets vers les collections de MongoDb
-const fs = require('fs');
+// const fs = require('fs'); // Crud files
 const schemas = require('../schemas/schemas')
 
 const isValid = (word, additionalData) => {
@@ -22,7 +22,7 @@ const isValid = (word, additionalData) => {
 }
 
 const isIdValid = (id) => {
-    return mongoose.Types.ObjectId.isValid(id) 
+    return mongoose.Types.ObjectId.isValid(id)
 }
 
 router.addWord = (req, res) => {

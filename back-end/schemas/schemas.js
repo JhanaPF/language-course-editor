@@ -1,78 +1,47 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
 require('dotenv').config()
+//import * as entities_schemas from './entities_schemas'
+const entities_schemas = require('./entities_schemas')
 
-const updates = [{
-    user_id: {type: mongoose.Schema.ObjectId}, 
-    date: {type: Date},
-}]  
-
-const fileUrl = {type: String}
-const mongoId = {type: mongoose.Schema.ObjectId}
-const uniqueMongoId = {type: mongoose.Schema.ObjectId, unique: true}
-
-const courseSchema = mongoose.Schema({ 
-    description: {type: String},
-    name: {type: String, required: true, unique: true},
-    dictionnary_id: {type: mongoose.Schema.ObjectId, unique: true}, // Relation to dictionaries
-    // Les drapeaux sont stockés dans la collection dictionnaire 
+const uniqueRequiredString = entities_schemas.uniqueRequiredString
+const dictionnarySchema = mongoose.Schema({ // Carry informations about available dictionnaries and courses created
+    name: uniqueRequiredString,
+    language: uniqueRequiredString,
+    raw_name: uniqueRequiredString, // spanish_from_french for example to link with the dictionnary word collection
+    pivot_tongue: uniqueRequiredString,
+    flag_url: entities_schemas.fileUrl, 
+    released: {type: Boolean, default: false},
 })
-
-const pictureChoice = [{
-    picture_id: mongoId, 
-    url: fileUrl,
-}] 
-
-
-const textChoice =  {
-    type: [Array]
-}
-
+const dictionnary = mongoose.model('Dictionnary', dictionnarySchema) 
 
 const lessonSchema = mongoose.Schema({
-        // Une photo
-        // Une phrase/ un mot
-        // Un enregistrement audio
-        // Enregistrer la phrase sous forme d'array
-        
-        // La réponse:
-        // Une traduction
-        // Choix de quatre phrases/mots
-        // Choix de quatre images
-        // Un champs pour le type de réponse
-        // L'index du mot à sélectionner pour les phrases à compléter
 
-        // langage, ex french_to_french
-        // Index de la question dans la leçon
+    dictionnary_id: entities_schemas.mongoId,
 
+    name: String,
+    description: String,
+    picture: entities_schemas.fileUrl,
+})
+const lesson = mongoose.model('Lesson', lessonSchema) 
+
+const questionSchema = mongoose.Schema({
+    // Enregistrer la phrase sous forme d'array
+
+    lesson_id: entities_schemas.mongoId,
+    dictionnary_id: entities_schemas.mongoId,// ex spanish_from_french
     answerIndex: {type: Number, min: 0, max: 100},
     course_id: {type: mongoose.Schema.ObjectId, unique: true}, // Relation to dictionaries
-    picture: fileUrl,
-    sentence: {type: Array},
-    sentence_audio: fileUrl, // Il devrait y avoir plusieurs enregistrements
+    picture: entities_schemas.fileUrl,
+    sentence: {type: [String]}, // Can be a single word
+    sentence_audio: entities_schemas.fileUrl, // Il devrait y avoir plusieurs enregistrements
     translation: {type: Array},
-    pictureChoice,
+    pictureChoice: entities_schemas.pictureChoice,
     textChoice,
     answerIndex: {type: Number, min: 0, max: 100},
-    answerType: {type: String, enum: ["translation", "pictureChoice", "textChoice", ""]},
+    //answerType: {type: String, enum: ["translation", "pictureChoice", "textChoice", ""]},
 })
-
-const fileSchema = mongoose.Schema({ 
-    description: {type: String},
-    url: fileUrl,
-})
-
-const audioRecordingSchema = fileSchema // Des enregistrements audio des collections word, additionals et lesson
-const pictureSchema = fileSchema // Des images de la collection lesson
-
-const dictionnarySchema = mongoose.Schema({
-    name: {type: String, required: true, unique: true},
-    language: {type: String},
-    pivot_tongue: {type: String},
-    flag_url: fileUrl, 
-    released: {type: Boolean},
-})
-
+const question = mongoose.model('Question', questionSchema) 
 
 const wordSchema = mongoose.Schema({
     word : {type: String, required: true, unique: true}, 
@@ -84,21 +53,21 @@ const wordSchema = mongoose.Schema({
     categories: [Number], 
     source: {type: Number}, // If word comes from external source
     phonetic: {type: String},
-    vocal_url: fileUrl, 
-    updates,
+    vocal_url: entities_schemas.fileUrl, 
+    updates: entities_schemas.updates,
 })
 
 const additionalDataSchema = mongoose.Schema({
     word_id: {type: mongoose.Schema.ObjectId, unique: true}, // Relation to word schema
     sentence: {type: String}, // Sentence in context. Phrase en contexte
-    sentence_vocal_url: fileUrl, 
+    sentence_vocal_url: entities_schemas.fileUrl, 
     riddle: {type: String}, 
     translated_riddle: {type: String}, 
     story: {type: String}, // Anecdotes
-    updates,
+    updates: entities_schemas.updates,
 })
 
-// Schema for both players and dahsboard's users
+// Schema for dahsboard's users
 const userSchema = mongoose.Schema({
     name : {type: String},
     mail : {type: String, required: true, unique: true},
@@ -111,18 +80,17 @@ userSchema.plugin(uniqueValidator)
 wordSchema.plugin(uniqueValidator)
 dictionnarySchema.plugin(uniqueValidator)
 
-
 // Define list of dialects with this syntax "languageToLearn_from_pivotTongue" to generate all the models and collections for each dictionnary
 const languages = process.env.DICTIONARIES.split(", ")
-let models = {}
+let dictionnaryModels = {} // ex language_from_pivotlanguage and language_from_pivotlanguage_additional
 for (const language of languages) { // Dynamic generation of Mongo models
-    models[language] = mongoose.model(language, wordSchema, language) // 3rd parameter define name of collection
+    dictionnaryModels[language] = mongoose.model(language, wordSchema, language) // 3rd parameter define name of collection
     
-    const languageSentences = language + "additional"
+    const languageSentences = language + "_additional"
     collectionName = languageSentences.charAt(0).toUpperCase() + languageSentences.slice(1) 
-    models[languageSentences] = mongoose.model(languageSentences, additionalDataSchema)
+    dictionnaryModels[languageSentences] = mongoose.model(languageSentences, additionalDataSchema)
 }
 
 const user = mongoose.model('User', userSchema) 
 
-module.exports = {...models, user, wordSchema, additionalDataSchema}
+module.exports = {...dictionnaryModels, user, wordSchema, additionalDataSchema, question, lesson, dictionnary}
