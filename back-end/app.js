@@ -1,5 +1,5 @@
 /*
-      Express app
+    ***  Express app  ***
 */
 
 const express = require('express')
@@ -9,6 +9,8 @@ const cors = require('cors')
 const rateLimit = require('express-rate-limit')
 const mongoSanitize = require('express-mongo-sanitize')
 const helmet = require("helmet")
+require('dotenv').config()
+const isProduction = process.env.NODE_ENV === 'production' 
 
 const dicRoutes = require('./routes/dictionnaries')
 const userRoutes = require('./routes/user')
@@ -20,31 +22,29 @@ const limiter = rateLimit({
 	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 })
 
+// --- Security middlewares ---
 app.use(limiter)
-app.use(mongoSanitize())    
+app.use(mongoSanitize())
 app.use(helmet())
+app.use(cors())
+//  --------------------------
+
 //app.use(bodyParser.urlencoded({ extended: true }))
 //app.use(bodyParser.json({ type: 'multipart/form-data', limit: '50mb' }))
-if(process.env.NODE_ENV === "production") app.use(cors())
+
 
 app.use((req, res, next) => { 
-    res.setHeader('Access-Control-Allow-Origin', '*') // Autorise CORS, security failure for development 
+    if(!isProduction) res.setHeader('Access-Control-Allow-Origin', '*') // Autorise CORS, security failure for development 
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization')
     res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE')
-    console.log(req.body, req.url)
-    
-        
-    
+    //console.log(req.body, req.url)
+
     next()
-}) 
+})
 
 app.use(express.json()) // Put body in req object for all request with Content-Type: application/json
-//app.use('/dictionaries', (req, res, next) => { 
-//    console.log('dico')
-//    next()
-//}) 
 
-app.use('/dictionaries', dicRoutes) 
-app.use('/auth', userRoutes) 
+app.use('/dictionaries', dicRoutes)
+app.use('/auth', userRoutes)
 
 module.exports = app // For testing

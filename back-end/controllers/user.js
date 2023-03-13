@@ -13,9 +13,8 @@ router.signup = (req, res) => {
     const validation = userValidation.validate(req.body)
     if(validation.error) { 
         console.log(validation.error) 
-        return res.status(500).json({}) 
+        return res.status(500)
     }
-
 
     bcrypt.hash(req.body.password, 12)
     .then(hash => {
@@ -28,11 +27,15 @@ router.signup = (req, res) => {
         
         newUser.save()
         .then(() => res.status(201).json({ message: 'New user registered' }))
-        .catch(error => res.status(400).json({ error }))
-        
+        .catch(error => {
+            console.log(error)
+            res.status(400)
+        })
     })
-    .catch(error => res.status(500).json({ error }))
-    
+    .catch(error => {
+        console.log(error)
+        res.status(500)
+    })
 }
 
 router.signin = (req, res) => {
@@ -40,42 +43,42 @@ router.signin = (req, res) => {
     
     if(!validator.isEmail(req.body.mail)){
         console.log("Connexion attempt with invalid mail")
-        return res.status(400).json({})
+        return res.status(400)
     }
 
     user.findOne({ mail: req.body.mail })
     .then(userFound => {
         if (!userFound) {
             console.log("Utilisateur non trouvé")
-            return res.status(401).json({}) 
+            return res.status(401)
         }
         
         bcrypt.compare(req.body.password, userFound.password)
         .then(valid => {
-            //console.log(valid)
             if (!valid) {
-                return res.status(401).json({ error: 'Wrong password', sendPassword:req.body.password, passwordFound: userFound.password})
+                console.log("Connexion attempt with invalid password")
+                return res.status(401).json({ error: 'Wrong password' })
             }
 
             res.status(200).json({
                 userId: userFound._id,
                 token: jwt.sign(
                     {userId: userFound._id, isAdmin: userFound.role === "admin"},
-                    process.env.SECRET, //  RANDOM_TOKEN_SECRET Ou process.env.SECRET
-                    {expiresIn: "24h"}
+                    process.env.SECRET ? process.env.SECRET : "RANDOM_TOKEN_SECRET",
+                    {expiresIn: "12h"}
                 )
             })
         })
         .catch(error => {
-            return res.status(500).json({ error : 'Impossible de comparer les hashs'})
+            console.log(error)
+            return res.status(500).json({ error : 'Passwords hash comparison error'})
         })
 
     })
     .catch(error =>  {
         console.log(error)
-        return res.status(500).json({ error : 'Utilisateur inexistant'}) 
+        return res.status(500).json({ error : 'No user corresponding found'}) 
     })
-    
 }
 
 module.exports = router

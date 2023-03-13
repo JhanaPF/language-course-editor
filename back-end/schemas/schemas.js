@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
-//require('dotenv').config()
+require('dotenv').config()
 
 const updates = [{
     user_id: {type: mongoose.Schema.ObjectId}, 
@@ -69,7 +69,7 @@ const dictionnarySchema = mongoose.Schema({
     name: {type: String, required: true, unique: true},
     language: {type: String},
     pivot_tongue: {type: String},
-    flag_url: url, 
+    flag_url: fileUrl, 
     released: {type: Boolean},
 })
 
@@ -103,7 +103,7 @@ const userSchema = mongoose.Schema({
     name : {type: String},
     mail : {type: String, required: true, unique: true},
     password : {type: String},
-    role:{type: String, enum: ['guest, admin, superAdmin', 'player']}, // SuperAdmin, Admin, Joueur, etc...
+    role:{type: String, enum: ['guest', 'admin', 'superAdmin', 'player']}, // SuperAdmin, Admin, Joueur, etc...
     dialects: {type: Array}, // Langue dans lesquelles le joueur a joué
 })
 

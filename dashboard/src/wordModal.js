@@ -69,7 +69,7 @@ class WordModal extends React.Component {
             };
         }
 
-        this.apiUrl = process.env.API_URL || 'http://localhost:3001/';
+        this.apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3001/';
 
         this.handleChange = this.handleChange.bind(this);
         this.save = this.save.bind(this);

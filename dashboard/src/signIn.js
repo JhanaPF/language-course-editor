@@ -20,6 +20,7 @@ class SignIn extends React.Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.signIn = this.signIn.bind(this);
+        
     }
 
 

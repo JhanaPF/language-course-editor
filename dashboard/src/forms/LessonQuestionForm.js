@@ -36,7 +36,7 @@ class LessonQuestionForm extends React.Component {
         this.state = state;
         //console.log(this.state)
 
-        this.apiUrl = process.env.API_URL || 'http://localhost:3001/';
+        this.apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3001/';
         this.handleChange = this.handleChange.bind(this);
         this.save = this.save.bind(this);
         this.update = this.update.bind(this);

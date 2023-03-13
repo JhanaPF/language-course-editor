@@ -16,14 +16,14 @@ class App extends React.Component {
             loggedin: false,
         }
 
-        this.apiUrl = process.env.API_URL || "http://localhost:3001/";
+        this.apiUrl = process.env.REACT_APP_API_URL || "http://localhost:3001/";
 
         this.signIn = this.signIn.bind(this);
         this.signUp = this.signUp.bind(this);
     }
 
     signIn = (mail, password) => {
-        console.log({ mail, password })
+        console.log({ mail, password }, this.apiUrl)
         axios.post(this.apiUrl + 'auth/signin', { mail, password })
         .then(res => { 
             console.log("Logged in")

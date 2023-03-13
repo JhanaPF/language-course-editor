@@ -1,0 +1,12 @@
+{
+  "name": "collaborative-dictionnary",
+  "version": "1.0.0",
+  "description": "Dash and Api for collaborative dictionnary and level creator",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install": "cd back-end && npm install && cd ../dashboard && npm install",
+    "start": "cd back-end && npm start && cd ../dashboard && npm start"
+  },
+  "author": "Jhana",
+  "license": "ISC"
+}
