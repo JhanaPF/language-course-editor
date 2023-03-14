@@ -10,11 +10,14 @@ class App extends React.Component {
     constructor(){
         super();
 
+        const token = localStorage.getItem('token');
         this.state={
-            token: '',
+            token: token ? token : '',
             uId: '',
-            loggedin: false,
+            loggedin: token ? true : false,
         }
+
+
 
         this.apiUrl = process.env.REACT_APP_API_URL || "http://localhost:3001/";
 
@@ -22,11 +25,16 @@ class App extends React.Component {
         this.signUp = this.signUp.bind(this);
     }
 
+    componentDidMount(){
+        
+    }
+
     signIn = (mail, password) => {
         //console.log({ mail, password }, this.apiUrl)
         axios.post(this.apiUrl + 'auth/signin', { mail, password })
         .then(res => { 
             console.log("Logged in")
+            localStorage.setItem('token', res.data.token);
             this.setState({token : res.data.token, userId: res.data.userId, loggedin: true}); 
         })
         .catch(error => console.log(error));

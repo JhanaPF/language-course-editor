@@ -1,8 +1,7 @@
 import axios from 'axios';
 
 const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:3001/";
-const token = null;
-
+const token = localStorage.getItem('token');
 
 export function post(url, data, successCbk, errorCbk, noty=false){
 
