@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+const mongoose = require('mongoose')
 
 const errorHandler = error => {
     if (error.syscall !== 'listen') throw error

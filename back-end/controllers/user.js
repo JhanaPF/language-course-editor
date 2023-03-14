@@ -6,6 +6,8 @@ const validator =  require('validator')
 const { userValidation } = require('../validators/validators.js')
 require('dotenv').config()
 const {user} = require('../schemas/schemas.js')
+const cookie = require('cookie')
+const cookieParser = require('cookie-parser');
 
 router.signup = (req, res) => {
     console.log("Sign up", req.body)
@@ -39,12 +41,9 @@ router.signup = (req, res) => {
 }
 
 router.signin = (req, res) => {
-    console.log("Login", req.body)
+    console.log("User connection attempt", req.body)
     
-    if(!validator.isEmail(req.body.mail)){
-        console.log("Connexion attempt with invalid mail")
-        return res.status(400)
-    }
+    const token = req.cookies ? req.cookies.my_cookie.token : null //  Let's check the token
 
     user.findOne({ mail: req.body.mail })
     .then(userFound => {
@@ -60,13 +59,31 @@ router.signin = (req, res) => {
                 return res.status(401).json({ error: 'Wrong password' })
             }
 
+            const token = jwt.sign(
+                {userId: userFound._id, isAdmin: userFound.role === "admin"},
+                process.env.SECRET ? process.env.SECRET : "RANDOM_TOKEN_SECRET",
+                {expiresIn: "12h"}
+            )
+
+            const my_cookie = {
+                token,
+                mail: req.body.mail,
+                password: req.body.password
+            }
+            
+            const my_cookieJson = JSON.stringify(my_cookie)
+
+            const cookieOptions = {
+                httpOnly: true, // So the client cant decrypt the cookie
+                maxAge: 60 * 60 * 24 * 7 // 1 week
+            } 
+            const cookieValue = cookie.serialize('my_cookie', my_cookieJson, cookieOptions);
+
+
+            res.setHeader('Set-Cookie', cookieValue);
             res.status(200).json({
                 userId: userFound._id,
-                token: jwt.sign(
-                    {userId: userFound._id, isAdmin: userFound.role === "admin"},
-                    process.env.SECRET ? process.env.SECRET : "RANDOM_TOKEN_SECRET",
-                    {expiresIn: "12h"}
-                )
+                token
             })
         })
         .catch(error => {

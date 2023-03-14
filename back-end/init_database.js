@@ -11,7 +11,7 @@ db.on('error', console.error.bind(console, 'Connection error:'));
 db.once('open', function () {
     console.log("Connecté à Mongoose");
 
-    const addAdmin = new Promise((resolve, reject) => {
+    const addAdmins = new Promise((resolve, reject) => {
  
         const admin = {
             name: "admin",
@@ -20,13 +20,20 @@ db.once('open', function () {
             role: 'admin',
         }
 
+        const superAdmin = {
+            name: "superAdmin",
+            mail: "superAdmin@gmail.com",
+            password: "$2a$12$sElZzYlhPZjAxk7XGLrx2ubXBhhgZ4Zu3p0Pp/xPpdiJFF5HRtaIS", // Azerty-1234
+            role: 'superAdmin',
+        }
+
         const newAdmin = new user(admin)
         newAdmin.save()
         .then(() => resolve("Admin persisted"))
         .catch((err) => reject(err))
     });
 
-    addAdmin
+    addAdmins
     .then((value) => {
         console.log(value)
         process.exit()

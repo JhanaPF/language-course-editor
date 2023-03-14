@@ -9,11 +9,13 @@ const cors = require('cors')
 const rateLimit = require('express-rate-limit')
 const mongoSanitize = require('express-mongo-sanitize')
 const helmet = require("helmet")
+const cookieParser = require('cookie-parser')
 require('dotenv').config()
 const isProduction = process.env.NODE_ENV === 'production' 
 
-const dicRoutes = require('./routes/dictionnaries')
 const userRoutes = require('./routes/user')
+const dicRoutes = require('./routes/dictionnaries')
+const coursesRoutes = require('./routes/courses')
 
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
@@ -43,8 +45,10 @@ app.use((req, res, next) => {
 })
 
 app.use(express.json()) // Put body in req object for all request with Content-Type: application/json
+app.use(cookieParser()) // Put cookie in the body
 
-app.use('/dictionaries', dicRoutes)
 app.use('/auth', userRoutes)
+app.use('/dictionaries', dicRoutes)
+app.use('/courses', coursesRoutes)
 
 module.exports = app // For testing

@@ -17,16 +17,9 @@ class App extends React.Component {
             loggedin: token ? true : false,
         }
 
-
-
         this.apiUrl = process.env.REACT_APP_API_URL || "http://localhost:3001/";
-
         this.signIn = this.signIn.bind(this);
         this.signUp = this.signUp.bind(this);
-    }
-
-    componentDidMount(){
-        
     }
 
     signIn = (mail, password) => {
@@ -35,6 +28,9 @@ class App extends React.Component {
         .then(res => { 
             console.log("Logged in")
             localStorage.setItem('token', res.data.token);
+            localStorage.setItem('mail', mail);
+            localStorage.setItem('password', password);
+
             this.setState({token : res.data.token, userId: res.data.userId, loggedin: true}); 
         })
         .catch(error => console.log(error));
@@ -53,7 +49,7 @@ class App extends React.Component {
     render() {        
         return (
             <div className="App">
-                {this.state.loggedin && <Dashboard token={this.state.token} userId={this.state.userId}/> }
+                {this.state.loggedin && <Dashboard token={this.state.token} userId={this.state.userId}/>}
                 {!this.state.loggedin && <SignIn signIn={this.signIn} signUp={this.signUp} /> }
             </div>
         );

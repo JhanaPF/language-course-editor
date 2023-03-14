@@ -3,7 +3,7 @@ import {Card, CardBody, CardSubtitle, CardTitle, CardText, Input, Label, Button,
 import axios from 'axios';
 import Select from 'react-select';
 import LessonsOverview from './LessonOverview';
-
+import AddButton from '../components/AddButton';
 
 class CoursesOverview extends React.Component {
 
@@ -13,25 +13,35 @@ class CoursesOverview extends React.Component {
         const frenchFlagUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Flag_of_France.svg/langfr-225px-Flag_of_France.svg.png";
         const spanishFlag = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Bandera_de_Espa%C3%B1a.svg/1200px-Bandera_de_Espa%C3%B1a.svg.png";
         const englishFlag = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_the_United_Kingdom_%283-5%29.svg/1200px-Flag_of_the_United_Kingdom_%283-5%29.svg.png";
-        
+        const italianFlag = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Flag_of_Italy_%282003%E2%80%932006%29.svg/220px-Flag_of_Italy_%282003%E2%80%932006%29.svg.png";
         this.courses = [
             {
+                _id:1,
                 language: "espanol",
                 pivot_tongue: "le français",
                 released: true,
                 flag_url: spanishFlag
             },
             {
+                _id:2,
                 language: "français",
-                pivot_tongue: "l'anglais",
+                pivot_tongue: "le français",
                 released: false,
                 flag_url: frenchFlagUrl,
                 pivot_tongue_flag_url: englishFlag
             },
+            {
+                _id:3,
+                language: "italien",
+                pivot_tongue: "le français",
+                released: false,
+                flag_url: italianFlag,
+                pivot_tongue_flag_url: frenchFlagUrl
+            },
         ]
 
         this.state = {
-            course: this.props.course
+            course: 1
         }
     }
 
@@ -103,8 +113,12 @@ class CoursesOverview extends React.Component {
 
     render() {
 
+        let courses = this.courses;
+        if(this.state.course) courses.filter(course => course._id = this.state.course);
+
         return(<>
-            {this.courses.map((course, index) => 
+
+            {courses.map((course) => {
                 <Card style={{ width: '18rem' }}>
                     <img alt="Sample" src={course.flag_url} />
                     <CardBody>
@@ -117,16 +131,14 @@ class CoursesOverview extends React.Component {
                         <CardText>
                             Détail
                         </CardText>
-                        <Button onClick={this.openCourse.bind(this, index)}>
+                        <Button onClick={this.openCourse.bind(this, course._id)}>
                             Modifier
                         </Button>
                     </CardBody>
-                </Card>
-            )}
+                </Card> }
+            ).filter(c => c._id === this.state.course)}
 
-            <Button onClick={this.addCourse.bind(this)}>
-                +
-            </Button>
+            <AddButton addFunction={this.addCourse.bind(this)}/>
 
             {this.state.addCourseModal &&
                 <Modal isOpen={true} size='lg' style={{ overflowY: 'auto'}}>

@@ -2,6 +2,7 @@ import React from 'react';
 import {Card, CardBody, CardSubtitle, CardTitle, CardText, Input, Label, Button, Row, Col, ButtonGroup} from 'reactstrap';
 import axios from 'axios';
 import Select from 'react-select';
+import AddButton from '../components/AddButton';
 
 class LessonsOverview extends React.Component {
 
@@ -18,6 +19,11 @@ class LessonsOverview extends React.Component {
                 _id: "fd77hhdgdgd75",
                 name: "Réserver un hôtel",
                 description: "Dialogue avec un receptionniste pour louer un chambre"
+            },
+            {
+                _id: "fd77hsfzehdgdgd75",
+                name: "Les verbes",
+                description: ""
             },
         ]
 
@@ -82,9 +88,16 @@ class LessonsOverview extends React.Component {
         
     }
 
+    addLesson(){
+
+    }
+
+
     render() {
-        return(
-            this.lessons.map((lesson) => 
+        return(<>
+            <AddButton addFunction={this.addLesson.bind(this)}>Ajouter une leçon</AddButton>
+
+            {this.lessons.map((lesson) => 
                 <Card style={{ width: '18rem' }}>
                     {this.props.course.flag_url &&
                         <img src={this.props.course.flag_url} />
@@ -113,8 +126,8 @@ class LessonsOverview extends React.Component {
                         </ButtonGroup>
                     </CardBody>
                 </Card>
-            )
-        );
+            )}
+        </>);
     }
 
 }
