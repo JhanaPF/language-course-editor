@@ -12,19 +12,19 @@ const helmet = require("helmet")
 const cookieParser = require('cookie-parser')
 require('dotenv').config()
 const isProduction = process.env.NODE_ENV === 'production' 
-
+const auth = require('./middleware/auth')
 const userRoutes = require('./routes/user')
 const dicRoutes = require('./routes/dictionnaries')
 const coursesRoutes = require('./routes/courses')
 
+
+// --- Security middlewares ---
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
 	max: 1000, // Limit each IP to 1000 requests per `window` (here, per 15 minutes)
 	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
 	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 })
-
-// --- Security middlewares ---
 app.use(limiter)
 app.use(mongoSanitize())
 app.use(helmet())
@@ -48,6 +48,8 @@ app.use(express.json()) // Put body in req object for all request with Content-T
 app.use(cookieParser()) // Put cookie in the body
 
 app.use('/auth', userRoutes)
+
+app.use(auth)
 app.use('/dictionaries', dicRoutes)
 app.use('/courses', coursesRoutes)
 

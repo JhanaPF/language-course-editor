@@ -25,8 +25,34 @@ const isIdValid = (id) => {
     return mongoose.Types.ObjectId.isValid(id)
 }
 
+router.fetch =  (req, res) => {   
+    
+    const isValid = isIdValid(req.params._id) 
+    if(!isValid) return res.status(400).json({message: "Invalid id"})
+    
+    console.log("Fetching word ")
+    const {collection} = req.body
+    schemas[collection].aggregate([
+        {
+            $match: {_id: mongoose.Types.ObjectId(req.params._id)} 
+        },
+        {   
+            $lookup:{
+                from: collection + '_additionals',
+                localField: '_id',
+                foreignField: 'word_id',
+                as: 'additionalData'
+            },
+        },
+        {   $unwind: '$additionalData'  }
+    ])
+    .then(word => res.status(200).json({message: word[0]}))
+    .catch(error => res.status(400).json({ error }))
+} 
+
 router.addWord = (req, res) => {
     console.log("Adding word ", req.file)
+
     const {collection} = req.body
     if(!collection) return res.status(400).json({})
     if(!isValid(req.body.word, req.body.additionalData)) return res.status(500).json({})
@@ -59,13 +85,12 @@ router.addWord = (req, res) => {
 }
 
 router.updateWord = (req, res) => {
-    console.log('update word')
     const {collection} = req.body
     if(!collection || !isIdValid(req.body.word_id)) return res.status(400).json({})
     if(!isValid(req.body.word, req.body.additionalData)) return res.status(500).json({})
 
     console.log("Updating word", req.body.word_id)  
-    schema[collection].updateOne({_id: req.body.word_id}, req.body.word) 
+    schemas[collection].updateOne({_id: req.body.word_id}, req.body.word) 
     .then(() => schema[collection+'_additionals'].updateOne({word_id: req.body.word_id}, req.body.additionalData))
     .then(() => {
         console.log(req.body.word + ' updated')
