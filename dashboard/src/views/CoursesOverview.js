@@ -4,6 +4,7 @@ import axios from 'axios';
 import Select from 'react-select';
 import LessonsOverview from './LessonOverview';
 import AddButton from '../components/AddButton';
+import ReturnButton from '../components/ReturnButton';
 
 class CoursesOverview extends React.Component {
 
@@ -144,6 +145,10 @@ class CoursesOverview extends React.Component {
         this.setState({addCourseModal: false});
     }
 
+    closeCourse(){
+        this.setState({course: undefined});
+    }
+
     render() {
 
         let courses = this.courses;
@@ -159,6 +164,10 @@ class CoursesOverview extends React.Component {
                 </Col>
             </Row>
 
+            {this.state.course !== undefined && 
+                <ReturnButton goBack={this.closeCourse.bind(this)}/>
+            }
+
             <Row className='mt-3 mx-5 w-100 justify-content-center'>
                 {courses && courses.map((course) => 
                     <Card style={{ width: '18rem' }}>
@@ -170,9 +179,6 @@ class CoursesOverview extends React.Component {
                             <CardSubtitle className="mb-2 text-muted" tag="h6" >
                                 Depuis {course.pivot_tongue}
                             </CardSubtitle>
-                            <CardText>
-                                Détail
-                            </CardText>
                             <Button onClick={this.openCourse.bind(this, course._id)}>
                                 Modifier
                             </Button>

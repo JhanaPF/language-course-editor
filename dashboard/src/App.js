@@ -1,6 +1,7 @@
 import './App.css';
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import axios from 'axios';
 import Dashboard from './dashboard';
 import SignIn from './signIn';
