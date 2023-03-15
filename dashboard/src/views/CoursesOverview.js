@@ -17,7 +17,7 @@ class CoursesOverview extends React.Component {
         this.courses = [
             {
                 _id:1,
-                language: "espanol",
+                language: "Espagnol",
                 pivot_tongue: "le français",
                 released: true,
                 flag_url: spanishFlag
@@ -38,10 +38,42 @@ class CoursesOverview extends React.Component {
                 flag_url: italianFlag,
                 pivot_tongue_flag_url: frenchFlagUrl
             },
+            {
+                _id:3,
+                language: "italien",
+                pivot_tongue: "le français",
+                released: false,
+                flag_url: italianFlag,
+                pivot_tongue_flag_url: frenchFlagUrl
+            },
+            {
+                _id:3,
+                language: "italien",
+                pivot_tongue: "le français",
+                released: false,
+                flag_url: italianFlag,
+                pivot_tongue_flag_url: frenchFlagUrl
+            },
+            {
+                _id:3,
+                language: "italien",
+                pivot_tongue: "le français",
+                released: false,
+                flag_url: italianFlag,
+                pivot_tongue_flag_url: frenchFlagUrl
+            },
+            {
+                _id:3,
+                language: "italien",
+                pivot_tongue: "le français",
+                released: false,
+                flag_url: italianFlag,
+                pivot_tongue_flag_url: frenchFlagUrl
+            },
         ]
 
         this.state = {
-            course: 1
+            course: undefined
         }
     }
 
@@ -100,6 +132,7 @@ class CoursesOverview extends React.Component {
     }
 
     openCourse(index){
+        console.log(index)
         this.setState({course: index})
     }
     
@@ -114,31 +147,40 @@ class CoursesOverview extends React.Component {
     render() {
 
         let courses = this.courses;
-        if(this.state.course) courses.filter(course => course._id = this.state.course);
+        if(this.state.course !== undefined) courses = this.courses.filter(course => course._id === this.state.course);
 
         return(<>
+            <Row className='w-100'>
+                <Col>
+                    <h3 className='text-right mt-4'>Liste des cours disponibles</h3>
+                </Col>
+                <Col className='text-left m-auto'>
+                    <AddButton addFunction={this.addCourse.bind(this)}>Ajouter un cours</AddButton>
+                </Col>
+            </Row>
 
-            {courses.map((course) => {
-                <Card style={{ width: '18rem' }}>
-                    <img alt="Sample" src={course.flag_url} />
-                    <CardBody>
-                        <CardTitle tag="h5">
-                            {course.language}
-                        </CardTitle>
-                        <CardSubtitle className="mb-2 text-muted" tag="h6" >
-                            Depuis {course.pivot_tongue}
-                        </CardSubtitle>
-                        <CardText>
-                            Détail
-                        </CardText>
-                        <Button onClick={this.openCourse.bind(this, course._id)}>
-                            Modifier
-                        </Button>
-                    </CardBody>
-                </Card> }
-            ).filter(c => c._id === this.state.course)}
+            <Row className='mt-3 mx-5 w-100 justify-content-center'>
+                {courses && courses.map((course) => 
+                    <Card style={{ width: '18rem' }}>
+                        <img alt="Sample" src={course.flag_url} />
+                        <CardBody>
+                            <CardTitle tag="h5">
+                                {course.language}
+                            </CardTitle>
+                            <CardSubtitle className="mb-2 text-muted" tag="h6" >
+                                Depuis {course.pivot_tongue}
+                            </CardSubtitle>
+                            <CardText>
+                                Détail
+                            </CardText>
+                            <Button onClick={this.openCourse.bind(this, course._id)}>
+                                Modifier
+                            </Button>
+                        </CardBody>
+                    </Card> 
+                )}
+            </Row>
 
-            <AddButton addFunction={this.addCourse.bind(this)}/>
 
             {this.state.addCourseModal &&
                 <Modal isOpen={true} size='lg' style={{ overflowY: 'auto'}}>
