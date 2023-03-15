@@ -2,15 +2,19 @@ const express = require('express')
 const mongoose = require('mongoose')
 const router = express.Router()
 
-router.addCourse =  (req, res) => {   
+router.fetch =  (req, res) => {   
     
 } 
 
-router.updateCourse =  (req, res) => {    
+router.add =  (req, res) => {   
+    
+} 
+
+router.upd =  (req, res) => {    
 
 } 
 
-router.deleteCourse =  (req, res) => {    
+router.del =  (req, res) => {    
 
 } 
 

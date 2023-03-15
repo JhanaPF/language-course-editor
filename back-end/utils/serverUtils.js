@@ -1,8 +1,11 @@
 const mongoose = require('mongoose')
+const app = require('../app').server
 
 const errorHandler = error => {
     if (error.syscall !== 'listen') throw error
-
+    
+    const server = app.server
+    console.log(server) // Without this log, enable to access server adress
     const address = server.address()
     const bind = typeof address === 'string' ? 'pipe ' + address : 'port: ' + port
     switch (error.code) {
