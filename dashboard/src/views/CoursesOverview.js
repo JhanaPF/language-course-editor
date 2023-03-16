@@ -2,11 +2,12 @@ import React from 'react';
 import {Card, CardBody, CardSubtitle, CardTitle, CardText, Input, Label, Button, Row, Col, Form, FormGroup, FormText, ModalBody, ButtonGroup, Modal} from 'reactstrap';
 import axios from 'axios';
 import Select from 'react-select';
-import LessonsOverview from './LessonOverview';
+import LessonsOverview from './LessonsOverview';
 import AddButton from '../components/AddButton';
 import ReturnButton from '../components/ReturnButton';
+import QuestionsOverview from './QuestionsOverview';
 
-class CoursesOverview extends React.Component {
+class CoursesOverview extends React.Component { // Show all courses
 
     constructor(props){
         super(props);
@@ -25,7 +26,7 @@ class CoursesOverview extends React.Component {
             },
             {
                 _id:2,
-                language: "français",
+                language: "Français",
                 pivot_tongue: "le français",
                 released: false,
                 flag_url: frenchFlagUrl,
@@ -33,39 +34,7 @@ class CoursesOverview extends React.Component {
             },
             {
                 _id:3,
-                language: "italien",
-                pivot_tongue: "le français",
-                released: false,
-                flag_url: italianFlag,
-                pivot_tongue_flag_url: frenchFlagUrl
-            },
-            {
-                _id:3,
-                language: "italien",
-                pivot_tongue: "le français",
-                released: false,
-                flag_url: italianFlag,
-                pivot_tongue_flag_url: frenchFlagUrl
-            },
-            {
-                _id:3,
-                language: "italien",
-                pivot_tongue: "le français",
-                released: false,
-                flag_url: italianFlag,
-                pivot_tongue_flag_url: frenchFlagUrl
-            },
-            {
-                _id:3,
-                language: "italien",
-                pivot_tongue: "le français",
-                released: false,
-                flag_url: italianFlag,
-                pivot_tongue_flag_url: frenchFlagUrl
-            },
-            {
-                _id:3,
-                language: "italien",
+                language: "Italien",
                 pivot_tongue: "le français",
                 released: false,
                 flag_url: italianFlag,
@@ -76,10 +45,18 @@ class CoursesOverview extends React.Component {
         this.state = {
             course: undefined
         }
+
+        this.closeModal = this.closeModal.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     handleSelectChange = (param, e) =>{
         this.setState({ [param] : e });
+    }
+
+    handleChange(event){
+        const {name, value} = event.currentTarget;
+        this.setState({[name]: value});
     }
 
     update(){
@@ -133,20 +110,32 @@ class CoursesOverview extends React.Component {
     }
 
     openCourse(index){
-        console.log(index)
         this.setState({course: index})
     }
     
-    addCourse(){
+    openCourseModal(){
         this.setState({addCourseModal: true})
     }
-
+    
     closeModal(){
         this.setState({addCourseModal: false});
     }
 
     closeCourse(){
         this.setState({course: undefined});
+    }
+
+    addCourse(){
+        const data = {
+            language: this.state.language,
+            raw_name: this.state.rawName, // spanish_from_french for example to link with the dictionnary word collection
+            pivot_language: this.state.pivotLanguage,
+            flagFile: this.state.flagFile, 
+        }
+    }
+
+    addLesson(){
+
     }
 
     render() {
@@ -160,7 +149,7 @@ class CoursesOverview extends React.Component {
                     <h3 className='text-right mt-4'>Liste des cours disponibles</h3>
                 </Col>
                 <Col className='text-left m-auto'>
-                    <AddButton addFunction={this.addCourse.bind(this)}>Ajouter un cours</AddButton>
+                    <AddButton addFunction={this.openCourseModal.bind(this)}>Ajouter un cours</AddButton>
                 </Col>
             </Row>
 
@@ -179,13 +168,18 @@ class CoursesOverview extends React.Component {
                             <CardSubtitle className="mb-2 text-muted" tag="h6" >
                                 Depuis {course.pivot_tongue}
                             </CardSubtitle>
-                            <Button onClick={this.openCourse.bind(this, course._id)}>
-                                Modifier
-                            </Button>
+                            {this.state.course === undefined && 
+                                <Button onClick={this.openCourse.bind(this, course._id)}>
+                                    Modifier
+                                </Button>
+                            }
                         </CardBody>
                     </Card> 
                 )}
             </Row>
+
+            <AddButton addFunction={this.addLesson.bind(this)}>Ajouter une leçon</AddButton>
+
 
 
             {this.state.addCourseModal &&
@@ -198,12 +192,12 @@ class CoursesOverview extends React.Component {
                                 </h4>
                             </Col>
                             <Col className='text-right ml-auto'>
-                                <button onClick={this.props.toggleModal.bind(this, this.type)} type="button" className="btn btn-outline-secondary text-right ml-auto">X</button>
+                                <button onClick={this.closeModal} type="button" className="btn btn-outline-secondary text-right ml-auto">X</button>
                             </Col>                        
                         </Row>
                             <Form>
                                 <FormGroup className='mx-2'>
-                                    <Label className='text-left mr-4' for="word">
+                                    <Label className='text-left mr-4' for="language">
                                         Langage à apprendre:
                                     </Label>
                                     <Input
@@ -211,94 +205,40 @@ class CoursesOverview extends React.Component {
                                         name="language"
                                         value={this.state.language}
                                         onChange={this.handleChange}
-                                        invalid={!this.state.word} />
+                                        required />
                                 </FormGroup>
                                 <FormGroup className='mx-2 mb-3'>
-                                    <Label className='text-left'>
+                                    <Label className='text-left' for="pivotLanguage">
                                         Langue pivot:
                                     </Label>
-                                    <Select
-                                        name="class"
-                                        value={this.state.class}
-                                        onChange={this.handleSelectChange.bind(this, 'class')} 
-                                        options={this.classOptions}  
-                                        placeholder=""/>
+                                    <Input
+                                        id="pivotLanguage"
+                                        name="pivotLanguage"
+                                        value={this.state.pivotLanguage}
+                                        onChange={this.handleChange}
+                                        required />
                                 </FormGroup>
                                 <FormGroup className='mx-2 mb-3' >
-                                    <Label for="vocalFile">
-                                        Fichier vocal
+                                    <Label for="flagFile">
+                                        Drapeau
                                     </Label>
                                     <Col sm={10}>
-                                        <Input id="vocalFile" name="vocalFile" type="file" onChange={this.handleChange}/>
+                                        <Input id="flagFile" name="flagFile" type="file" onChange={this.handleChange}/>
                                         <FormText>
-                                            Ajouter un fichier vocal
+                                            Ajouter un drapeau
                                         </FormText>
                                     </Col>
                                 </FormGroup>
                                 <FormGroup className='mx-2 mb-3'>
-                                    <Label className='text-left' for="translated_definition">
-                                        Définition (en langue pivot):
+                                    <Label className='text-left' for="rawName">
+                                        Nom du dictionnaire en brut (en anglais: language_from_pivotlanguage):
                                     </Label>                  
                                     <Input
-                                        id="translated_definition"
-                                        name="translated_definition"
-                                        value={this.state.translated_definition}
-                                        onChange={this.handleChange}  
-                                        type='textarea'/>
-                                </FormGroup>
-                                <FormGroup className='mx-2 mb-3'>
-                                    <Label className='text-left' for="definition">
-                                        Définition:
-                                    </Label>                  
-                                    <Input
-                                        id="definition"
-                                        name="definition"
-                                        value={this.state.definition}
+                                        id="rawName"
+                                        name="rawName"
+                                        value={this.state.rawName}
                                         onChange={this.handleChange}
-                                        type='textarea'/>
-                                </FormGroup>
-
-
-                                <FormGroup className='mx-2'>
-                                    <Label className='text-left' for="story">
-                                        Anecdote(s):
-                                    </Label>                        
-                                    <Input
-                                        id={"story"}
-                                        name="story"
-                                        value={this.state.story}
-                                        onChange={this.handleChange}
-                                        type='textarea'/>                         
-                                </FormGroup>
-
-                                <FormGroup className='mx-2'>
-                                    <Label className='text-left' for="level">
-                                        Dictionnaire à lier:
-                                    </Label>                  
-                                    <Input
-                                        id="level"
-                                        name="level"
-                                        type="select" 
-                                        value={this.state.level}
-                                        onChange={this.handleChange} 
-                                        className="ml-1 mr-5">                                   
-                                            <option value={1}>1</option>
-                                            <option value={2}>2</option>
-                                            <option value={3}>3</option>
-                                    </Input>
-                                </FormGroup>
-                                   
-                                <FormGroup className='mx-2'>
-                                    <Label className='text-left' for="source">
-                                        Source:
-                                    </Label>                  
-                                    <Select 
-                                        id="source"
-                                        name="source"
-                                        value={this.state.source}
-                                        onChange={this.handleSelectChange.bind(this, 'source')} 
-                                        options={this.sourceOptions} 
-                                        placeholder="" />
+                                        required />
                                 </FormGroup>
                             </Form>
                     </ModalBody>
@@ -307,6 +247,10 @@ class CoursesOverview extends React.Component {
 
             {this.state.course &&
                 <LessonsOverview course={this.state.course}/>
+            }
+
+            {this.state.lesson &&
+                <QuestionsOverview/>
             }
         </>);
     }

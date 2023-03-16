@@ -1,15 +1,14 @@
-import './App.css';
 import React from 'react';
 import {Modal, ModalBody, ModalFooter, Form, FormText, FormGroup, Input, Label, Button, Row, Col, UncontrolledAccordion, AccordionItem, AccordionHeader, AccordionBody} from 'reactstrap';
 import axios from 'axios';
 import Select from 'react-select';
-import {validString} from './rgx/regex'
-import Classes from './enum/classes';
-import Categories from './enum/categories';
-import Sources from './enum/sources';
-import AudioRecorder from './components/AudioRecorder';
+import {validString} from '../rgx/regex'
+import Classes from '../enum/classes';
+import Categories from '../enum/categories';
+import Sources from '../enum/sources';
+import AudioRecorder from '../components/AudioRecorder';
 
-class WordModal extends React.Component {
+export default class WordModal extends React.Component {
 
     constructor(props){
         super(props);
@@ -140,7 +139,7 @@ class WordModal extends React.Component {
             audioFile: this.state.audioFile,
         }
         
-        console.log(save)
+        //console.log(save)
         return save;
     }
     
@@ -162,10 +161,9 @@ class WordModal extends React.Component {
         if(this.isValid() === false) return; 
         
         const save = this.getData();
-       // console.log(save)
+        // console.log(save)
         const formData = new FormData();
-//        console.log(this.state)
-      //  formData.append("audio", this.state.audioFile);
+        //  console.log(this.state)
         formData.append("audio-file", this.state.vocalFile);
         axios.put(
             this.apiUrl + 'dictionaries/word', 
@@ -408,5 +406,3 @@ class WordModal extends React.Component {
     }
 
 }
-
-export default WordModal;

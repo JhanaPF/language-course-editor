@@ -1,4 +1,3 @@
-import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import React from 'react';
 import {
@@ -8,7 +7,7 @@ import {
 } from 'reactstrap';
 import axios from 'axios';
 import Select from 'react-select';
-import WordModal from './wordModal';
+import WordModal from './modals/WordModal';
 import Classes from './enum/classes';
 // import Categories from './enum/categories';
 import Sources from './enum/sources';

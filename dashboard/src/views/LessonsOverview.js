@@ -1,10 +1,9 @@
 import React from 'react';
-import {Card, CardBody, CardSubtitle, CardTitle, CardText, Input, Label, Button, Row, Col, ButtonGroup} from 'reactstrap';
+import {Card, CardBody, CardSubtitle, CardTitle, CardText, Input, Label, Button, Row, Col, ButtonGroup, Modal, FormGroup} from 'reactstrap';
 import axios from 'axios';
-import Select from 'react-select';
-import AddButton from '../components/AddButton';
+import LessonModal from '../modals/LessonModal';
 
-class LessonsOverview extends React.Component {
+export default class LessonsOverview extends React.Component { // Show all lessons of a course
 
     constructor(props){
         super(props);
@@ -31,7 +30,8 @@ class LessonsOverview extends React.Component {
         this.state = {
             course: this.props.course
         }
-        
+
+        this.closeModal = this.closeModal.bind(this);
     }
 
     handleSelectChange = (param, e) =>{
@@ -52,50 +52,20 @@ class LessonsOverview extends React.Component {
         .catch(function (error) {console.log(error)});     
     }
 
-    save = (next) =>{  
-        if(this.isValid() === false) return; 
-        
-        const data = this.getData();
-        const formData = new FormData();
-        formData.append("audio-file", this.state.vocalFile);
-        axios.put(
-            this.apiUrl + 'dictionaries/word', 
-            formData,
-            { 
-                headers: { 
-                    'Authorization': this.props.token,
-                    'Accept' : 'application/json'
-                    //'Content-Type': 'multipart/form-data'
-                },
-            },
-        )
-        .then( () => {
-            console.log(formData)
-            if(next)
-                this.props.reloadModal();
-            else 
-                this.props.toggleModal();
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-    }
-
     formValidation () {
+        
     }
 
     lessonIndexChange(lessonId, index) {
         
     }
 
-    addLesson(){
-
+    closeModal(){
+        this.setState({lessonModal: false})
     }
-
 
     render() {
         return(<>
-            <AddButton addFunction={this.addLesson.bind(this)}>Ajouter une leçon</AddButton>
 
             {this.lessons.map((lesson) => 
                 <Card style={{ width: '18rem' }}>
@@ -127,9 +97,12 @@ class LessonsOverview extends React.Component {
                     </CardBody>
                 </Card>
             )}
+
+            {this.state.lessonModal && 
+               <LessonModal closeModal={this.closeModal}/>
+            }
+
         </>);
     }
 
 }
-
-export default LessonsOverview;

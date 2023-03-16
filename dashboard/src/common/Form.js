@@ -1,14 +1,37 @@
-import './App.css';
-import React from 'react';
-import {Modal, ModalBody, ModalFooter, Form, FormText, FormGroup, Input, Label, Button, Row, Col, UncontrolledAccordion, AccordionItem, AccordionHeader, AccordionBody} from 'reactstrap';
-import axios from 'axios';
-import Select from 'react-select';
-import {validString} from './rgx/regex';
+import React from "react";
+import {fetch, put, del} from '../apiRequests';
 
-class LessonEditor extends React.Component {
-
+export default class Form extends React.Component{
     constructor(props){
         super(props);
+
+        this.inputNames = props.inputNames;
+        
+        let state = {};
+        this.inputNames.forEach(name => {
+            state[name] = this.props.levelData ? this.props.levelData[name] : undefined;
+        });
+        state.fieldError = false;
+        this.state = state;
+
+        this.handleChange = this.handleChange.bind(this);
+        this.save = this.save.bind(this);
+        this.update = this.update.bind(this);
+        this.delete = this.delete.bind(this)
+    }
+
+
+
+    handleChange = (event) =>{
+        const {name, value} = event.currentTarget;
+        //console.log(name, value)
+
+        if(name === "vocalFile") {
+            console.log(event.target.files)
+            return  this.setState({ [name] : event.target.files[0] });
+        }
+
+        this.setState({ [name] : value });
     }
 
     handleSelectChange = (param, e) =>{
@@ -22,6 +45,12 @@ class LessonEditor extends React.Component {
 
     getData(){
         
+        let data = {};
+
+        this.inputNames.foreach(key => save[key] = this.state.levelData ? this.state.levelData[key] : undefined);
+
+        //console.log(save)
+        return data;
     }
     
     update(){
@@ -66,19 +95,4 @@ class LessonEditor extends React.Component {
             console.log(error);
         });
     }
-
-    saveAudio (file) {
-        this.setState({audioFile: file});
-    }
-
-    formValidation () {
-
-    }
-
-    render() {
-
-    }
-
 }
-
-export default LessonEditor;

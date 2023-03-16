@@ -1,4 +1,3 @@
-import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import {  Form, FormGroup, Input, Label, Button, Col} from 'reactstrap';

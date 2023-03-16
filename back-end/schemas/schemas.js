@@ -6,13 +6,13 @@ const entities_schemas = require('./entities_schemas')
 
 const uniqueRequiredString = entities_schemas.uniqueRequiredString
 const dictionnarySchema = mongoose.Schema({ // Carry informations about available dictionnaries and courses created to link both of them
-    name: uniqueRequiredString,
     language: uniqueRequiredString,
     raw_name: uniqueRequiredString, // spanish_from_french for example to link with the dictionnary word collection
-    pivot_tongue: uniqueRequiredString,
+    pivot_language: uniqueRequiredString,
     flag_url: entities_schemas.fileUrl, 
     released: {type: Boolean, default: false},
 })
+
 const dictionnary = mongoose.model('Dictionnary', dictionnarySchema) 
 
 // Level creator schemas 

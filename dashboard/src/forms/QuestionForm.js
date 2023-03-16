@@ -1,12 +1,11 @@
-import './App.css';
 import React from 'react';
-import {Modal, ModalBody, ModalFooter, Form, FormText, FormGroup, Input, Label, Button, Row, Col, UncontrolledAccordion, AccordionItem, AccordionHeader, AccordionBody} from 'reactstrap';
+import {Modal, ModalBody, ModalFooter, Form, FormText, FormGroup, Input, Label, Button, Row, Col} from 'reactstrap';
 import axios from 'axios';
 import Select from 'react-select';
-import {validString} from './rgx/regex'
-import AudioRecorder from './components/audioRecorder';
+import {validString} from '../rgx/regex'
+import AudioRecorder from '../components/AudioRecorder';
 
-class LessonQuestionForm extends React.Component {
+export default class QuestionForm extends React.Component {
 
     constructor(props){
         super(props);
@@ -81,20 +80,10 @@ class LessonQuestionForm extends React.Component {
         else return true;
     }
 
-    getData(){
-        
-        const save = {
-            picture: this.state.levelData ? this.state.levelData.picture : undefined,
-            sentence: this.state.levelData ? this.state.levelData.sentence : undefined, 
-            vocal: this.state.levelData ? this.state.levelData.vocal : undefined, 
-            translation: this.state.levelData ? this.state.levelData.translation : undefined,
-            answerChoices: this.state.levelData ? this.state.levelData.answerChoices : undefined,
-            pictureChoices: this.state.levelData.level ? this.state.levelData.pictureChoices : undefined,
-            indexAnswer: this.state.levelData ? this.state.levelData.indexAnswer : undefined, 
-            lessonIndex: this.state.levelData ? this.state.levelData.lessonIndex : undefined, 
-        }
-        
-        console.log(save)
+    getData(){ 
+        let data = {};
+        data = formKeys.foreach(key => {this.state.levelData ? this.state.levelData[key] : undefined});
+        //console.log(save)
         return save;
     }
     
@@ -141,9 +130,6 @@ class LessonQuestionForm extends React.Component {
         });
     }
 
-    saveAudio (file) {
-        this.setState({audioFile: file});
-    }
 
     formValidation () {
     }
@@ -259,5 +245,3 @@ class LessonQuestionForm extends React.Component {
     }
 
 }
-
-export default LessonQuestionForm;
