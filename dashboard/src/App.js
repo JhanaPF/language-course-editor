@@ -5,6 +5,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import axios from 'axios';
 import Dashboard from './dashboard';
 import SignIn from './signIn';
+import { post } from './apiRequests';
 
 class App extends React.Component {
 
@@ -15,19 +16,32 @@ class App extends React.Component {
         this.state={
             token: token ? token : '',
             uId: '',
-            loggedin: token ? true : false,
+            loggedin: false,
         }
 
         this.apiUrl = process.env.REACT_APP_API_URL || "http://localhost:3001/";
-        this.signIn = this.signIn.bind(this);
-        this.signUp = this.signUp.bind(this);
+    }
+
+    componentDidMount(){ // Starting application
+        const token = localStorage.getItem('token');
+        if(token) // If token, check if it is still valid
+            post(
+                'auth/token', 
+                null,
+                (res) => {
+                    console.log(res)
+                    this.setState({loggedin: true})},
+                (res) => console.log(res) 
+                )
     }
 
     signIn = (mail, password) => {
         //console.log({ mail, password }, this.apiUrl)
+
         axios.post(this.apiUrl + 'auth/signin', { mail, password })
         .then(res => { 
-            console.log("Logged in")
+            console.log("Logged in", res)
+            console.log(document.cookie)
             localStorage.setItem('token', res.data.token);
             localStorage.setItem('mail', mail);
             localStorage.setItem('password', password);
@@ -37,7 +51,7 @@ class App extends React.Component {
         .catch(error => console.log(error));
     }
 
-    signUp = (mail, password) => {   
+    signUp = (mail, password) => {  
         axios.post(
             this.apiUrl + 'auth/signup', 
             { mail, password }, 
@@ -51,7 +65,7 @@ class App extends React.Component {
         return (
             <div className="App">
                 {this.state.loggedin && <Dashboard token={this.state.token} userId={this.state.userId}/>}
-                {!this.state.loggedin && <SignIn signIn={this.signIn} signUp={this.signUp} /> }
+                {!this.state.loggedin && <SignIn signIn={this.signIn.bind(this)} signUp={this.signUp.bind(this)} /> }
             </div>
         );
     }

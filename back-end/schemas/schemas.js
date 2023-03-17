@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
 require('dotenv').config()
-//import * as entities_schemas from './entities_schemas'
 const entities_schemas = require('./entities_schemas')
 
 const uniqueRequiredString = entities_schemas.uniqueRequiredString

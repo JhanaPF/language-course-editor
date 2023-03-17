@@ -1,10 +1,10 @@
 import axios from 'axios';
+//axios.defaults.withCredentials = true;
 
 const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:3001/";
 const token = localStorage.getItem('token');
 const mail = localStorage.getItem('mail');
 const password = localStorage.getItem('password');
-
 
 export function verifyToken (successCbk, errorCbk) { // Potentially token stored locally is no longer valid
 
@@ -61,7 +61,8 @@ export function put(url, data, successCbk, errorCbk, noty=false){
         { 
             headers: { 
                 'Authorization': token,
-                'Accept' : 'application/json'
+                'Accept' : 'application/json',
+                'withCredentials': true
                 //'Content-Type': 'multipart/form-data'
             },
         },

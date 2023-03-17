@@ -213,165 +213,162 @@ export default class WordModal extends React.Component {
                             <button onClick={this.props.toggleModal.bind(this, this.type)} type="button" className="btn btn-outline-secondary text-right ml-auto">X</button>
                         </Col>                        
                     </Row>
-                        <Form>
-                            <FormGroup className='mx-2'>
-                                <Label className='text-left mr-4' for="word">
-                                    Mot:
-                                </Label>
-                                <Input
-                                    id="word"
-                                    name="word"
-                                    value={this.state.word}
-                                    onChange={this.handleChange}
-                                    invalid={!this.state.word} />
-                            </FormGroup>
-                            <FormGroup className='mx-2 mb-3'>
-                                <Label className='text-left'>
-                                    Classe:
-                                </Label>
-                                <Select
-                                    name="class"
-                                    value={this.state.class}
-                                    onChange={this.handleSelectChange.bind(this, 'class')} 
-                                    options={this.classOptions}  
-                                    placeholder=""/>
-                            </FormGroup>
-                            <FormGroup className='mx-2'>
-                                <Label className='text-left mr-4'>
-                                    Enregistrement vocal du mot:
-                                </Label>
-                                <AudioRecorder saveAudio={this.saveAudio.bind(this)}/>
-                            </FormGroup>
-                            <FormGroup className='mx-2 mb-3' >
-                                <Label for="vocalFile">
-                                    Fichier vocal
-                                </Label>
-                                <Col sm={10}>
-                                    <Input id="vocalFile" name="vocalFile" type="file" onChange={this.handleChange}/>
-                                    <FormText>
-                                        Ajouter un fichier vocal
-                                    </FormText>
-                                </Col>
-                            </FormGroup>
-                            <FormGroup className='mx-2 mb-3'>
-                                <Label className='text-left' for="translated_definition">
-                                    Définition (en langue pivot):
-                                </Label>                  
-                                <Input
-                                    id="translated_definition"
-                                    name="translated_definition"
-                                    value={this.state.translated_definition}
-                                    onChange={this.handleChange}  
-                                    type='textarea'/>
-                            </FormGroup>
-                            <FormGroup className='mx-2 mb-3'>
-                                <Label className='text-left' for="definition">
-                                    Définition:
-                                </Label>                  
-                                <Input
-                                    id="definition"
-                                    name="definition"
-                                    value={this.state.definition}
-                                    onChange={this.handleChange}
-                                    type='textarea'/>
-                            </FormGroup>
-
-
-                            <FormGroup className='mx-2'>
-                                <Label className='text-left' for="story">
-                                    Anecdote(s):
-                                </Label>                        
-                                <Input
-                                    id={"story"}
-                                    name="story"
-                                    value={this.state.story}
-                                    onChange={this.handleChange}
-                                    type='textarea'/>                         
-                            </FormGroup>
-                            <FormGroup className='mx-2'>
-                                <Label className='text-left' for="sentence">
-                                    Mot en contexte dans une phrase:
-                                </Label>                  
-                                <Input
-                                    id="sentence"
-                                    name="sentence"
-                                    value={this.state.sentence}
-                                    onChange={this.handleChange}/>
-                            </FormGroup>
-                            <FormGroup className='mx-2'>
-                                <Label className='text-left' for="level">
-                                    Niveau de langage:
-                                </Label>                  
-                                <Input
-                                    id="level"
-                                    name="level"
-                                    type="select" 
-                                    value={this.state.level}
-                                    onChange={this.handleChange} 
-                                    className="ml-1 mr-5">                                   
-                                        <option value={1}>1</option>
-                                        <option value={2}>2</option>
-                                        <option value={3}>3</option>
-                                </Input>
-                            </FormGroup>
-                            <FormGroup className='mx-2'>
-                                <Label className='text-left' for="categories">
-                                    Catégorie(s):
-                                </Label>      
-                                <Select 
-                                    id="categories"
-                                    name="categories"
-                                    isMulti
-                                    value={this.state.categories}
-                                    onChange={this.handleSelectChange.bind(this, 'categories')} 
-                                    options={this.categoriesOptions}
-                                    placeholder=""/>
-                            </FormGroup>                                       
-                            <FormGroup className='mx-2'>
-                                <Label className='text-left' for="source">
-                                    Source:
-                                </Label>                  
-                                <Select 
-                                    id="source"
-                                    name="source"
-                                    value={this.state.source}
-                                    onChange={this.handleSelectChange.bind(this, 'source')} 
-                                    options={this.sourceOptions} 
-                                    placeholder="" />
-                            </FormGroup>
-                            <UncontrolledAccordion className="border-0" stayOpen >
-                                <AccordionItem>
-                                    <AccordionHeader targetId="1">
-                                        Jeu de mots-croisés
-                                    </AccordionHeader>
-                                    <AccordionBody accordionId="1">
-                                        <FormGroup className='mx-2'>
-                                            <Label className='text-left' for="riddle">
-                                                Devinette (pour le mot-croisé) en langue pivot:
-                                            </Label>
-                                            <Input
-                                                id="translated_riddle"
-                                                name="translated_riddle"
-                                                value={this.state.translated_riddle}
-                                                onChange={this.handleChange}
-                                                type='textarea'/>
-                                        </FormGroup>
-                                        <FormGroup className='mx-2'>
-                                            <Label className='text-left' for="riddle">
-                                                Devinette (pour le mot-croisé):
-                                            </Label>
-                                            <Input
-                                                id="riddle"
-                                                name="riddle"
-                                                value={this.state.riddle}
-                                                onChange={this.handleChange}   
-                                                type='textarea' />
-                                        </FormGroup>
-                                    </AccordionBody>
-                                </AccordionItem>
-                            </UncontrolledAccordion>
-
-                        </Form>
+                    <Form>
+                        <FormGroup className='mx-2'>
+                            <Label className='text-left mr-4' for="word">
+                                Mot:
+                            </Label>
+                            <Input
+                                id="word"
+                                name="word"
+                                value={this.state.word}
+                                onChange={this.handleChange}
+                                invalid={!this.state.word} />
+                        </FormGroup>
+                        <FormGroup className='mx-2 mb-3'>
+                            <Label className='text-left'>
+                                Classe:
+                            </Label>
+                            <Select
+                                name="class"
+                                value={this.state.class}
+                                onChange={this.handleSelectChange.bind(this, 'class')} 
+                                options={this.classOptions}  
+                                placeholder=""/>
+                        </FormGroup>
+                        <FormGroup className='mx-2'>
+                            <Label className='text-left mr-4'>
+                                Enregistrement vocal du mot:
+                            </Label>
+                            <AudioRecorder saveAudio={this.saveAudio.bind(this)}/>
+                        </FormGroup>
+                        <FormGroup className='mx-2 mb-3' >
+                            <Label for="vocalFile">
+                                Fichier vocal
+                            </Label>
+                            <Col sm={10}>
+                                <Input id="vocalFile" name="vocalFile" type="file" onChange={this.handleChange}/>
+                                <FormText>
+                                    Ajouter un fichier vocal
+                                </FormText>
+                            </Col>
+                        </FormGroup>
+                        <FormGroup className='mx-2 mb-3'>
+                            <Label className='text-left' for="translated_definition">
+                                Définition (en langue pivot):
+                            </Label>                  
+                            <Input
+                                id="translated_definition"
+                                name="translated_definition"
+                                value={this.state.translated_definition}
+                                onChange={this.handleChange}  
+                                type='textarea'/>
+                        </FormGroup>
+                        <FormGroup className='mx-2 mb-3'>
+                            <Label className='text-left' for="definition">
+                                Définition:
+                            </Label>                  
+                            <Input
+                                id="definition"
+                                name="definition"
+                                value={this.state.definition}
+                                onChange={this.handleChange}
+                                type='textarea'/>
+                        </FormGroup>
+                        <FormGroup className='mx-2'>
+                            <Label className='text-left' for="story">
+                                Anecdote(s):
+                            </Label>                        
+                            <Input
+                                id={"story"}
+                                name="story"
+                                value={this.state.story}
+                                onChange={this.handleChange}
+                                type='textarea'/>                         
+                        </FormGroup>
+                        <FormGroup className='mx-2'>
+                            <Label className='text-left' for="sentence">
+                                Mot en contexte dans une phrase:
+                            </Label>                  
+                            <Input
+                                id="sentence"
+                                name="sentence"
+                                value={this.state.sentence}
+                                onChange={this.handleChange}/>
+                        </FormGroup>
+                        <FormGroup className='mx-2'>
+                            <Label className='text-left' for="level">
+                                Niveau de langage:
+                            </Label>                  
+                            <Input
+                                id="level"
+                                name="level"
+                                type="select" 
+                                value={this.state.level}
+                                onChange={this.handleChange} 
+                                className="ml-1 mr-5">                                   
+                                    <option value={1}>1</option>
+                                    <option value={2}>2</option>
+                                    <option value={3}>3</option>
+                            </Input>
+                        </FormGroup>
+                        <FormGroup className='mx-2'>
+                            <Label className='text-left' for="categories">
+                                Catégorie(s):
+                            </Label>      
+                            <Select 
+                                id="categories"
+                                name="categories"
+                                isMulti
+                                value={this.state.categories}
+                                onChange={this.handleSelectChange.bind(this, 'categories')} 
+                                options={this.categoriesOptions}
+                                placeholder=""/>
+                        </FormGroup>                                       
+                        <FormGroup className='mx-2'>
+                            <Label className='text-left' for="source">
+                                Source:
+                            </Label>                  
+                            <Select 
+                                id="source"
+                                name="source"
+                                value={this.state.source}
+                                onChange={this.handleSelectChange.bind(this, 'source')} 
+                                options={this.sourceOptions} 
+                                placeholder="" />
+                        </FormGroup>
+                        <UncontrolledAccordion className="border-0" stayOpen >
+                            <AccordionItem>
+                                <AccordionHeader targetId="1">
+                                    Jeu de mots-croisés
+                                </AccordionHeader>
+                                <AccordionBody accordionId="1">
+                                    <FormGroup className='mx-2'>
+                                        <Label className='text-left' for="riddle">
+                                            Devinette (pour le mot-croisé) en langue pivot:
+                                        </Label>
+                                        <Input
+                                            id="translated_riddle"
+                                            name="translated_riddle"
+                                            value={this.state.translated_riddle}
+                                            onChange={this.handleChange}
+                                            type='textarea'/>
+                                    </FormGroup>
+                                    <FormGroup className='mx-2'>
+                                        <Label className='text-left' for="riddle">
+                                            Devinette (pour le mot-croisé):
+                                        </Label>
+                                        <Input
+                                            id="riddle"
+                                            name="riddle"
+                                            value={this.state.riddle}
+                                            onChange={this.handleChange}   
+                                            type='textarea' />
+                                    </FormGroup>
+                                </AccordionBody>
+                            </AccordionItem>
+                        </UncontrolledAccordion>
+                    </Form>
                 </ModalBody>
                 <ModalFooter>
                     <Col className='text-right mt-4'>

@@ -7,7 +7,11 @@ const { userValidation } = require('../validators/validators.js')
 require('dotenv').config()
 const {user} = require('../schemas/schemas.js')
 const cookie = require('cookie')
-const cookieParser = require('cookie-parser');
+
+router.token = (req, res) => { // Just check if token is valid
+    console.log("hello")
+   console.dir(req.cookies)
+}
 
 router.signup = (req, res) => {
     console.log("Sign up", req.body)
@@ -41,9 +45,9 @@ router.signup = (req, res) => {
 }
 
 router.signin = (req, res) => {
-    console.log("User connection attempt", req.body)
+    console.log("User connection attempt")
     
-    const token = req.cookies ? req.cookies.my_cookie.token : null //  Let's check the token
+    // const token = req.cookies ? req.cookies.my_cookie.token : null //  Let's check the token from cookieparser
 
     user.findOne({ mail: req.body.mail })
     .then(userFound => {
@@ -74,10 +78,11 @@ router.signin = (req, res) => {
             const my_cookieJson = JSON.stringify(my_cookie)
 
             const cookieOptions = {
-                httpOnly: true, // So the client cant decrypt the cookie
-                maxAge: 60 * 60 * 24 * 7 // 1 week
+                httpOnly: true, // So the client can see the cookie but js code cant access it
+                maxAge: 60 * 60 * 24 * 7, // 1 week
+                secure: true,
             } 
-            const cookieValue = cookie.serialize('my_cookie', my_cookieJson, cookieOptions);
+            const cookieValue = cookie.serialize('token', my_cookieJson, cookieOptions);
 
 
             res.setHeader('Set-Cookie', cookieValue);

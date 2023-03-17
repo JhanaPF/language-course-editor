@@ -4,7 +4,7 @@ module.exports = (req, res, next) => {
 
     // `req.user.isAdmin` est obtenu depuis le middleware précedent "auth", 
     // la variable est décodée depuis le jeton JWT
-    console.log('is admin', req.decodedToken)
+    //console.log('is admin ?', req.decodedToken)
     if (req.decodedToken.isAdmin){
         next()
     }

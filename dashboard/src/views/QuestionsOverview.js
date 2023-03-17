@@ -2,7 +2,7 @@ import React from 'react';
 import {Card, CardBody, CardSubtitle, CardTitle, CardText, Button, Row, Col, ButtonGroup} from 'reactstrap';
 import QuestionModal from '../modals/QuestionModal';
 
-export default class QuestionsOverview extends React.Component {
+export default class QuestionsOverview extends React.Component { // Show all questions of a lesson
 
     constructor(props){
         super(props);
@@ -14,19 +14,7 @@ export default class QuestionsOverview extends React.Component {
         this.closeModal = this.closeModal.bind(this);
     }
 
-    handleSelectChange = (param, e) =>{
-        this.setState({ [param] : e });
-    }
-
-    update(){
-        if(!this.isValid()) return;   
-    }
-
-    formValidation () {
-        
-    }
-
-    lessonIndexChange(lessonId, index) {
+    questionIndexChange(lessonId, index) {
         
     }
 
@@ -74,5 +62,4 @@ export default class QuestionsOverview extends React.Component {
 
         </>);
     }
-
 }

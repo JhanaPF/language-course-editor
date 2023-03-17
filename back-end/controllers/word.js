@@ -2,8 +2,8 @@ const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
 const { wordValidation, wordAdditionalDataValidation } = require('../validators/validators.js')
-const {wordSchema, additionalDataSchema} = require('../schemas/schemas.js') // Importation des schémas pour envoyer des objets vers les collections de MongoDb
-// const fs = require('fs'); // Crud files
+const {wordSchema, additionalDataSchema} = require('../schemas/schemas.js') 
+// const fs = require('fs'); // Crud files on disk
 const schemas = require('../schemas/schemas')
 
 const isValid = (word, additionalData) => {
@@ -25,8 +25,8 @@ const isIdValid = (id) => {
     return mongoose.Types.ObjectId.isValid(id)
 }
 
-router.fetch =  (req, res) => {   
-    
+router.fetch = (req, res) => {   
+
     const isValid = isIdValid(req.params._id) 
     if(!isValid) return res.status(400).json({message: "Invalid id"})
     

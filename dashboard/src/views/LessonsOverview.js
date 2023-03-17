@@ -66,7 +66,7 @@ export default class LessonsOverview extends React.Component { // Show all lesso
 
     render() {
         return(<>
-
+    
             {this.lessons.map((lesson) => 
                 <Card style={{ width: '18rem' }}>
                     {this.props.course.flag_url &&

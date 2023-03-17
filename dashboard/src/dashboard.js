@@ -180,23 +180,23 @@ class Dashboard extends React.Component {
                                         <i onClick={this.toggleModal.bind(this, 'deleteModal')} 
                                             className="fas fa-trash-alt fa-xl position-absolute mr-1" style={{right: 0, top: 0}}/>
                                         <span className="font-weight-bold"> Mot : </span>
-                                        { this.state.selectedWordData.word}{', '}{ this.state.selectedWordData.class && Classes.getName(this.state.selectedWordData.class)} <br/>
+                                        {this.state.selectedWordData.word}{', '}{ this.state.selectedWordData.class && Classes.getName(this.state.selectedWordData.class)} <br/>
                                         <span className="font-weight-bold">Définition en français : </span> 
-                                        { this.state.selectedWordData.translated_definition} <br/>
+                                        {this.state.selectedWordData.translated_definition} <br/>
                                         <span className="font-weight-bold">Définition : </span> 
-                                        { this.state.selectedWordData.definition} <br/>
+                                        {this.state.selectedWordData.definition} <br/>
                                         <span className="font-weight-bold">Niveau de langage : </span> 
-                                        { this.state.selectedWordData.level} <br/>
+                                        {this.state.selectedWordData.level} <br/>
                                         <span className="font-weight-bold">Catégorie(s) : </span> 
-                                        { this.state.selectedWordData.categories} <br/>
+                                        {this.state.selectedWordData.categories} <br/>
                                         <span className="font-weight-bold">Source : </span> 
-                                        { (this.state.selectedWordData.source !== null) && Sources.getName(this.state.selectedWordData.source)} <br/>
+                                        {(this.state.selectedWordData.source !== null) && Sources.getName(this.state.selectedWordData.source)} <br/>
                                         <span className="font-weight-bold">Devinette : </span> 
-                                        { this.state.selectedWordData.additionalData.riddle} <br/>
+                                        {this.state.selectedWordData.additionalData.riddle} <br/>
                                         <span className="font-weight-bold">Devinette en français : </span> 
-                                        { this.state.selectedWordData.additionalData.translated_riddle} <br/>
+                                        {this.state.selectedWordData.additionalData.translated_riddle} <br/>
                                         <span className="font-weight-bold">Anecdotes : </span> 
-                                        { this.state.selectedWordData.additionalData.story} <br/>
+                                        {this.state.selectedWordData.additionalData.story} <br/>
                                         <span className="font-weight-bold">Mot en contexte : </span> 
                                         { this.state.selectedWordData.additionalData.sentence} <br/>
                                     </CardText>

@@ -6,6 +6,7 @@ import LessonsOverview from './LessonsOverview';
 import AddButton from '../components/AddButton';
 import ReturnButton from '../components/ReturnButton';
 import QuestionsOverview from './QuestionsOverview';
+import CourseModal from '../modals/CourseModal';
 
 class CoursesOverview extends React.Component { // Show all courses
 
@@ -114,11 +115,11 @@ class CoursesOverview extends React.Component { // Show all courses
     }
     
     openCourseModal(){
-        this.setState({addCourseModal: true})
+        this.setState({courseModal: true})
     }
     
     closeModal(){
-        this.setState({addCourseModal: false});
+        this.setState({courseModal: false});
     }
 
     closeCourse(){
@@ -173,76 +174,17 @@ class CoursesOverview extends React.Component { // Show all courses
                                     Modifier
                                 </Button>
                             }
+                            {this.state.course &&
+                                <AddButton addFunction={this.addLesson.bind(this)}>Ajouter une leçon</AddButton>
+                            }
                         </CardBody>
                     </Card> 
                 )}
             </Row>
+            
 
-            <AddButton addFunction={this.addLesson.bind(this)}>Ajouter une leçon</AddButton>
-
-
-
-            {this.state.addCourseModal &&
-                <Modal isOpen={true} size='lg' style={{ overflowY: 'auto'}}>
-                    <ModalBody className=''>
-                        <Row className='border-bottom pb-3'>
-                            <Col md='10'>
-                                <h4>
-                                    Ajouter un cours                 
-                                </h4>
-                            </Col>
-                            <Col className='text-right ml-auto'>
-                                <button onClick={this.closeModal} type="button" className="btn btn-outline-secondary text-right ml-auto">X</button>
-                            </Col>                        
-                        </Row>
-                            <Form>
-                                <FormGroup className='mx-2'>
-                                    <Label className='text-left mr-4' for="language">
-                                        Langage à apprendre:
-                                    </Label>
-                                    <Input
-                                        id="language"
-                                        name="language"
-                                        value={this.state.language}
-                                        onChange={this.handleChange}
-                                        required />
-                                </FormGroup>
-                                <FormGroup className='mx-2 mb-3'>
-                                    <Label className='text-left' for="pivotLanguage">
-                                        Langue pivot:
-                                    </Label>
-                                    <Input
-                                        id="pivotLanguage"
-                                        name="pivotLanguage"
-                                        value={this.state.pivotLanguage}
-                                        onChange={this.handleChange}
-                                        required />
-                                </FormGroup>
-                                <FormGroup className='mx-2 mb-3' >
-                                    <Label for="flagFile">
-                                        Drapeau
-                                    </Label>
-                                    <Col sm={10}>
-                                        <Input id="flagFile" name="flagFile" type="file" onChange={this.handleChange}/>
-                                        <FormText>
-                                            Ajouter un drapeau
-                                        </FormText>
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup className='mx-2 mb-3'>
-                                    <Label className='text-left' for="rawName">
-                                        Nom du dictionnaire en brut (en anglais: language_from_pivotlanguage):
-                                    </Label>                  
-                                    <Input
-                                        id="rawName"
-                                        name="rawName"
-                                        value={this.state.rawName}
-                                        onChange={this.handleChange}
-                                        required />
-                                </FormGroup>
-                            </Form>
-                    </ModalBody>
-                </Modal>
+            {this.state.courseModal &&
+                <CourseModal closeModal={this.closeModal}/>
             }
 
             {this.state.course &&

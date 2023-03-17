@@ -9,10 +9,11 @@ export default function TextFormGroup (props) {
     return (
         <MyFormGroup text={props.text}>
             <Input
-                id={props.value}
-                name={props.value}
+                id={props.id}
+                name={props.id}
                 value={props.value}
-                onChange={props.handleChange} />
+                onChange={props.handleChange} 
+                maxLength={100}/>
         </MyFormGroup>
     )
 }
