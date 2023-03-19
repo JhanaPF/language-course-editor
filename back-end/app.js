@@ -25,12 +25,13 @@ const isAdmin = require('./middleware/isAdmin');
 
 
 app.use((req, res, next) => { 
+    //console.log(req.body, req.url)
+    
     //if(!isProduction) 
     res.setHeader('Access-Control-Allow-Origin', '*') // Autorise CORS, security failure for development 
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization')
     res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE')
     res.header("Access-Control-Allow-Credentials", true);
-    //console.log(req.body, req.url)
     next()
 })
 

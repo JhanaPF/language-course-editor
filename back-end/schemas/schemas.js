@@ -4,6 +4,7 @@ require('dotenv').config()
 const entities_schemas = require('./entities_schemas')
 
 const uniqueRequiredString = entities_schemas.uniqueRequiredString
+
 const dictionnarySchema = mongoose.Schema({ // Carry informations about available dictionnaries and courses created to link both of them
     language: uniqueRequiredString,
     raw_name: uniqueRequiredString, // spanish_from_french for example to link with the dictionnary word collection
@@ -14,7 +15,7 @@ const dictionnarySchema = mongoose.Schema({ // Carry informations about availabl
 
 const dictionnary = mongoose.model('Dictionnary', dictionnarySchema) 
 
-// Level creator schemas 
+// --- Level creator schemas ---
 const lessonSchema = mongoose.Schema({
     dictionnary_id: entities_schemas.mongoId,
     name: String,
@@ -24,10 +25,9 @@ const lessonSchema = mongoose.Schema({
 const lesson = mongoose.model('Lesson', lessonSchema) 
 
 const questionSchema = mongoose.Schema({
-    // Enregistrer la phrase sous forme d'array
     lesson_id: entities_schemas.mongoId,
     dictionnary_id: entities_schemas.mongoId,// ex spanish_from_french
-    course_id: {type: mongoose.Schema.ObjectId, unique: true}, // Relation to dictionaries
+    course_id: entities_schemas.uniqueMongoId, // Relation to dictionaries
     picture: entities_schemas.fileUrl,
     sentence: {type: [String]}, // Can be a single word
     sentence_audio: entities_schemas.fileUrl, // Il devrait y avoir plusieurs enregistrements
@@ -38,7 +38,6 @@ const questionSchema = mongoose.Schema({
     // answerType: {type: String, enum: ["translation", "pictureChoice", "textChoice", ""]},
 })
 const question = mongoose.model('Question', questionSchema) 
-
 // ------------
 
 // Dictionnary Schemas: word and additional data
@@ -73,7 +72,7 @@ const userSchema = mongoose.Schema({ // User schema for dahsboard's users
     mail : {type: String, required: true, unique: true},
     password : {type: String},
     role:{type: String, enum: ['guest', 'admin', 'superAdmin', 'player']}, // SuperAdmin, Admin, Joueur, etc...
-    dialects: {type: Array}, // Langue dans lesquelles le joueur a joué
+    dialects: {type: Array}, // languages the user can crud
 })
 
 // Add unique validator plugin to all schemas

@@ -1,10 +1,12 @@
 const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
+
 const { wordValidation, wordAdditionalDataValidation } = require('../validators/validators.js')
 const {wordSchema, additionalDataSchema} = require('../schemas/schemas.js') 
 // const fs = require('fs'); // Crud files on disk
 const schemas = require('../schemas/schemas')
+const {isIdValid} = require('../utils/utils')
 
 const isValid = (word, additionalData) => {
 
@@ -19,10 +21,6 @@ const isValid = (word, additionalData) => {
         console.log(validateWord.error && validateWord.error, validateAdditionalData.error && validateAdditionalData.error) 
         return false 
     }
-}
-
-const isIdValid = (id) => {
-    return mongoose.Types.ObjectId.isValid(id)
 }
 
 router.fetch = (req, res) => {   
