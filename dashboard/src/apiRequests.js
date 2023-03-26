@@ -6,6 +6,19 @@ const token = localStorage.getItem('token');
 const mail = localStorage.getItem('mail');
 const password = localStorage.getItem('password');
 
+function axiosRequest(url, data, options, successCbk, errorCbk) {
+
+    return axios(this.apiUrl + url, { headers: { 'Authorization': token },  ...options})
+        .then(res => {
+            console.log(res);
+            if(successCbk) successCbk(res);
+        })
+        .catch(err => {
+            console.error(err);
+            if(errorCbk) errorCbk(err);
+        });
+}
+
 export function verifyToken (successCbk, errorCbk) { // Potentially token stored locally is no longer valid
 
     axios.post(this.apiUrl + 'auth/token', { token })
@@ -55,16 +68,19 @@ export function get(url, data, successCbk, errorCbk, noty=false){
 
 export function put(url, data, successCbk, errorCbk, noty=false){
 
-    axios.put(
-        apiUrl + url, 
-        data,
-        { 
+    axiosRequest(
+        url, 
+        data, 
+        {
+            method: 'PUT',
             headers: { 
                 'Authorization': token,
                 'Accept' : 'application/json',
                 'withCredentials': true
                 //'Content-Type': 'multipart/form-data'
             },
-        },
-    )
+        }, 
+        successCbk, 
+        errorCbk
+    );
 }

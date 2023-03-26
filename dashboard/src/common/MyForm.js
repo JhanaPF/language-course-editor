@@ -7,12 +7,12 @@ export default class MyForm extends React.Component{
     // parent class for all forms
 
     constructor(props, other){
-        console.log(other)
+        //console.log(other)
         super(props);
         this.state = {fieldError: false};
+        
         this.handleChange = this.handleChange.bind(this);
-        this.add = this.add.bind(this);
-        this.update = this.update.bind(this);
+        this.type = this.props.addModal ? 'addModal' : 'editModal';
     }
     
     initState(inputNames){
@@ -20,6 +20,7 @@ export default class MyForm extends React.Component{
         inputNames.forEach(name => {
             state[name] = this.props.levelData ? this.props.levelData[name] : undefined;
         });
+        state.fieldError=false;
         this.setState({...state});
     }
 
@@ -57,6 +58,10 @@ export default class MyForm extends React.Component{
 
     handleSubmit (event) {
         console.log('form:', event)
+    }
+
+    formValidation(form){
+
     }
 
 }

@@ -4,6 +4,8 @@ require('dotenv').config()
 const isProduction = process.env.NODE_ENV === 'production' 
 
 
+// Use this script to add admin accounts 
+
 mongoose.connect(isProduction ? process.env.DATABASE : 'mongodb://localhost:27017/dictionnaries', { useNewUrlParser: true,  useUnifiedTopology: true });
 db = mongoose.connection;
 
@@ -22,14 +24,15 @@ db.once('open', function () {
 
         const superAdmin = {
             name: "superAdmin",
-            mail: "superAdmin@gmail.com",
+            mail: "superadmin@gmail.com",
             password: "$2a$12$sElZzYlhPZjAxk7XGLrx2ubXBhhgZ4Zu3p0Pp/xPpdiJFF5HRtaIS", // Azerty-1234
             role: 'superAdmin',
         }
+        
+        const collection = db.collection('users');
 
-        const newAdmin = new user(admin)
-        newAdmin.save()
-        .then(() => resolve("Admin persisted"))
+        collection.insertMany([admin, superAdmin])
+        .then((results) => resolve({message:"Admin and Superadmin persisted", results}))
         .catch((err) => reject(err))
     });
 

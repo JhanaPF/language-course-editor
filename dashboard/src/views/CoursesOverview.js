@@ -135,10 +135,6 @@ class CoursesOverview extends React.Component { // Show all courses
         }
     }
 
-    addLesson(){
-
-    }
-
     render() {
 
         let courses = this.courses;
@@ -173,9 +169,6 @@ class CoursesOverview extends React.Component { // Show all courses
                                 <Button onClick={this.openCourse.bind(this, course._id)}>
                                     Modifier
                                 </Button>
-                            }
-                            {this.state.course &&
-                                <AddButton addFunction={this.addLesson.bind(this)}>Ajouter une leçon</AddButton>
                             }
                         </CardBody>
                     </Card> 

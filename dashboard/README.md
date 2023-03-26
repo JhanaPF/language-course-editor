@@ -15,7 +15,7 @@ Saas
 
 npm install
 Create a .env file :
-Add API_URL variable to connect the back-end api
+Add REACT_APP_API_URL variable to connect the back-end api
 npm start
 
 # Build

@@ -1,18 +1,19 @@
 import React from 'react';
 import {Modal, ModalBody, ModalFooter, Form, FormText, FormGroup, Input, Label, Button, Row, Col} from 'reactstrap';
-import axios from 'axios';
 import Select from 'react-select';
 import {validString} from '../rgx/regex'
 import AudioRecorder from '../components/AudioRecorder';
+import MyForm from '../common/MyForm';
 
-export default class QuestionForm extends React.Component {
+export default class QuestionForm extends MyForm {
 
     constructor(props){
         super(props);
         
+        // La question:
         // Une photo
         // Une phrase/ un mot
-        // Un enregistrement audio
+        // Un ou PLUSIEURS enregistrements audio
         // Enregistrer la phrase sous forme d'array
         
         // La réponse:
@@ -22,32 +23,24 @@ export default class QuestionForm extends React.Component {
         // Un champs pour le type de réponse
         // L'index du mot à sélectionner pour les phrases à compléter
 
-        // langage, ex french_to_french
         // Index de la question dans la leçon
 
-        const inputNames = ["picture", "sentence", "vocal", "translation", "answerChoices", "pictureChoices", "indexAnswer", "questionIndex"];
-        
-        let state = {};
-        inputNames.forEach(name => {
-            state[name] = this.props.levelData ? this.props.levelData[name] : undefined;
-        });
-        state.fieldError = false;
-        this.state = state;
-        //console.log(this.state)
+        this.inputNames = ["picture", "sentence", "sentence_audio", "translation", "picture_choice", "text_choice", "answer_index"];        
 
-        this.apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3001/';
-        this.handleChange = this.handleChange.bind(this);
-        this.save = this.save.bind(this);
-        this.update = this.update.bind(this);
-        this.type = this.props.addModal ? 'addModal' : 'editModal';
+        this.state = {course_id: this.props.lessonId};
+
+
+        this.handleChange = super.handleChange.bind(this);
     }
 
+    componentDidMount(){
+        super.initState(this.inputNames);
+    }
 
 
     isValid(){
         return true;
     }
-
 
     formValidation () {
     }

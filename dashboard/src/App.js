@@ -36,7 +36,7 @@ class App extends React.Component {
     }
 
     signIn = (mail, password) => {
-        //console.log({ mail, password }, this.apiUrl)
+        console.log({ mail, password}, this.apiUrl)
 
         axios.post(this.apiUrl + 'auth/signin', { mail, password })
         .then(res => { 

@@ -1,7 +1,8 @@
 import React from 'react';
 import {Card, CardBody, CardSubtitle, CardTitle, CardText, Input, Label, Button, Row, Col, ButtonGroup, Modal, FormGroup} from 'reactstrap';
-import axios from 'axios';
 import LessonModal from '../modals/LessonModal';
+import AddButton from '../components/AddButton';
+import {put, post} from '../apiRequests';
 
 export default class LessonsOverview extends React.Component { // Show all lessons of a course
 
@@ -32,40 +33,31 @@ export default class LessonsOverview extends React.Component { // Show all lesso
         }
 
         this.closeModal = this.closeModal.bind(this);
+        this.openLessonModal = this.openLessonModal.bind(this);
+
     }
 
     handleSelectChange = (param, e) =>{
         this.setState({ [param] : e });
     }
 
-    update(){
-        if(!this.isValid()) return; 
-
-        const data = this.getData();
-        //console.log(save.word, this.state.translated_definition)
-        axios.post(
-            this.apiUrl + 'lesson-questions',
-            data, 
-            { headers: { 'Authorization': this.props.token,  'Content-Type': 'multipart/form-data' } }
-        )
-        .then( () => this.props.toggleModal())
-        .catch(function (error) {console.log(error)});     
-    }
-
-    formValidation () {
-        
-    }
-
     lessonIndexChange(lessonId, index) {
-        
+        console.log("update lesson index");
     }
 
     closeModal(){
         this.setState({lessonModal: false})
     }
 
+    openLessonModal(){
+        this.setState({lessonModal: true});
+    }
+
     render() {
         return(<>
+
+            <AddButton addFunction={this.openLessonModal}>Ajouter une leçon</AddButton>
+
     
             {this.lessons.map((lesson) => 
                 <Card style={{ width: '18rem' }}>
@@ -83,7 +75,7 @@ export default class LessonsOverview extends React.Component { // Show all lesso
                         <CardText>
                             Détail
                         </CardText>
-                        <Button>
+                        <Button onClick={this.openLessonModal}>
                             Modifier
                         </Button>
                         <ButtonGroup>

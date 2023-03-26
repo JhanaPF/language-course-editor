@@ -4,23 +4,21 @@ import axios from 'axios';
 import Select from 'react-select';
 import {validString} from '../rgx/regex'
 import AudioRecorder from '../components/AudioRecorder';
+import MyForm from '../common/MyForm';
 
-export default class LessonForm extends React.Component {
+export default class LessonForm extends MyForm {
 
     constructor(props){
         super(props);
-        this.inputNames = ["dictionnary_id", "name", "description", "picture"];
-        
-        let state = {};
-        this.inputNames.forEach(name => {
-            state[name] = this.props.levelData ? this.props.levelData[name] : undefined;
-        });
-        state.fieldError = false;
-        this.state = state;
+
+        this.inputNames = ["name", "description", "picture"];        
+        this.state = {dictionnary_id: this.props.dictionnary_id};
 
         this.handleChange = this.handleChange.bind(this);
-        this.save = this.save.bind(this);
-        this.update = this.update.bind(this);
+    }
+
+    componentDidMount(){
+        super.initState(this.inputNames);
     }
     
     formValidation () {
@@ -30,13 +28,13 @@ export default class LessonForm extends React.Component {
         return (
             <Form>
                 <FormGroup className='mx-2'>
-                    <Label className='text-left mr-4' for="language">
-                        Langage à apprendre:
+                    <Label className='text-left mr-4' for="name">
+                        Nom:
                     </Label>
                     <Input
-                        id="language"
-                        name="language"
-                        value={this.state.language}
+                        id="name"
+                        name="name"
+                        value={this.state.name}
                         onChange={this.handleChange}
                         required />
                 </FormGroup>

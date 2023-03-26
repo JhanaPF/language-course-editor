@@ -1,6 +1,8 @@
-import mongoose from "mongoose"
+const mongoose = require('mongoose')
 
 
-export const isIdValid = (id) => {
+const isIdValid = (id) => {
     return mongoose.Types.ObjectId.isValid(id)
 }
+
+module.exports={isIdValid}

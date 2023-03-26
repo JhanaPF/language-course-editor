@@ -5,7 +5,7 @@ const {dictionnary} = require('../schemas/schemas.js')
 const {isIdValid} = require('../utils/utils')
 
 
-router.fetch =  (req, res) => {   
+router.fetch = (req, res) => {   
 
     dictionnary.find({}, function(err, dictionnaries){
         if(err) return res.status(400)
@@ -13,7 +13,7 @@ router.fetch =  (req, res) => {
     })
 }
 
-router.add =  (req, res) => {   
+router.add = (req, res) => {   
     const dictionnary = req.body.dictionnary
     if(!dictionnary) return res.status(400)
     
@@ -48,7 +48,7 @@ router.upd =  (req, res) => {
     })
 } 
 
-router.del =  (req, res) => {    
+router.del = (req, res) => {    
     const _id = req.body._id
     if(_id) return res.status(400)
     if(!isIdValid(_id)) return res.status(400)

@@ -28,11 +28,12 @@ const questionSchema = mongoose.Schema({
     lesson_id: entities_schemas.mongoId,
     dictionnary_id: entities_schemas.mongoId,// ex spanish_from_french
     course_id: entities_schemas.uniqueMongoId, // Relation to dictionaries
+    question_index: {type: Number, min: 0, max: 100},
     picture: entities_schemas.fileUrl,
     sentence: {type: [String]}, // Can be a single word
-    sentence_audio: entities_schemas.fileUrl, // Il devrait y avoir plusieurs enregistrements
+    sentence_audio: entities_schemas.fileUrl, // Must have many recordings
     translation: {type: Array},
-    pitcture_choice: entities_schemas.pictureChoice,
+    picture_choice: entities_schemas.pictureChoice,
     text_choice: entities_schemas.textChoice,
     answer_index: {type: Number, min: 0, max: 100},
     // answerType: {type: String, enum: ["translation", "pictureChoice", "textChoice", ""]},

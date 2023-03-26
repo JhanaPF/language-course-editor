@@ -9,25 +9,28 @@ const {user} = require('../schemas/schemas.js')
 const cookie = require('cookie')
 
 router.token = (req, res) => { // Just check if token is valid
-    console.log("hello")
-   console.dir(req.cookies)
+    console.log("Check token")
+    console.log(req.cookies)
 }
 
 router.signup = (req, res) => {
-    console.log("Sign up", req.body)
+    body = req.body
+    console.log("Sign up", body)
     
-    const validation = userValidation.validate(req.body)
+    const validation = userValidation.validate(body)
     if(validation.error) { 
         console.log(validation.error) 
         return res.status(500)
     }
 
+    body.mail = body.mail.toLowerCase()
+
     bcrypt.hash(req.body.password, 12)
     .then(hash => {
         
         const newUser = new user({
-            name: req.body.name,
-            mail: req.body.mail,
+            name: name,
+            mail: mail,
             password: hash
         })
         
@@ -45,11 +48,12 @@ router.signup = (req, res) => {
 }
 
 router.signin = (req, res) => {
-    console.log("User connection attempt")
+    const mail = req.body.mail
+    console.log("User connection attempt " + mail)
     
     // const token = req.cookies ? req.cookies.my_cookie.token : null //  Let's check the token from cookieparser
 
-    user.findOne({ mail: req.body.mail })
+    user.findOne({ mail: mail })
     .then(userFound => {
         if (!userFound) {
             console.log("Utilisateur non trouvé")

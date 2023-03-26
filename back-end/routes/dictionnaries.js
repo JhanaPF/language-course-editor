@@ -19,6 +19,6 @@ router.delete('/word', isAdmin, wordCtrl.deleteWord)
 const dicoUrl = '/dictionnary'
 router.put(dicoUrl, isAdmin, uploadPicture.single('flag'), dicoCtrl.add)
 router.post(dicoUrl, isAdmin, uploadPicture.single('flag'), dicoCtrl.upd)
-router.delete(dicoUrl, isAdmin, dicoCrtl.del)
+router.delete(dicoUrl, isAdmin, dicoCtrl.del)
 
 module.exports = router
