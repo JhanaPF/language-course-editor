@@ -1,32 +1,24 @@
 import React from 'react';
-import {Form, FormText, FormGroup, Input, Label, Button, Row, Col} from 'reactstrap';
-import axios from 'axios';
-import Select from 'react-select';
-import {validString} from '../rgx/regex';
-import AudioRecorder from '../components/AudioRecorder';
 import MyForm from '../common/MyForm';
 import FormWrapper from '../components/FormWrapper';
 import TextFormGroup from '../components/TextFormGroup';
+import PictureInputGroup from '../components/PictureInputGroup';
 
-
-export default class LessonForm extends MyForm {
+export default class CourseForm extends MyForm {
     
     constructor(props){
         super(props, "other props");
-        this.inputNames = ["dictionnary_id", "name", "description", "picture"];
+        this.inputNames = ["language", "pivotLanguage", "flagFile", "rawName"];
     }
 
     componentDidMount(){
         super.initState(this.inputNames);
     }
-    
-    formValidation () {
-    }
 
     submit(event){
-        event.stopPropagation()
-        console.log(event)
-        super.add("course")
+        event.stopPropagation();
+        const {formData} = this.getData();
+        //super.add("course", formData);
     }
 
     render() {
@@ -34,15 +26,7 @@ export default class LessonForm extends MyForm {
             <FormWrapper submit={this.submit.bind(this)}>
                 <TextFormGroup text="Langage à apprendre" id="language" value={this.state.language} handleChange={this.handleChange} />
                 <TextFormGroup text="Langue pivot" id="pivotLanguage" value={this.state.pivotLanguage} handleChange={this.handleChange} />
-                <FormGroup className='mx-2 mb-3'>
-                    <Label for="flagFile">
-                        Drapeau:
-                    </Label>
-                    <Input id="flagFile" name="flagFile" type="file" onChange={this.handleChange}/>
-                    <FormText>
-                        Ajouter un drapeau
-                    </FormText>
-                </FormGroup>
+                <PictureInputGroup text="Drapeau" description="Ajouter un drapeau" name="flagFile" onChange={this.handleChange}/>
                 <TextFormGroup 
                     text="Nom du dictionnaire en brut (en anglais: language_from_pivotlanguage)" 
                     id="rawName" 

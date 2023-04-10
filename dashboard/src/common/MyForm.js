@@ -1,7 +1,7 @@
 import React from "react";
 import {fetch, put, post, del} from '../apiRequests';
 import { Form, Button } from "reactstrap";
-
+const log = console.log;
 
 export default class MyForm extends React.Component{
     // parent class for all forms
@@ -26,11 +26,11 @@ export default class MyForm extends React.Component{
 
     handleChange = (event) =>{
         const {name, value} = event.currentTarget;
-        console.log('handle change', name, value)
+        //console.log('handle change', name, value)
 
         const files = event.target.files;
         if(files && files[0]) { // Input is a file input, make it more readable
-            console.log(event.target)
+            //console.log(event.target)
             return  this.setState({ [name] : event.target.files[0] });
         }
 
@@ -41,11 +41,21 @@ export default class MyForm extends React.Component{
         this.setState({ [param] : e });
     }
 
-    getData(inputNames){   
+    getData(){   
         let data = {};
-        inputNames.foreach(key => data[key] = this.state.levelData ? this.state.levelData[key] : undefined);
-        return data;
-    }
+        let formData = new FormData();
+ 
+        // Set data and formdata objects
+        for (let i = 0; i < this.inputNames.length; i++) {
+            const key = this.inputNames[i];
+            const stateField = this.state[key];
+            data[key] = stateField ? stateField : undefined;
+            formData.append(key, stateField)
+            log(key, stateField)
+        }
+        console.log(data, formData);        
+        return {data, formData};
+    } 
     
     update(url){
         const data = this.getData();
@@ -57,6 +67,7 @@ export default class MyForm extends React.Component{
     }
 
     handleSubmit (event) {
+        event.stopPropagation();
         console.log('form:', event)
     }
 

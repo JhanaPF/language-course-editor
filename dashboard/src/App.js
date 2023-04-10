@@ -16,7 +16,7 @@ class App extends React.Component {
         this.state={
             token: token ? token : '',
             uId: '',
-            loggedin: false,
+            loggedin: process.env.NODE_ENV,
         }
 
         this.apiUrl = process.env.REACT_APP_API_URL || "http://localhost:3001/";
@@ -24,7 +24,7 @@ class App extends React.Component {
 
     componentDidMount(){ // Starting application
         const token = localStorage.getItem('token');
-        if(token) // If token, check if it is still valid
+        if(token){ // If token, check if it is still valid
             post(
                 'auth/token', 
                 null,
@@ -32,7 +32,8 @@ class App extends React.Component {
                     console.log(res)
                     this.setState({loggedin: true})},
                 (res) => console.log(res) 
-                )
+            )
+        }
     }
 
     signIn = (mail, password) => {

@@ -8,7 +8,7 @@ router.fetch =  (req, res) => {
 }
 
 router.add =  (req, res) => {   
-    console.log(req.cookie)
+    console.log(req)
 } 
 
 router.upd =  (req, res) => {    

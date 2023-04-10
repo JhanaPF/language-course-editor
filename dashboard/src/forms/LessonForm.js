@@ -1,11 +1,9 @@
 import React from 'react';
 import {Form, FormText, FormGroup, Input, Label, Button, Row, Col} from 'reactstrap';
-import axios from 'axios';
-import Select from 'react-select';
-import {validString} from '../rgx/regex'
-import AudioRecorder from '../components/AudioRecorder';
 import MyForm from '../common/MyForm';
-
+import FormWrapper from '../components/FormWrapper';
+import TextFormGroup from '../components/TextFormGroup';
+import PictureInputGroup from '../components/PictureInputGroup';
 export default class LessonForm extends MyForm {
 
     constructor(props){
@@ -14,64 +12,26 @@ export default class LessonForm extends MyForm {
         this.inputNames = ["name", "description", "picture"];        
         this.state = {dictionnary_id: this.props.dictionnary_id};
 
-        this.handleChange = this.handleChange.bind(this);
+      //  this.handleChange = this.handleChange.bind(this);
     }
 
     componentDidMount(){
         super.initState(this.inputNames);
     }
     
-    formValidation () {
+    submit(event){
+        event.stopPropagation();
+        console.log(event)
+        super.add("lesson");
     }
 
     render() {
         return (
-            <Form>
-                <FormGroup className='mx-2'>
-                    <Label className='text-left mr-4' for="name">
-                        Nom:
-                    </Label>
-                    <Input
-                        id="name"
-                        name="name"
-                        value={this.state.name}
-                        onChange={this.handleChange}
-                        required />
-                </FormGroup>
-                <FormGroup className='mx-2 mb-3'>
-                    <Label className='text-left' for="pivotLanguage">
-                        Langue pivot:
-                    </Label>
-                    <Input
-                        id="pivotLanguage"
-                        name="pivotLanguage"
-                        value={this.state.pivotLanguage}
-                        onChange={this.handleChange}
-                        required />
-                </FormGroup>
-                <FormGroup className='mx-2 mb-3' >
-                    <Label for="flagFile">
-                        Drapeau
-                    </Label>
-                    <Col>
-                        <Input id="flagFile" name="flagFile" type="file" onChange={this.handleChange}/>
-                        <FormText>
-                            Ajouter un drapeau
-                        </FormText>
-                    </Col>
-                </FormGroup>
-                <FormGroup className='mx-2 mb-3'>
-                    <Label className='text-left' for="rawName">
-                        Nom du dictionnaire en brut (en anglais: language_from_pivotlanguage):
-                    </Label>                  
-                    <Input
-                        id="rawName"
-                        name="rawName"
-                        value={this.state.rawName}
-                        onChange={this.handleChange}
-                        required />
-                </FormGroup>
-            </Form>             
+            <FormWrapper submit={this.submit.bind(this)}>
+                <TextFormGroup text="Initulé du cours" id="name" value={this.state.name} handleChange={this.handleChange}/>
+                <TextFormGroup text="Description" id="description" value={this.state.description} handleChange={this.handleChange}/>
+                <PictureInputGroup text="Image de couverture" name="picture" onChange={this.handleChange}/>
+            </FormWrapper>
         );
     }
 

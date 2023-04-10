@@ -1,6 +1,3 @@
-
-
-
 import React from "react";
 import { Input } from "reactstrap";
 import MyFormGroup from "./MyFormGroup";
