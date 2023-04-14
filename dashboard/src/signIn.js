@@ -5,6 +5,9 @@ import {validEmail, validPassword} from './rgx/regex';
 import TextFormGroup from './components/TextFormGroup';
 import { post } from './apiRequests';
 
+/**
+ * @param props: signIn()
+ */
 class SignIn extends React.Component {
 
     constructor(){
@@ -37,29 +40,19 @@ class SignIn extends React.Component {
         this.setState({ [name] : value });
     }
 
-    signIn(){
+    handleSubtmit(){
         const mailError= !validEmail.test(this.state.email);
         const passwordError= !validPassword.test(this.state.password);
 
         if(mailError || passwordError) return this.setState({mailError, passwordError});
         
+        if(this.state.keepConnection){        
+            localStorage.setItem('mail', this.state.email);
+            localStorage.setItem('password', this.state.password);
+            localStorage.setItem('keepConnection', this.state.keepConnection);
+        }
 
-        this.signInn(this.state.email, this.state.password)
-    }
-
-    signInn = (mail, password) => {
-        console.log({ mail, password}, this.apiUrl)
-
-        post('auth/signin', { mail, password })
-        .then(res => { 
-            console.log(document.cookie)
-            localStorage.setItem('token', res.data.token);
-            localStorage.setItem('mail', mail);
-            localStorage.setItem('password', password);
-
-            this.setState({token : res.data.token, userId: res.data.userId, loggedin: true}); 
-        })
-        .catch(error => console.log(error));
+        this.props.signIn(this.state.email, this.state.password);
     }
 
     handleChekbox(event){
@@ -115,7 +108,7 @@ class SignIn extends React.Component {
                 <TextFormGroup type="checkbox" id="keepConnection" value={this.state.keepConnection} handleChange={this.handleChekbox.bind(this)} text="Restez connecté"/>
                 
                 <Col md="6" className='ml-auto'>
-                    <Button className=' position-absoluto r-0 text-right ml-auto text-dark bg-white' onClick={this.signIn.bind(this)}>
+                    <Button className=' position-absoluto r-0 text-right ml-auto text-dark bg-white' onClick={this.handleSubtmit.bind(this)}>
                         Connexion
                     </Button>                        
                 </Col>

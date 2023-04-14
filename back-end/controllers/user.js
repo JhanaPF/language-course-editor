@@ -9,8 +9,9 @@ const {user} = require('../schemas/schemas.js')
 const cookie = require('cookie')
 
 router.token = (req, res) => { // Just check if token is valid
-    console.log("Check token")
-    console.log(req.cookies)
+    console.log("Check token", req.cookies)
+
+    return res.status(401).json()
 }
 
 router.signup = (req, res) => {
@@ -70,7 +71,7 @@ router.signin = (req, res) => {
             const token = jwt.sign(
                 {userId: userFound._id, isAdmin: userFound.role === "admin"},
                 process.env.SECRET ? process.env.SECRET : "RANDOM_TOKEN_SECRET",
-                {expiresIn: "12h"}
+                {expiresIn: "36h"}
             )
 
             const my_cookie = {
@@ -86,13 +87,13 @@ router.signin = (req, res) => {
                 maxAge: 60 * 60 * 24 * 7, // 1 week
                 secure: true,
             } 
-            const cookieValue = cookie.serialize('token', my_cookieJson, cookieOptions);
 
+            const cookieValue = cookie.serialize('token', my_cookieJson, cookieOptions);
 
             res.setHeader('Set-Cookie', cookieValue);
             res.status(200).json({
                 userId: userFound._id,
-                token
+                //token
             })
         })
         .catch(error => {

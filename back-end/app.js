@@ -26,7 +26,7 @@ const bodyParser = require('body-parser');
 
 
 app.use((req, res, next) => { 
-    console.log(req.body, req.url)
+    //console.log(req.body, req.url)
     
     if(!isProduction)
         res.setHeader('Access-Control-Allow-Origin', '*') // Autorise CORS, security failure for development 

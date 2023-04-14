@@ -3,18 +3,17 @@ import axios from 'axios';
 
 const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:3001/";
 const token = localStorage.getItem('token');
-//const mail = localStorage.getItem('mail');
-//const password = localStorage.getItem('password');
+const log = console.log;
 
 function axiosRequest(url, options, successCbk, errorCbk) { 
-    console.log(options)
-    return axios({ url:apiUrl + url, headers: { 'Authorization': token },  ...options})
+    log(options)
+    return axios({ url:apiUrl + url, headers: { withCredentials: true},  ...options})
         .then(res => {
-            console.log(res);
+            log("Request success: ", res);
             if(successCbk) successCbk(res);
         })
         .catch(err => {
-            console.error(err);
+            console.error("Request error: ", err);
             if(errorCbk) errorCbk(err);
         });
 }
@@ -22,40 +21,31 @@ function axiosRequest(url, options, successCbk, errorCbk) {
 export function verifyToken (successCbk, errorCbk) { // Potentially token stored locally is no longer valid
     axios.post(apiUrl + 'auth/token', { token })
     .then(res => {
-        console.log("Token still valid")
+        log("Token still valid")
         if(res.data.token)
             localStorage.setItem('token', res.data.token);
         if(successCbk)
             successCbk();
     })
     .catch(error => {
-        console.log("Token no longer valid, reconnect");
-        console.log(error);
+        log("Token no longer valid, reconnect");
+        log(error);
         if(errorCbk) errorCbk();
     });
 }
 
 export function post(url, data, successCbk, errorCbk, noty=false){
-    axios.post(
-        apiUrl + url, 
-        data, 
-        { headers: { 'Authorization': token, withCredentials: true },})
-    .then(res => {
-        console.log(res);
-        if(successCbk) successCbk();})
-    .catch(err => {
-        console.log(err);
-        if(errorCbk) errorCbk();});
+    axiosRequest(url, {method: 'POST', data}, successCbk, errorCbk);
 }
 
 export function get(url, data, successCbk, errorCbk, noty=false){
     axios.get(apiUrl + url, {  headers: { 'Authorization': token } } )
     .then(res => {
-        console.log(res);
+        log(res);
         if(successCbk) successCbk(res);
     })
     .catch(err => {
-        console.log(err);
+        log(err);
         if(errorCbk) errorCbk();
     });
 }
@@ -63,7 +53,7 @@ export function get(url, data, successCbk, errorCbk, noty=false){
 export function put(url, data, successCbk, errorCbk, noty=false){
 
     axiosRequest(
-        apiUrl + url, 
+        url, 
         {
             method: 'PUT',
             headers: { 

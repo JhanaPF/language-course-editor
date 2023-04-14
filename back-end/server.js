@@ -23,7 +23,7 @@ const port = serverUtil.normalizePort(process.env.PORT || '3001')
 app.set('port', port) 
 
 const server = http.createServer(app)
-server.on('error', serverUtil.errorHandler)
+server.on('error', (err)=>serverUtil.errorHandler(err, server))
 server.on('listening', () => {
     const address = server.address()
     const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port
