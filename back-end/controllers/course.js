@@ -1,14 +1,14 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const router = express.Router()
-const {dictionnary} = require('../schemas/schemas.js') 
 
 router.fetch =  (req, res) => {   
 
 }
 
 router.add =  (req, res) => {   
-    console.log(req)
+    console.log("add course", req.body)
+    
 } 
 
 router.upd =  (req, res) => {    

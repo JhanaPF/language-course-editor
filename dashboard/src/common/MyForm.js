@@ -50,10 +50,11 @@ export default class MyForm extends React.Component{
             const key = this.inputNames[i];
             const stateField = this.state[key];
             data[key] = stateField ? stateField : undefined;
-            formData.append(key, stateField)
+            //formData.append(key, this.state[key])
             log(key, stateField)
         }
-        console.log(data, formData);        
+
+        //console.log(data, {formData});        
         return {data, formData};
     } 
     
