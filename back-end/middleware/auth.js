@@ -2,7 +2,10 @@ const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
 module.exports = (req, res, next) => {
-    //console.log(req.cookies, req.signedCookies)
+    console.log("cookies:", req.cookies, req.signedCookies)
+    return next()
+    
+    
     const token = req.headers.authorization
     if(!token) return res.status(401).json({error: "No token"})
 

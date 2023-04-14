@@ -3,12 +3,12 @@ import axios from 'axios';
 
 const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:3001/";
 const token = localStorage.getItem('token');
-const mail = localStorage.getItem('mail');
-const password = localStorage.getItem('password');
+//const mail = localStorage.getItem('mail');
+//const password = localStorage.getItem('password');
 
 function axiosRequest(url, options, successCbk, errorCbk) { 
-
-    return axios(   { url:apiUrl + url, headers: { 'Authorization': token },  ...options})
+    console.log(options)
+    return axios({ url:apiUrl + url, headers: { 'Authorization': token },  ...options})
         .then(res => {
             console.log(res);
             if(successCbk) successCbk(res);
@@ -20,7 +20,6 @@ function axiosRequest(url, options, successCbk, errorCbk) {
 }
 
 export function verifyToken (successCbk, errorCbk) { // Potentially token stored locally is no longer valid
-
     axios.post(apiUrl + 'auth/token', { token })
     .then(res => {
         console.log("Token still valid")
@@ -37,24 +36,19 @@ export function verifyToken (successCbk, errorCbk) { // Potentially token stored
 }
 
 export function post(url, data, successCbk, errorCbk, noty=false){
-    
     axios.post(
         apiUrl + url, 
         data, 
-        { headers: { 'Authorization': token },
-    })
+        { headers: { 'Authorization': token, withCredentials: true },})
     .then(res => {
         console.log(res);
-        if(successCbk) successCbk();
-    })
+        if(successCbk) successCbk();})
     .catch(err => {
         console.log(err);
-        if(errorCbk) errorCbk();
-    });
+        if(errorCbk) errorCbk();});
 }
 
 export function get(url, data, successCbk, errorCbk, noty=false){
-
     axios.get(apiUrl + url, {  headers: { 'Authorization': token } } )
     .then(res => {
         console.log(res);
@@ -73,12 +67,12 @@ export function put(url, data, successCbk, errorCbk, noty=false){
         {
             method: 'PUT',
             headers: { 
-                'Authorization': token,
+             //   'Authorization': token,
                 'Accept' : 'application/json',
                 'withCredentials': true
                 //'Content-Type': 'multipart/form-data'
             },
-            data
+            data: data
         }, 
         successCbk, 
         errorCbk

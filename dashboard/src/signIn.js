@@ -2,11 +2,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import {  Form, FormGroup, Input, Label, Button, Col} from 'reactstrap';
 import {validEmail, validPassword} from './rgx/regex';
+import TextFormGroup from './components/TextFormGroup';
+import { post } from './apiRequests';
 
 class SignIn extends React.Component {
 
     constructor(){
         super();
+
+        const keepConnection = localStorage.getItem("keepConnection");
 
         this.state={
             email: '',
@@ -14,12 +18,11 @@ class SignIn extends React.Component {
             mailError: false,
             passwordError: false,
             mailValid: false,
-            passwordValid: false
+            passwordValid: false,
+            keepConnection,
         }   
 
         this.handleChange = this.handleChange.bind(this);
-        this.signIn = this.signIn.bind(this);
-        
     }
 
 
@@ -27,29 +30,41 @@ class SignIn extends React.Component {
         const {name, value} = event.currentTarget;
         if(value.length > 150) return;
         
-        if(name === "email")
-            this.setState({ mailError: !validEmail.test(value)}); 
+        if(name === "email") this.setState({ mailError: !validEmail.test(value)}); 
 
-        if(name === "password") 
-            this.setState({passwordError: !validPassword.test(value)});
+        if(name === "password") this.setState({passwordError: !validPassword.test(value)});
 
         this.setState({ [name] : value });
     }
 
     signIn(){
+        const mailError= !validEmail.test(this.state.email);
+        const passwordError= !validPassword.test(this.state.password);
 
-        this.setState({
-            mailError: !validEmail.test(this.state.email), 
-            passwordError: !validPassword.test(this.state.password)
-        });
+        if(mailError || passwordError) return this.setState({mailError, passwordError});
+        
 
+        this.signInn(this.state.email, this.state.password)
+    }
 
-        if(!validPassword.test(this.state.password) || !validEmail.test(this.state.email)) return;   
+    signInn = (mail, password) => {
+        console.log({ mail, password}, this.apiUrl)
 
-        this.setState(
-            {mailError: false, passwordError: false},
-            this.props.signIn(this.state.email, this.state.password))
-    
+        post('auth/signin', { mail, password })
+        .then(res => { 
+            console.log(document.cookie)
+            localStorage.setItem('token', res.data.token);
+            localStorage.setItem('mail', mail);
+            localStorage.setItem('password', password);
+
+            this.setState({token : res.data.token, userId: res.data.userId, loggedin: true}); 
+        })
+        .catch(error => console.log(error));
+    }
+
+    handleChekbox(event){
+        const checked = event.currentTarget.checked;
+        this.setState({keepConnection: checked});
     }
 
     render() {        
@@ -97,9 +112,10 @@ class SignIn extends React.Component {
                         />
                     </Col>   
                 </FormGroup>
-                {' '}
+                <TextFormGroup type="checkbox" id="keepConnection" value={this.state.keepConnection} handleChange={this.handleChekbox.bind(this)} text="Restez connecté"/>
+                
                 <Col md="6" className='ml-auto'>
-                    <Button className=' position-absoluto r-0 text-right ml-auto text-dark bg-white' onClick={this.signIn}>
+                    <Button className=' position-absoluto r-0 text-right ml-auto text-dark bg-white' onClick={this.signIn.bind(this)}>
                         Connexion
                     </Button>                        
                 </Col>
