@@ -59,8 +59,8 @@ export default class LessonsOverview extends React.Component { // Show all lesso
             <AddButton addFunction={this.openLessonModal}>Ajouter une leçon</AddButton>
 
     
-            {this.lessons.map((lesson) => 
-                <Card style={{ width: '18rem' }}>
+            {this.lessons.map((lesson, i) => 
+                <Card key={i} style={{ width: '18rem' }}>
                     {this.props.course.flag_url &&
                         <img src={this.props.course.flag_url} />
                     }

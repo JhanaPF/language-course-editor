@@ -18,7 +18,7 @@ export default class CourseForm extends MyForm {
     submit(event){
         event.stopPropagation();
         const {formData} = this.getData();
-        super.add("courses/course", formData);
+        super.add("dictionaries/dictionary", formData);
     }
 
     render() {

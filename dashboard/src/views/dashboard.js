@@ -27,7 +27,7 @@ class Dashboard extends React.Component {
             selectedWord: undefined, 
             showNativeDefinition: false,
             showTranslatedWord: true,
-            dictionnary: null,
+            dictionary: null,
         }
         
         this.apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3001/';
@@ -36,7 +36,7 @@ class Dashboard extends React.Component {
     }
 
     componentDidMount(){
-        //this.onFetchDictionnary();
+        //this.onFetchdictionary();
     }
 
     componentDidUpdate(){
@@ -44,13 +44,13 @@ class Dashboard extends React.Component {
         if(this.state.reloadEditModal) this.setState({editModal: true, reloadEditModal: false});
     }
     
-    onFetchDictionnary(){
-        axios.get(this.apiUrl + 'dictionaries/dictionnary', {  headers: { 'Authorization': this.props.token } } )
+    onFetchdictionary(){
+        axios.get(this.apiUrl + 'dictionaries/dictionary', {  headers: { 'Authorization': this.props.token } } )
         .then(res => {
             // console.log(res.data.message)
             let setWords = [];
-            let newDictionnary =  res.data.message.slice();
-            newDictionnary.map(w => setWords.push({label: w.word, value:w._id}));
+            let newDictionary =  res.data.message.slice();
+            newDictionary.map(w => setWords.push({label: w.word, value:w._id}));
 
          
             if(this.state.selectedWordData) {
@@ -58,7 +58,7 @@ class Dashboard extends React.Component {
                 this.onFetchWord(this.state.selectedWordData._id);
             }
 
-            this.setState({dictionnary : newDictionnary, words: setWords, loading: false});
+            this.setState({dictionary : newDictionary, words: setWords, loading: false});
         })
         .catch(error => console.log(error))        
     }
@@ -66,7 +66,7 @@ class Dashboard extends React.Component {
     onFetchWord(id){
         this.setState({loading: true});
 
-        let word = this.state.dictionnary.find(w => w._id === id);
+        let word = this.state.dictionary.find(w => w._id === id);
         axios.get(
             this.apiUrl + 'word/_id/' + id,
             { headers: { 'Authorization': this.props.token } } 
@@ -92,7 +92,7 @@ class Dashboard extends React.Component {
     toggleModal = (name) =>{
         // console.log("toggleModal")
         if(this.state[name]){
-            this.onFetchDictionnary();
+            this.onFetchdictionary();
         }
         this.setState({[name]: !this.state[name]});
     }
@@ -112,10 +112,10 @@ class Dashboard extends React.Component {
         )
         .then( (res) => {
             //console.log(res)
-            this.setState({deleteModal: false, selectedWord: null, selectedWordData: null}, this.onFetchDictionnary);
+            this.setState({deleteModal: false, selectedWord: null, selectedWordData: null}, this.onFetchdictionary);
         })
         .catch(function (error) {
-            this.setState({deleteModal: false, selectedWord: null, selectedWordData: null}, this.onFetchDictionnary);
+            this.setState({deleteModal: false, selectedWord: null, selectedWordData: null}, this.onFetchdictionary);
             console.log(error);
         });
     }
@@ -154,7 +154,7 @@ class Dashboard extends React.Component {
                                       </tr>
                                     </thead>
                                     <tbody>
-                                        {this.state.dictionnary.map((wordData, i) => {
+                                        {this.state.dictionary.map((wordData, i) => {
                                             return(
                                                 <tr key={i} onClick={this.selectWord.bind(this, wordData._id)}>
                                                     <th scope="row">{wordData.word}</th>

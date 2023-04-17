@@ -1,8 +1,8 @@
 const multer = require('multer')
 var path = require('path')
 
-// ---
-//  ---  Configurations  ---
+// ===
+// ===  Configurations  ===
 
 const storage = multer.diskStorage({
     destination: function (req, file, cbk) {
@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
     }
 })
 
-const checkFileType = (req, file, type, cbk) => {
+const checkFileType = ( file, type, cbk) => {
     // Vérifie que le fichier est un MP3
     if (file.mimetype === 'audio/wav') {
         cbk(null, true);
@@ -22,8 +22,9 @@ const checkFileType = (req, file, type, cbk) => {
     }
 }  
 
-// ---
-// ---  Middlewares  ---
+// ===
+// ===  Middlewares  ===
+// === 
 
 const uploadAudio = multer({ 
     dest: 'uploads/audios/', 
@@ -37,7 +38,7 @@ const uploadPicture = multer({
     dest: 'uploads/pictures/', 
     storage,   
     fileFilter: (req, file, cbk) => {
-        checkFileType(req, file, 'image/*', cbk);
+        checkFileType(file, 'image/*', cbk);
     }   
 })
 

@@ -1,7 +1,7 @@
 # Project forked from Dictionnaire_Participatif
 A study project I build, I wanted to improve it, in english and make the doc easier for the world
 
-# Collaborative Dictionnary
+# Collaborative dictionary
 
 First install Nodejs, npm and Mongo
 

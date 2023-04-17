@@ -129,7 +129,7 @@ class CoursesOverview extends React.Component { // Show all courses
     addCourse(){
         const data = {
             language: this.state.language,
-            raw_name: this.state.rawName, // spanish_from_french for example to link with the dictionnary word collection
+            raw_name: this.state.rawName, // spanish_from_french for example to link with the dictionary word collection
             pivot_language: this.state.pivotLanguage,
             flagFile: this.state.flagFile, 
         }
@@ -143,7 +143,7 @@ class CoursesOverview extends React.Component { // Show all courses
         return(<>
             <Row className='w-100'>
                 <Col>
-                    <h3 className='text-right mt-4'>Liste des cours disponibles</h3>
+                    <h3 className='text-right my-auto'>Liste des cours disponibles:</h3>
                 </Col>
                 <Col className='text-left m-auto'>
                     <AddButton addFunction={this.openCourseModal.bind(this)}>Ajouter un cours</AddButton>
