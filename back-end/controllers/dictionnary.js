@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const {dictionnary} = require('../schemas/schemas.js') 
 const {isIdValid} = require('../utils/utils')
+const log = console.log
 
 router.fetch = (req, res) => {   
     dictionnary.find({}, function(err, dictionnaries){
@@ -19,11 +20,11 @@ router.add = (req, res) => {
 
     newDictionnary.save() 
     .then(() => {
-        console.log('dictionnary saved ', dictionnary)
+        log('dictionnary saved ', dictionnary)
         res.status(201).json({})
     })
     .catch(error => {
-        console.log(error)
+        log(error)
         res.status(400)
     })
 } 
@@ -35,11 +36,11 @@ router.upd =  (req, res) => {
 
     dictionnary.updateOne({_id: _id}, req.body.dictionnary) 
     .then(() => {
-        console.log(_id + ' updated')
+        log(_id + ' updated')
         res.status(201)
     })
     .catch(error => {
-        console.log(error)
+        log(error)
         res.status(400)
     })
 } 
@@ -51,11 +52,11 @@ router.del = (req, res) => {
     
     dictionnary.deleteOne({_id: req.body._id}) 
     .then(() => {
-        console.log('dictionnary ' + req.body._id + ' deleted')
+        log('dictionnary ' + req.body._id + ' deleted')
         res.status(201)
     })
     .catch(error => {
-        console.log(error)
+        log(error)
         res.status(400)
     })
 } 
