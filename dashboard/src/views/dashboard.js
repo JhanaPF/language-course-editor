@@ -7,11 +7,11 @@ import {
 } from 'reactstrap';
 import axios from 'axios';
 import Select from 'react-select';
-import WordModal from './modals/WordModal';
-import Classes from './enum/classes';
+import WordModal from '../modals/WordModal';
+import Classes from '../enum/classes';
 // import Categories from './enum/categories';
-import Sources from './enum/sources';
-import CoursesOverview from './views/CoursesOverview';
+import Sources from '../enum/sources';
+import CoursesOverview from './CoursesOverview';
 
 class Dashboard extends React.Component {
 

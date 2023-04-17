@@ -155,8 +155,8 @@ class CoursesOverview extends React.Component { // Show all courses
             }
 
             <Row className='mt-3 mx-5 w-100 justify-content-center'>
-                {courses && courses.map((course) => 
-                    <Card style={{ width: '18rem' }}>
+                {courses && courses.map((course, index) => 
+                    <Card key={index} style={{ width: '18rem' }}>
                         <img alt="Sample" src={course.flag_url} />
                         <CardBody>
                             <CardTitle tag="h5">

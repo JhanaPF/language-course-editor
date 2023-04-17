@@ -3,8 +3,8 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-import Dashboard from './dashboard';
-import SignIn from './signIn';
+import Dashboard from './views/dashboard';
+import SignIn from './views/signIn';
 import { post } from './apiRequests';
 
 class App extends React.Component {
@@ -13,22 +13,24 @@ class App extends React.Component {
         super();
         this.state={
             uId: '',
-            //loggedin: process.env.NODE_ENV,
-            loggedin: false
+            loggedin: false,
+            loading: true,
         }
     }
 
     componentDidMount(){ // Starting application    
+        const isIdSaved = localStorage.getItem("keepConnection");
+
         post('auth/token', {},
             (res) => {
-                if(res.status === 200) this.setState({loggedin: true}) 
+                this.setState({loggedin: true, loading: false}) 
             },
             () => {
-                console.log("connect again")
-                const mail = localStorage.getItem("mail");
-                const password = localStorage.getItem("password");
-                console.log(mail, password)
-                this.signIn(mail, password);
+                if(isIdSaved){
+                    const mail = localStorage.getItem("mail");
+                    const password = localStorage.getItem("password");
+                    this.signIn(mail, password);
+                }
             }
         )
     }
@@ -38,16 +40,15 @@ class App extends React.Component {
             'auth/signin', 
             { mail, password },
             (res)=>{
-                console.log("hello")
-                if(res.status === 200){
-                    localStorage.setItem('userId', res.data.userId)
-                    this.setState({loggedin: true});
-                }
+                localStorage.setItem('userId', res.data.userId)
+                this.setState({loggedin: true, loading: false});
             }
         );
     }
 
     render() {        
+        if(this.state.loading) return null;
+
         return (
             <div className="App">
                 {this.state.loggedin && <Dashboard userId={this.state.userId} />}

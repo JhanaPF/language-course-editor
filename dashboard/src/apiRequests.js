@@ -1,13 +1,13 @@
 import axios from 'axios';
-//axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = true;
 
 const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:3001/";
 const token = localStorage.getItem('token');
 const log = console.log;
 
 function axiosRequest(url, options, successCbk, errorCbk) { 
-    log(options)
-    return axios({ url:apiUrl + url, headers: { withCredentials: true},  ...options})
+    //log(options)
+    return axios({ url:apiUrl + url, headers: {'Authorization': token},  ...options})
         .then(res => {
             log("Request success: ", res);
             if(successCbk) successCbk(res);
@@ -19,19 +19,7 @@ function axiosRequest(url, options, successCbk, errorCbk) {
 }
 
 export function verifyToken (successCbk, errorCbk) { // Potentially token stored locally is no longer valid
-    axios.post(apiUrl + 'auth/token', { token })
-    .then(res => {
-        log("Token still valid")
-        if(res.data.token)
-            localStorage.setItem('token', res.data.token);
-        if(successCbk)
-            successCbk();
-    })
-    .catch(error => {
-        log("Token no longer valid, reconnect");
-        log(error);
-        if(errorCbk) errorCbk();
-    });
+    axiosRequest('auth/token', {method: 'POST'}, successCbk, errorCbk);
 }
 
 export function post(url, data, successCbk, errorCbk, noty=false){
@@ -39,32 +27,19 @@ export function post(url, data, successCbk, errorCbk, noty=false){
 }
 
 export function get(url, data, successCbk, errorCbk, noty=false){
-    axios.get(apiUrl + url, {  headers: { 'Authorization': token } } )
-    .then(res => {
-        log(res);
-        if(successCbk) successCbk(res);
-    })
-    .catch(err => {
-        log(err);
-        if(errorCbk) errorCbk();
-    });
+    axiosRequest(url, {method: 'GET', data}, successCbk, errorCbk);
 }
 
 export function put(url, data, successCbk, errorCbk, noty=false){
+    const config = {
+        method: 'PUT',
+        headers: { 
+            'Accept' : 'application/json',
+            //'Content-Type': 'multipart/form-data'
+        },
+        data: data,
+        credentials: "include"
+    };
 
-    axiosRequest(
-        url, 
-        {
-            method: 'PUT',
-            headers: { 
-             //   'Authorization': token,
-                'Accept' : 'application/json',
-                'withCredentials': true
-                //'Content-Type': 'multipart/form-data'
-            },
-            data: data
-        }, 
-        successCbk, 
-        errorCbk
-    );
+    axiosRequest(url, config, successCbk, errorCbk);
 }

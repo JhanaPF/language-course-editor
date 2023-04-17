@@ -2,14 +2,13 @@ const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const validator =  require('validator')
 const { userValidation } = require('../validators/validators.js')
 require('dotenv').config()
 const {user} = require('../schemas/schemas.js')
 const cookie = require('cookie')
 
 router.token = (req, res) => { // Just check if token is valid
-    console.log("Check token", req.cookies)
+    console.log("Check token", req.cookies, req.signedCookies)
 
     return res.status(401).json()
 }
@@ -49,19 +48,20 @@ router.signup = (req, res) => {
 }
 
 router.signin = (req, res) => {
-    const mail = req.body.mail
+    const {mail, password} = req.body
+    if(!mail || !password) return res.status(401).json()
     console.log("User connection attempt " + mail)
     
     // const token = req.cookies ? req.cookies.my_cookie.token : null //  Let's check the token from cookieparser
 
-    user.findOne({ mail: mail })
+    user.findOne({ mail })
     .then(userFound => {
         if (!userFound) {
-            console.log("Utilisateur non trouvé")
-            return res.status(401)
+            console.log("User not found")
+            return res.status(401).json()
         }
         
-        bcrypt.compare(req.body.password, userFound.password)
+        bcrypt.compare(password, userFound.password)
         .then(valid => {
             if (!valid) {
                 console.log("Connexion attempt with invalid password")
@@ -69,32 +69,22 @@ router.signin = (req, res) => {
             }
 
             const token = jwt.sign(
-                {userId: userFound._id, isAdmin: userFound.role === "admin"},
+                {userId: userFound._id, mail, role: userFound.role},
                 process.env.SECRET ? process.env.SECRET : "RANDOM_TOKEN_SECRET",
-                {expiresIn: "36h"}
+                {expiresIn: "8760h"} // A year
             )
 
-            const my_cookie = {
-                token,
-                mail: req.body.mail,
-                password: req.body.password
-            }
-            
-            const my_cookieJson = JSON.stringify(my_cookie)
+            const my_cookieJson = JSON.stringify(token)
 
             const cookieOptions = {
-                httpOnly: true, // So the client can see the cookie but js code cant access it
-                maxAge: 60 * 60 * 24 * 7, // 1 week
-                secure: true,
+                httpOnly: true, // So the client code cant access it
+                secure: process.env.NODE_ENV === 'production', // Cookie not send if connection is not https
             } 
 
             const cookieValue = cookie.serialize('token', my_cookieJson, cookieOptions);
-
-            res.setHeader('Set-Cookie', cookieValue);
-            res.status(200).json({
-                userId: userFound._id,
-                //token
-            })
+            
+            res.cookie('credentials', cookieValue, { signed: true, sameSite: 'strict' });
+            res.status(200).json({userId: userFound._id,})
         })
         .catch(error => {
             console.log(error)

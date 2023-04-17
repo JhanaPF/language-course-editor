@@ -1,9 +1,9 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import {  Form, FormGroup, Input, Label, Button, Col} from 'reactstrap';
-import {validEmail, validPassword} from './rgx/regex';
-import TextFormGroup from './components/TextFormGroup';
-import { post } from './apiRequests';
+import {validEmail, validPassword} from '../rgx/regex';
+import TextFormGroup from '../components/TextFormGroup';
+import { post } from '../apiRequests';
 
 /**
  * @param props: signIn()
@@ -49,9 +49,9 @@ class SignIn extends React.Component {
         if(this.state.keepConnection){        
             localStorage.setItem('mail', this.state.email);
             localStorage.setItem('password', this.state.password);
-            localStorage.setItem('keepConnection', this.state.keepConnection);
-        }
-
+        }  
+        
+        localStorage.setItem('keepConnection', this.state.keepConnection);
         this.props.signIn(this.state.email, this.state.password);
     }
 
@@ -105,6 +105,7 @@ class SignIn extends React.Component {
                         />
                     </Col>   
                 </FormGroup>
+
                 <TextFormGroup type="checkbox" id="keepConnection" value={this.state.keepConnection} handleChange={this.handleChekbox.bind(this)} text="Restez connecté"/>
                 
                 <Col md="6" className='ml-auto'>

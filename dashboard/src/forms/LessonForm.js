@@ -21,7 +21,7 @@ export default class LessonForm extends MyForm {
     
     submit(event){
         event.stopPropagation();
-        console.log(event)
+        //console.log(event)
         super.add("lesson");
     }
 
