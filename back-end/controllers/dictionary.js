@@ -10,14 +10,16 @@ router.fetch = (req, res) => {
 }
 
 router.add = (req, res) => {   
-    console.log(11)
-    console.log(req.body)
-    const data = req.body.dictionary
+    console.log("body", req.body.formData)
+    const data = req.body
     if(!data) return res.status(400).json()
     
-    const newdictionary = new dictionary({...data})
+    console.log(data.formData.raw_name)
+ 
 
-    newdictionary.save() 
+    const newDictionary = new dictionary({...data.formData})
+    console.log("newDictionary",newDictionary)
+    newDictionary.save() 
     .then(() => {
         log('dictionary saved ', dictionary)
         res.status(201).json({})

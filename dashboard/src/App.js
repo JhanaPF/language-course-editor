@@ -20,10 +20,15 @@ class App extends React.Component {
 
     componentDidMount(){ // Starting application    
         const isIdSaved = localStorage.getItem("keepConnection");
+        const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+
+        if(isLoggedIn){
+            this.setState({loggedin: true, loading: false});
+        }
 
         post('auth/token', {},
-            (res) => {
-                this.setState({loggedin: true, loading: false}) 
+            () => {
+                this.unlockApp(); // Token still valid
             },
             () => {
                 if(isIdSaved){
@@ -32,7 +37,7 @@ class App extends React.Component {
                     this.signIn(mail, password);
                 }
             }
-        )
+        );
     }
 
     signIn = (mail, password) => {
@@ -41,9 +46,14 @@ class App extends React.Component {
             { mail, password },
             (res)=>{
                 localStorage.setItem('userId', res.data.userId)
-                this.setState({loggedin: true, loading: false});
+                this.unlockApp();
             }
         );
+    }
+
+    unlockApp(){
+        this.setState({loggedin: true, loading: false});
+        sessionStorage.setItem('isLoggedIn', true);
     }
 
     render() {        
@@ -51,8 +61,8 @@ class App extends React.Component {
 
         return (
             <div className="App">
-                {this.state.loggedin && <Dashboard userId={this.state.userId} />}
-                {!this.state.loggedin && <SignIn signIn={this.signIn.bind(this)}/> }
+                {this.state.loggedin && <Dashboard userId={this.state.userId}/>}
+                {!this.state.loggedin && <SignIn signIn={this.signIn.bind(this)}/>}
             </div>
         );
     }

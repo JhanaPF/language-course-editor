@@ -9,7 +9,7 @@ export default function PictureInputGroup (props) {
                 {props.text}
             </Label>
             <Col>
-                <Input id={props.name} name={props.name} type="file" onChange={props.handleChange}/>
+                <Input type="file" id={props.name} name={props.name} onChange={(event)=>props.onChange(event)}/>
                 <FormText>{props.description}</FormText>
             </Col>
         </FormGroup>

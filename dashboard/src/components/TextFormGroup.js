@@ -4,7 +4,12 @@ import MyFormGroup from "./MyFormGroup";
 
 /**
  * 
- * @param {*} props id, value, handleChange, text
+ * @param {ObjectId} id 
+ * @param {*} value 
+ * @param {Function} handleChange 
+ * @param {string} text 
+ * @param {boolean} required 
+
  * @returns Formfroup with label and input
  */
 export default function TextFormGroup (props) {
@@ -16,7 +21,8 @@ export default function TextFormGroup (props) {
                 name={props.id}
                 value={props.value}
                 onChange={props.handleChange} 
-                maxLength={100}/>
+                maxLength={100}
+                required={props.required}/>
         </MyFormGroup>
     )
 }

@@ -8,10 +8,8 @@ const {user} = require('../schemas/schemas.js')
 const cookie = require('cookie')
 const log = console.log
 
-router.token = (req, res) => { // Just check if token is valid
-    log("Check token", req.cookies, req.signedCookies)
-
-    return res.status(401).json()
+router.token = (req, res) => { // Token is valid
+    return res.status(200).json()
 }
 
 router.signup = (req, res) => {

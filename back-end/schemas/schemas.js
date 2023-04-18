@@ -5,19 +5,19 @@ const entities_schemas = require('./entities_schemas')
 
 const uniqueRequiredString = entities_schemas.uniqueRequiredString
 
-const dictionnarySchema = mongoose.Schema({ // Carry informations about available dictionnaries and courses created to link both of them
+const dictionarySchema = mongoose.Schema({ // Carry informations about available dictionnaries and courses created to link both of them
     language: uniqueRequiredString,
-    raw_name: uniqueRequiredString, // spanish_from_french for example to link with the dictionnary word collection
+    raw_name: uniqueRequiredString, // spanish_from_french for example to link with the dictionary word collection
     pivot_language: uniqueRequiredString,
     flag_url: entities_schemas.fileUrl, 
     released: {type: Boolean, default: false},
 })
 
-const dictionnary = mongoose.model('Dictionnary', dictionnarySchema) 
+const dictionary = mongoose.model('dictionary', dictionarySchema) 
 
 // --- Level creator schemas ---
 const lessonSchema = mongoose.Schema({
-    dictionnary_id: entities_schemas.mongoId,
+    dictionary_id: entities_schemas.mongoId,
     name: String,
     description: String,
     picture: entities_schemas.fileUrl,
@@ -26,7 +26,7 @@ const lesson = mongoose.model('Lesson', lessonSchema)
 
 const questionSchema = mongoose.Schema({
     lesson_id: entities_schemas.mongoId,
-    dictionnary_id: entities_schemas.mongoId,// ex spanish_from_french
+    dictionary_id: entities_schemas.mongoId,// ex spanish_from_french
     course_id: entities_schemas.uniqueMongoId, // Relation to dictionaries
     question_index: {type: Number, min: 0, max: 100},
     picture: entities_schemas.fileUrl,
@@ -41,7 +41,7 @@ const questionSchema = mongoose.Schema({
 const question = mongoose.model('Question', questionSchema) 
 // ------------
 
-// Dictionnary Schemas: word and additional data
+// dictionary Schemas: word and additional data
 const wordSchema = mongoose.Schema({
     word : {type: String, required: true, unique: true}, 
     class : {type: Number}, // noun, verb, adjective, etc
@@ -79,23 +79,23 @@ const userSchema = mongoose.Schema({ // User schema for dahsboard's users
 // Add unique validator plugin to all schemas
 userSchema.plugin(uniqueValidator)
 wordSchema.plugin(uniqueValidator)
-dictionnarySchema.plugin(uniqueValidator)
+dictionarySchema.plugin(uniqueValidator)
 questionSchema.plugin(uniqueValidator)
 lessonSchema.plugin(uniqueValidator)
-dictionnarySchema.plugin(uniqueValidator)
+dictionarySchema.plugin(uniqueValidator)
 // ---
 
-// Define list of dialects with this syntax "languageToLearn_from_pivotTongue" to generate all the models and collections for each dictionnary
+// Define list of dialects with this syntax "languageToLearn_from_pivotTongue" to generate all the models and collections for each dictionary
 const languages = process.env.DICTIONARIES.split(", ")
-let dictionnaryModels = {} // ex language_from_pivotlanguage and language_from_pivotlanguage_additional
+let dictionaryModels = {} // ex language_from_pivotlanguage and language_from_pivotlanguage_additional
 for (const language of languages) { // Dynamic generation of Mongo models
-    dictionnaryModels[language] = mongoose.model(language, wordSchema, language) // 3rd parameter define name of collection
+    dictionaryModels[language] = mongoose.model(language, wordSchema, language) // 3rd parameter define name of collection
     
     const languageSentences = language + "_additional"
     collectionName = languageSentences.charAt(0).toUpperCase() + languageSentences.slice(1) 
-    dictionnaryModels[languageSentences] = mongoose.model(languageSentences, additionalDataSchema)
+    dictionaryModels[languageSentences] = mongoose.model(languageSentences, additionalDataSchema)
 }
 
 const user = mongoose.model('User', userSchema) 
 
-module.exports = {...dictionnaryModels, user, wordSchema, additionalDataSchema, question, lesson, dictionnary}
+module.exports = {...dictionaryModels, user, wordSchema, additionalDataSchema, question, lesson, dictionary}

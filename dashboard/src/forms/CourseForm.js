@@ -8,30 +8,34 @@ export default class CourseForm extends MyForm {
     
     constructor(props){
         super(props, "other props");
-        this.inputNames = ["language", "pivotLanguage", "flagFile", "rawName"];
+        this.inputNames = ["language", "pivot_language", "file", "raw_name"];
+        this.handleChange = this.handleChange.bind(this);
     }
 
-    componentDidMount(){
-        super.initState(this.inputNames);
-    }
+    componentDidMount(){ super.initState(this.inputNames); }
+
+    handleChange (e) { super.handleChange(e); }
 
     submit(event){
-        event.stopPropagation();
-        const {formData} = this.getData();
+        console.log(event)
+        //event.stopPropagation();
+        const {formData, data} = this.getData();
+        console.log("submitting form", data);      
         super.add("dictionaries/dictionary", formData);
     }
 
     render() {
         return (
             <FormWrapper submit={this.submit.bind(this)}>
-                <TextFormGroup text="Langage à apprendre" id="language" value={this.state.language} handleChange={this.handleChange} />
-                <TextFormGroup text="Langue pivot" id="pivotLanguage" value={this.state.pivotLanguage} handleChange={this.handleChange} />
-                <PictureInputGroup text="Drapeau" description="Ajouter un drapeau" name="flagFile" onChange={this.handleChange}/>
+                <TextFormGroup text="Langage à apprendre" id="language" value={this.state.language} handleChange={this.handleChange} required/>
+                <TextFormGroup text="Langue pivot" id="pivot_language" value={this.state.pivot_language} handleChange={this.handleChange} required/>
+                <PictureInputGroup text="Drapeau" description="Ajouter un drapeau" name="file" onChange={this.handleChange}/>
                 <TextFormGroup 
-                    text="Nom du dictionnaire en brut (en anglais: language_from_pivotlanguage)" 
-                    id="rawName" 
-                    value={this.state.rawName} 
-                    handleChange={this.handleChange} />
+                    text="Nom du dictionnaire en anglais au format suivant: language_from_pivotlanguage)" 
+                    id="raw_name" 
+                    value={this.state.raw_name} 
+                    handleChange={this.handleChange}
+                    required />
             </FormWrapper>
         )
     }

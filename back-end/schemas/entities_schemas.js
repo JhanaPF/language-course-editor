@@ -21,7 +21,7 @@ const fileSchema = mongoose.Schema({
 const courseSchema = mongoose.Schema({ 
     description: {type: String},
     name: {type: String, required: true, unique: true},
-    dictionnary_id: {type: mongoose.Schema.ObjectId, unique: true}, // Relation to dictionaries
+    dictionary_id: {type: mongoose.Schema.ObjectId, unique: true}, // Relation to dictionaries
     // Les drapeaux sont stockés dans la collection dictionnaire 
 })
 

@@ -10,7 +10,7 @@ export default class LessonForm extends MyForm {
         super(props);
 
         this.inputNames = ["name", "description", "picture"];        
-        this.state = {dictionnary_id: this.props.dictionnary_id};
+        this.state = {dictionary_id: this.props.dictionary_id};
 
       //  this.handleChange = this.handleChange.bind(this);
     }

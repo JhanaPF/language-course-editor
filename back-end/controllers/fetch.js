@@ -25,7 +25,7 @@ router.fetchOneWord =  (req, res) => {
     .catch(error => res.status(400).json({ error }))
 } 
 
-router.fetchOneDictionnary =  (req, res) => {    
+router.fetchOneDictionary =  (req, res) => {    
 
     spanish_from_french.find()
     .then(dic => res.status(200).json({message: dic}))

@@ -1,6 +1,5 @@
 import React from "react";
 import {fetch, put, post, del} from '../apiRequests';
-import { Form, Button } from "reactstrap";
 const log = console.log;
 
 export default class MyForm extends React.Component{
@@ -29,9 +28,11 @@ export default class MyForm extends React.Component{
         //console.log('handle change', name, value)
 
         const files = event.target.files;
+       // console.log(files)
         if(files && files[0]) { // Input is a file input, make it more readable
             //console.log(event.target)
-            return  this.setState({ [name] : event.target.files[0] });
+            console.log("add file")
+            return this.setState({ [name] : event.target.files[0] });
         }
 
         this.setState({ [name] : value });
@@ -50,20 +51,21 @@ export default class MyForm extends React.Component{
             const key = this.inputNames[i];
             const stateField = this.state[key];
             data[key] = stateField ? stateField : undefined;
-            //formData.append(key, this.state[key])
-            log(key, stateField)
+            formData.append(key, this.state[key])
+            //log(key, stateField)
         }
 
-        //console.log(data, {formData});        
+        // console.log(data, {formData});        
         return {data, formData};
-    } 
+    }   
     
     update(url){
         const data = this.getData();
         post(url, data);
     }
 
-    add (url, data, next){  
+    add (url){  
+        const data = this.getData();
         put(url, data);        
     }
 
@@ -71,9 +73,4 @@ export default class MyForm extends React.Component{
         event.stopPropagation();
         console.log('form:', event)
     }
-
-    formValidation(form){
-
-    }
-
 }

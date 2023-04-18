@@ -2,12 +2,11 @@ import axios from 'axios';
 axios.defaults.withCredentials = true;
 
 const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:3001/";
-const token = localStorage.getItem('token');
 const log = console.log;
 
 function axiosRequest(url, options, successCbk, errorCbk) { 
     //log(options)
-    return axios({ url:apiUrl + url, headers: {'Authorization': token},  ...options})
+    return axios({ url:apiUrl + url, headers: {'Accept' : 'application/json'},  ...options})
         .then(res => {
             log("Request success: ", res);
             if(successCbk) successCbk(res);
@@ -33,13 +32,8 @@ export function get(url, data, successCbk, errorCbk, noty=false){
 export function put(url, data, successCbk, errorCbk, noty=false){
     const config = {
         method: 'PUT',
-        headers: { 
-            'Accept' : 'application/json',
-            //'Content-Type': 'multipart/form-data'
-        },
-        data: data,
-        credentials: "include"
+        headers: { 'Content-Type': 'multipart/form-data'},
+        data,
     };
-
     axiosRequest(url, config, successCbk, errorCbk);
 }
