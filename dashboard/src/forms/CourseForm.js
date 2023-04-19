@@ -17,11 +17,8 @@ export default class CourseForm extends MyForm {
     handleChange (e) { super.handleChange(e); }
 
     submit(event){
-        console.log(event)
         //event.stopPropagation();
-        const {formData, data} = this.getData();
-        console.log("submitting form", data);      
-        super.add("dictionaries/dictionary", formData);
+        super.add("dictionaries/dictionary");
     }
 
     render() {

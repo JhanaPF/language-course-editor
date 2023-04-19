@@ -50,14 +50,14 @@ export default class MyForm extends React.Component{
         for (let i = 0; i < this.inputNames.length; i++) {
             const key = this.inputNames[i];
             const stateField = this.state[key];
-            data[key] = stateField ? stateField : undefined;
+             data[key] = stateField ? stateField : undefined;
             formData.append(key, this.state[key])
             //log(key, stateField)
         }
 
         // console.log(data, {formData});        
         return {data, formData};
-    }   
+    }
     
     update(url){
         const data = this.getData();
@@ -65,8 +65,9 @@ export default class MyForm extends React.Component{
     }
 
     add (url){  
-        const data = this.getData();
-        put(url, data);        
+        const {formData} = this.getData();
+        console.log("submitting form", formData);      
+        put(url, formData);        
     }
 
     handleSubmit (event) {

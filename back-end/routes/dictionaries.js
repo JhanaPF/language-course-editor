@@ -17,7 +17,7 @@ router.post('/word', isAdmin, wordValidator, wordCtrl.updateWord)
 router.delete('/word', isAdmin, wordCtrl.deleteWord)
 
 const dicoUrl = '/dictionary'
-router.put(dicoUrl, isAdmin, uploadPicture.single('file'), dicoCtrl.add)
+router.put(dicoUrl, isAdmin, dicoCtrl.add)
 router.post(dicoUrl, isAdmin, uploadPicture.single('flag'), dicoCtrl.upd)
 router.delete(dicoUrl, isAdmin, dicoCtrl.del)
 

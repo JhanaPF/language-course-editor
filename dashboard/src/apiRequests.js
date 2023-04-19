@@ -30,10 +30,5 @@ export function get(url, data, successCbk, errorCbk, noty=false){
 }
 
 export function put(url, data, successCbk, errorCbk, noty=false){
-    const config = {
-        method: 'PUT',
-        headers: { 'Content-Type': 'multipart/form-data'},
-        data,
-    };
-    axiosRequest(url, config, successCbk, errorCbk);
+    axiosRequest(url, {method: 'PUT', data: data, headers: { 'Content-Type': 'multipart/form-data'},}, successCbk, errorCbk);
 }

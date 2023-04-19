@@ -6,6 +6,8 @@ const express = require('express')
 const app = express()
 require('dotenv').config()
 const cors = require('cors')
+const cookieParser = require('cookie-parser')
+const isProduction = process.env.NODE_ENV === 'production' 
 //Sec middlewares
 const rateLimit = require('express-rate-limit')
 const mongoSanitize = require('express-mongo-sanitize')
@@ -17,12 +19,6 @@ const isAuth = require('./middleware/isAuth')
 const userRoutes = require('./routes/user')
 const dicRoutes = require('./routes/dictionaries')
 const coursesRoutes = require('./routes/courses')
-
-const cookieParser = require('cookie-parser')
-//const bodyParser = require('body-parser');
-
-const isProduction = process.env.NODE_ENV === 'production' 
-
 
 app.use((req, res, next) => { 
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization')
@@ -44,8 +40,7 @@ app.use(helmet())
 //  --------------------------
 
 app.use(express.json()) // Put body in req object for all request with Content-Type: application/json
-//app.use(bodyParser.urlencoded({ extended: true }))
-//app.use(bodyParser.json({ type: 'multipart/form-data', limit: '50mb' }))
+app.use(express.urlencoded({ extended: true }))
 
 // Auth middlewares
 const cookieKey = process.env.SECRET_COOKIE
@@ -53,14 +48,14 @@ app.use(cookieParser(cookieKey ? cookieKey : "RANDOM_SECRET_COOKIE_KEY")) // Put
 app.use('/auth', userRoutes)
 
 app.use(isAuth) // Check user authentification
-app.use((req, res, next) => { 
-    console.log(req.url, req.body)
-    next()
-})
+
+//app.use((req, res, next) => { 
+//    console.log(req.url, req.body)
+//    next()
+//})
+
 app.use(isAdmin) // Next routes are restricted for admins
 app.use('/dictionaries', dicRoutes)
-
-
 app.use('/courses', coursesRoutes)
 
 module.exports = app // For testing

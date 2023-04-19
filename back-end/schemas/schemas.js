@@ -2,15 +2,14 @@ const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
 require('dotenv').config()
 const entities_schemas = require('./entities_schemas')
-
 const uniqueRequiredString = entities_schemas.uniqueRequiredString
 
 const dictionarySchema = mongoose.Schema({ // Carry informations about available dictionnaries and courses created to link both of them
-    language: uniqueRequiredString,
+    language: String,
     raw_name: uniqueRequiredString, // spanish_from_french for example to link with the dictionary word collection
-    pivot_language: uniqueRequiredString,
-    flag_url: entities_schemas.fileUrl, 
-    released: {type: Boolean, default: false},
+    pivot_language: String,
+    file_name: entities_schemas.fileUrl, 
+    released: {type: Boolean, default: false}, // Is the dictionary accessible for public
 })
 
 const dictionary = mongoose.model('dictionary', dictionarySchema) 
