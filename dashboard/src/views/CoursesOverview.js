@@ -6,43 +6,15 @@ import ReturnButton from '../components/ReturnButton';
 import QuestionsOverview from './QuestionsOverview';
 import CourseModal from '../modals/CourseModal';
 import { get } from '../apiRequests';
+import { capitalizeFirstLetter } from '../utils/stringUtils';
 
 class CoursesOverview extends React.Component { // Show all courses
 
     constructor(props){
         super(props);
 
-        const frenchFlagUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Flag_of_France.svg/langfr-225px-Flag_of_France.svg.png";
-        const spanishFlag = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Bandera_de_Espa%C3%B1a.svg/1200px-Bandera_de_Espa%C3%B1a.svg.png";
-        const englishFlag = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_the_United_Kingdom_%283-5%29.svg/1200px-Flag_of_the_United_Kingdom_%283-5%29.svg.png";
-        const italianFlag = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Flag_of_Italy_%282003%E2%80%932006%29.svg/220px-Flag_of_Italy_%282003%E2%80%932006%29.svg.png";
-       
         this.apiUrl = localStorage.getItem("apiUrl");
        
-        this.courses = [
-            {
-                _id:1,
-                language: "Espagnol",
-                pivot_tongue: "le français",
-                released: true,
-                flag_url: spanishFlag
-            },
-            {
-                _id:2,
-                language: "Français",
-                pivot_tongue: "le français",
-                released: false,
-                flag_url: frenchFlagUrl,
-            },
-            {
-                _id:3,
-                language: "Italien",
-                pivot_tongue: "le français",
-                released: false,
-                flag_url: italianFlag,
-            },
-        ]
-
         this.state = {
             course: undefined,
             loading: true,
@@ -92,9 +64,10 @@ class CoursesOverview extends React.Component { // Show all courses
         if(this.state.course !== undefined) courses = this.courses.filter(course => course._id === this.state.course);
 
         return(<>
-            <Row className='w-100'>
-                <Col>
-                    <h3 className='text-right my-auto'>Liste des cours disponibles:</h3>
+            <Row className='w-100 mt-5'>
+                <Col></Col>
+                <Col >
+                    <h3 className='my-auto'>Liste des cours disponibles:</h3>
                 </Col>
                 <Col className='text-left m-auto'>
                     <AddButton addFunction={this.toggleCourseModal.bind(this)}>Ajouter un cours</AddButton>
@@ -111,7 +84,7 @@ class CoursesOverview extends React.Component { // Show all courses
                         <img src={`${this.apiUrl}pictures/courses/${course.file_name}`}/>
                         <CardBody>
                             <CardTitle tag="h5">
-                                {course.language}
+                                {capitalizeFirstLetter(course.language)}
                             </CardTitle>
                             <CardSubtitle className="mb-2 text-muted" tag="h6" >
                                 Depuis {course.pivot_language}
