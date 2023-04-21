@@ -12,7 +12,7 @@ const mongoose = require('mongoose')
 const isProduction = process.env.NODE_ENV === 'production' 
 if(!isProduction) process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0 // Delete Tls encryption, security failure for devlopment
 
-mongoose.connect( isProduction ? process.env.DATABASE : 'mongodb://localhost:27017/dictionnaries', { useNewUrlParser: true,  useUnifiedTopology: true })
+mongoose.connect( isProduction ? process.env.DATABASE : 'mongodb://localhost:27017/dictionaries', { useNewUrlParser: true,  useUnifiedTopology: true })
 .then(() => console.log('Connected to Mongo !'))
 .catch(() => {
     console.log('Failed to connect to Mongo database')

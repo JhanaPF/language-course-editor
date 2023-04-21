@@ -1,9 +1,9 @@
 import React from 'react';
-import {Form, FormText, FormGroup, Input, Label, Button, Row, Col} from 'reactstrap';
 import MyForm from '../common/MyForm';
 import FormWrapper from '../components/FormWrapper';
 import TextFormGroup from '../components/TextFormGroup';
 import PictureInputGroup from '../components/PictureInputGroup';
+
 export default class LessonForm extends MyForm {
 
     constructor(props){
@@ -12,7 +12,7 @@ export default class LessonForm extends MyForm {
         this.inputNames = ["name", "description", "picture"];        
         this.state = {dictionary_id: this.props.dictionary_id};
 
-      //  this.handleChange = this.handleChange.bind(this);
+        // this.handleChange = this.handleChange.bind(this);
     }
 
     componentDidMount(){
@@ -25,7 +25,7 @@ export default class LessonForm extends MyForm {
         super.add("lesson");
     }
 
-    render() {
+    render(){
         return (
             <FormWrapper submit={this.submit.bind(this)}>
                 <TextFormGroup text="Initulé du cours" id="name" value={this.state.name} handleChange={this.handleChange}/>
@@ -34,5 +34,4 @@ export default class LessonForm extends MyForm {
             </FormWrapper>
         );
     }
-
 }

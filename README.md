@@ -11,7 +11,7 @@ Start Mongo on your machine
 
 Add a .env file at root of back-end folder
 In this file add a few variables:
-DICTIONNARIES="learninglanguage_from_pivottongue, secondlearninglanguage_from_another" # Add your dictionnaries exactly like this
+DICTIONARIES="learninglanguage_from_pivottongue, secondlearninglanguage_from_another" # Add your dictionaries exactly like this
 NODE_ENV= "production" or "development"
 SECRET= 32 characters secret key for jwt signature
 PORT

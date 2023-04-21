@@ -1,12 +1,11 @@
 import React from 'react';
-import {Card, CardBody, CardSubtitle, CardTitle, CardText, Input, Label, Button, Row, Col, Form, FormGroup, FormText, ModalBody, ButtonGroup, Modal} from 'reactstrap';
-import axios from 'axios';
-import Select from 'react-select';
+import {Card, CardBody, CardSubtitle, CardTitle, Button, Row, Col} from 'reactstrap';
 import LessonsOverview from './LessonsOverview';
 import AddButton from '../components/AddButton';
 import ReturnButton from '../components/ReturnButton';
 import QuestionsOverview from './QuestionsOverview';
 import CourseModal from '../modals/CourseModal';
+import { get } from '../apiRequests';
 
 class CoursesOverview extends React.Component { // Show all courses
 
@@ -17,6 +16,9 @@ class CoursesOverview extends React.Component { // Show all courses
         const spanishFlag = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Bandera_de_Espa%C3%B1a.svg/1200px-Bandera_de_Espa%C3%B1a.svg.png";
         const englishFlag = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_the_United_Kingdom_%283-5%29.svg/1200px-Flag_of_the_United_Kingdom_%283-5%29.svg.png";
         const italianFlag = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Flag_of_Italy_%282003%E2%80%932006%29.svg/220px-Flag_of_Italy_%282003%E2%80%932006%29.svg.png";
+       
+        this.apiUrl = localStorage.getItem("apiUrl");
+       
         this.courses = [
             {
                 _id:1,
@@ -31,7 +33,6 @@ class CoursesOverview extends React.Component { // Show all courses
                 pivot_tongue: "le français",
                 released: false,
                 flag_url: frenchFlagUrl,
-                pivot_tongue_flag_url: englishFlag
             },
             {
                 _id:3,
@@ -39,18 +40,31 @@ class CoursesOverview extends React.Component { // Show all courses
                 pivot_tongue: "le français",
                 released: false,
                 flag_url: italianFlag,
-                pivot_tongue_flag_url: frenchFlagUrl
             },
         ]
 
         this.state = {
-            course: undefined
+            course: undefined,
+            loading: true,
         }
 
-        this.closeModal = this.closeModal.bind(this);
+        this.toggleCourseModal = this.toggleCourseModal.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
 
+    componentDidMount(){
+        get("dictionaries", {}, (res)=>this.initState(res), ()=>this.setState({loading: false}))
+    }
+
+    componentDidUpdate(){
+        console.log(this.state)
+    }
+
+    initState(data){
+        console.log("Courses fetched", data)
+        this.setState({dictionaries: data, loading: false})
+    }
+    
     handleSelectChange = (param, e) =>{
         this.setState({ [param] : e });
     }
@@ -60,79 +74,16 @@ class CoursesOverview extends React.Component { // Show all courses
         this.setState({[name]: value});
     }
 
-    update(){
-        if(!this.isValid()) return; 
-
-        const data = this.getData();
-        //console.log(save.word, this.state.translated_definition)
-        axios.post(
-            this.apiUrl + 'lesson-questions',
-            data, 
-            { headers: { 'Authorization': this.props.token,  'Content-Type': 'multipart/form-data' } }
-        )
-        .then( () => this.props.toggleModal())
-        .catch(function (error) {console.log(error)});
-    }
-
-    save = (next) =>{  
-        if(this.isValid() === false) return; 
-        
-        const data = this.getData();
-        const formData = new FormData();
-        formData.append("audio-file", this.state.vocalFile);
-        axios.put(
-            this.apiUrl + 'dictionaries/word', 
-            formData,
-            { 
-                headers: { 
-                    'Authorization': this.props.token,
-                    'Accept' : 'application/json'
-                    //'Content-Type': 'multipart/form-data'
-                },
-            },
-        )
-        .then( () => {
-            console.log(formData)
-            if(next)
-                this.props.reloadModal();
-            else 
-                this.props.toggleModal();
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-    }
-
-    formValidation () {
-    }
-
     lessonIndexChange(lessonId, index) {
         
     }
 
-    openCourse(index){
+    toggleCourseModal(){
+        this.setState({courseModal: !this.state.courseModal});
+    }
+    
+    setCourse(index){
         this.setState({course: index})
-    }
-    
-    openCourseModal(){
-        this.setState({courseModal: true})
-    }
-    
-    closeModal(){
-        this.setState({courseModal: false});
-    }
-
-    closeCourse(){
-        this.setState({course: undefined});
-    }
-
-    addCourse(){
-        const data = {
-            language: this.state.language,
-            raw_name: this.state.rawName, // spanish_from_french for example to link with the dictionary word collection
-            pivot_language: this.state.pivotLanguage,
-            flagFile: this.state.flagFile, 
-        }
     }
 
     render() {
@@ -146,29 +97,27 @@ class CoursesOverview extends React.Component { // Show all courses
                     <h3 className='text-right my-auto'>Liste des cours disponibles:</h3>
                 </Col>
                 <Col className='text-left m-auto'>
-                    <AddButton addFunction={this.openCourseModal.bind(this)}>Ajouter un cours</AddButton>
+                    <AddButton addFunction={this.toggleCourseModal.bind(this)}>Ajouter un cours</AddButton>
                 </Col>
             </Row>
 
             {this.state.course !== undefined && 
-                <ReturnButton goBack={this.closeCourse.bind(this)}/>
+                <ReturnButton goBack={function(){this.setCourse(undefined)}.bind(this)}/>
             }
 
             <Row className='mt-3 mx-5 w-100 justify-content-center'>
-                {courses && courses.map((course, index) => 
+                {this.state.dictionaries && this.state.dictionaries.map((course, index) => 
                     <Card key={index} style={{ width: '18rem' }}>
-                        <img alt="Sample" src={course.flag_url} />
+                        <img src={`${this.apiUrl}pictures/courses/${course.file_name}`}/>
                         <CardBody>
                             <CardTitle tag="h5">
                                 {course.language}
                             </CardTitle>
                             <CardSubtitle className="mb-2 text-muted" tag="h6" >
-                                Depuis {course.pivot_tongue}
+                                Depuis {course.pivot_language}
                             </CardSubtitle>
                             {this.state.course === undefined && 
-                                <Button onClick={this.openCourse.bind(this, course._id)}>
-                                    Modifier
-                                </Button>
+                                <Button onClick={this.setCourse.bind(this, course._id)}> Modifier </Button>
                             }
                         </CardBody>
                     </Card> 
@@ -177,7 +126,7 @@ class CoursesOverview extends React.Component { // Show all courses
             
 
             {this.state.courseModal &&
-                <CourseModal closeModal={this.closeModal}/>
+                <CourseModal closeModal={this.toggleCourseModal}/>
             }
 
             {this.state.course &&

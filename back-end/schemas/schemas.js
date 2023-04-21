@@ -4,7 +4,7 @@ require('dotenv').config()
 const entities_schemas = require('./entities_schemas')
 const uniqueRequiredString = entities_schemas.uniqueRequiredString
 
-const dictionarySchema = mongoose.Schema({ // Carry informations about available dictionnaries and courses created to link both of them
+const dictionarySchema = mongoose.Schema({ // Carry informations about available dictionaries and courses created to link both of them
     language: String,
     raw_name: uniqueRequiredString, // spanish_from_french for example to link with the dictionary word collection
     pivot_language: String,

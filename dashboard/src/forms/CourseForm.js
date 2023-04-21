@@ -12,13 +12,13 @@ export default class CourseForm extends MyForm {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    componentDidMount(){ super.initState(this.inputNames); }
+    componentDidMount =()=> super.initState(this.inputNames); 
 
-    handleChange (e) { super.handleChange(e); }
+    handleChange =(e)=> super.handleChange(e);
 
-    submit(event){
-        //event.stopPropagation();
-        super.add("dictionaries/dictionary");
+    submit(){
+        var cbk =()=> this.props.close();
+        super.add("dictionaries/dictionary", cbk, cbk);
     }
 
     render() {

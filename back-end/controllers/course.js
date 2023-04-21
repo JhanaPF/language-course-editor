@@ -6,7 +6,7 @@ const commonDao = require('../dao/common')
 
 router.fetch =  (req, res) => {  // All lessons of a course
     const {dictionary_id} = req.body 
-    commonDao.fetchById(res, lesson, "lessons", "dictionary_id", dictionary_id)
+    commonDao.fetch(res, lesson, "lessons", "dictionary_id", dictionary_id)
 }
 
 router.add = (req, res) => {   

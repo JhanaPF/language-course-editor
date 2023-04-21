@@ -1,7 +1,6 @@
 import axios from 'axios';
 axios.defaults.withCredentials = true;
-
-const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:3001/";
+const apiUrl = localStorage.getItem('apiUrl');
 const log = console.log;
 
 function axiosRequest(url, options, successCbk, errorCbk) { 
@@ -9,7 +8,7 @@ function axiosRequest(url, options, successCbk, errorCbk) {
     return axios({ url:apiUrl + url, headers: {'Accept' : 'application/json'},  ...options})
         .then(res => {
             log("Request success: ", res);
-            if(successCbk) successCbk(res);
+            if(successCbk) successCbk(res.data);
         })
         .catch(err => {
             console.error("Request error: ", err);
@@ -21,14 +20,18 @@ export function verifyToken (successCbk, errorCbk) { // Potentially token stored
     axiosRequest('auth/token', {method: 'POST'}, successCbk, errorCbk);
 }
 
-export function post(url, data, successCbk, errorCbk, noty=false){
-    axiosRequest(url, {method: 'POST', data}, successCbk, errorCbk);
-}
-
 export function get(url, data, successCbk, errorCbk, noty=false){
     axiosRequest(url, {method: 'GET', data}, successCbk, errorCbk);
 }
 
 export function put(url, data, successCbk, errorCbk, noty=false){
-    axiosRequest(url, {method: 'PUT', data: data, headers: { 'Content-Type': 'multipart/form-data'},}, successCbk, errorCbk);
+    axiosRequest(url, {method: 'PUT', data: data, headers: {'Content-Type': 'multipart/form-data'},}, successCbk, errorCbk);
+}
+
+export function post(url, data, successCbk, errorCbk, noty=false){
+    axiosRequest(url, {method: 'POST', data}, successCbk, errorCbk);
+}
+
+export function del(url, data, successCbk, errorCbk, noty=false){
+    axiosRequest(url, {method: 'DELETE', data}, successCbk, errorCbk);
 }

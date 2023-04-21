@@ -6,7 +6,7 @@ const isProduction = process.env.NODE_ENV === 'production'
 
 // Use this script to add admin accounts 
 
-mongoose.connect(isProduction ? process.env.DATABASE : 'mongodb://localhost:27017/dictionnaries', { useNewUrlParser: true,  useUnifiedTopology: true });
+mongoose.connect(isProduction ? process.env.DATABASE : 'mongodb://localhost:27017/dictionaries', { useNewUrlParser: true,  useUnifiedTopology: true });
 db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'Connection error:'));

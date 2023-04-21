@@ -6,7 +6,7 @@ import CourseForm from '../forms/CourseForm';
 export default function CourseModal (props) {
     
     return(
-        <MyModal title="Ajouter un cours" closeModal={props.closeModal}>
+        <MyModal isOpen={props.isOpen ? this.props.isOpen : true} title="Ajouter un cours" closeModal={props.closeModal}>
             <ModalBody>   
                 <CourseForm/>
             </ModalBody>

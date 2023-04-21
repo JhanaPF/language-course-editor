@@ -4,7 +4,9 @@
 
 const express = require('express')
 const app = express()
+const listEndpoints = require("express-list-endpoints")
 require('dotenv').config()
+const log = console.log
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const isProduction = process.env.NODE_ENV === 'production' 
@@ -20,6 +22,8 @@ const userRoutes = require('./routes/user')
 const dicRoutes = require('./routes/dictionaries')
 const coursesRoutes = require('./routes/courses')
 
+
+app.use(express.static(__dirname + '/public'))
 app.use((req, res, next) => { 
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization')
     res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE')
@@ -39,6 +43,7 @@ app.use(mongoSanitize())
 app.use(helmet())
 //  --------------------------
 
+
 app.use(express.json()) // Put body in req object for all request with Content-Type: application/json
 app.use(express.urlencoded({ extended: true }))
 
@@ -47,15 +52,23 @@ const cookieKey = process.env.SECRET_COOKIE
 app.use(cookieParser(cookieKey ? cookieKey : "RANDOM_SECRET_COOKIE_KEY")) // Put cookie in the body
 app.use('/auth', userRoutes)
 
+
+
 app.use(isAuth) // Check user authentification
 
-//app.use((req, res, next) => { 
-//    console.log(req.url, req.body)
-//    next()
-//})
+app.use((req, res, next) => { 
+    if(!isProduction) log(req.url, req.body)
+    next()
+})
+
 
 app.use(isAdmin) // Next routes are restricted for admins
 app.use('/dictionaries', dicRoutes)
 app.use('/courses', coursesRoutes)
+
+
+
+
+log("Routes list: ", listEndpoints(app));
 
 module.exports = app // For testing

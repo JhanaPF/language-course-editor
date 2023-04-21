@@ -64,10 +64,10 @@ export default class MyForm extends React.Component{
         post(url, data);
     }
 
-    add (url){  
+    add (url, successCbk, errorCbk){  
         const {formData} = this.getData();
         console.log("submitting form", formData);      
-        put(url, formData);        
+        put(url, formData, successCbk, errorCbk);        
     }
 
     handleSubmit (event) {

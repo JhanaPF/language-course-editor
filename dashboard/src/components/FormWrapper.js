@@ -5,7 +5,7 @@ export default function FormWrapper (props) {
     // Wrapper for forms
 
     const submit=(e)=>{
-        console.log(e)
+        //console.log(e)
         e.preventDefault();
         props.submit();
     }

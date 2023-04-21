@@ -1,6 +1,8 @@
 const multer = require('multer')
 var path = require('path')
 
+// Multer is not used anymore. Using Formidable and Fs for file processing 
+
 // ========================
 // ===  Configurations  ===
 // ========================
