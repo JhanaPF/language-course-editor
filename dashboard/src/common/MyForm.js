@@ -5,13 +5,17 @@ const log = console.log;
 export default class MyForm extends React.Component{
     // parent class for all forms
 
-    constructor(props, other){
+    constructor(props, inputNames){
         //console.log(other)
         super(props);
         this.state = {fieldError: false};
-        
+        this.inputNames = inputNames;
         this.handleChange = this.handleChange.bind(this);
         this.type = this.props.addModal ? 'addModal' : 'editModal';
+    }
+
+    componentDidMount(){
+        this.initState(this.inputNames);
     }
     
     initState(inputNames){

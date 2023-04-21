@@ -3,9 +3,9 @@ const formidable = require('formidable')
 const fs = require('fs')
 const {dictionary} = require('../schemas/schemas.js') 
 const commonDao = require('../dao/common')
-const log = console.log
 const {writeFile, isBuffer} = require('../utils/fileUtils')
 const {controlFields, isObjectEmpty} = require('../utils/utils')
+const log = console.log
 
 
 router.fetch = (req, res) => {     

@@ -7,14 +7,9 @@ import PictureInputGroup from '../components/PictureInputGroup';
 export default class CourseForm extends MyForm {
     
     constructor(props){
-        super(props, "other props");
-        this.inputNames = ["language", "pivot_language", "file", "raw_name"];
-        this.handleChange = this.handleChange.bind(this);
+        super(props, ["language", "pivot_language", "file", "raw_name"]);
     }
 
-    componentDidMount(){ super.initState(this.inputNames); }
-
-    handleChange (e) { super.handleChange(e); }
 
     submit(event){
         var cbk =()=> this.props.close();

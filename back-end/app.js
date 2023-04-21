@@ -21,6 +21,7 @@ const isAuth = require('./middleware/isAuth')
 const userRoutes = require('./routes/user')
 const dicRoutes = require('./routes/dictionaries')
 const coursesRoutes = require('./routes/courses')
+const lessonRoutes = require('./routes/lessons')
 
 
 const limiter = rateLimit({
@@ -65,6 +66,7 @@ app.use((req, res, next) => {
 app.use(isAdmin) // Next routes are restricted for admins
 app.use('/dictionaries', dicRoutes)
 app.use('/courses', coursesRoutes)
+app.use('/lesson', lessonRoutes)
 
 
 log("Routes list: ", listEndpoints(app));

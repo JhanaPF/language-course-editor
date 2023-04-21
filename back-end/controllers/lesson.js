@@ -4,7 +4,11 @@ const formidable = require('formidable')
 const commonDao = require('../dao/common')
 const {lesson} = require('../schemas/schemas.js') 
 const {controlFields} = require('../utils/utils')
+const log = console.log
 
+// ========================
+// ======= LESSONS ========
+// ========================
 
 router.fetchLessonList = (req, res) => {     
     commonDao.fetch(res, lesson, "lessons", (r)=>{return res.status(200).json(r)}, ()=>{return res.status(500).end()})
@@ -19,8 +23,10 @@ router.getLessonQuestions = (req, res) => { // Get all questions included in les
     })
 }
 
-router.addLesson = (req, res) => {   
-    const data = req.body.lesson
+router.add = (req, res) => {   
+    log("Add lesson")
+
+    const data = req.body
     if(!data) return res.status(400).json()
     
     const form = formidable({ multiples: true })
@@ -36,11 +42,11 @@ router.addLesson = (req, res) => {
     })
 } 
 
-router.updateLesson =  (req, res) => {    
+router.upd =  (req, res) => {    
 
 } 
 
-router.deleteLesson =  (req, res) => {    
+router.del =  (req, res) => {    
 
 } 
 

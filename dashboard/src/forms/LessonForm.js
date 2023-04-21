@@ -10,18 +10,12 @@ export default class LessonForm extends MyForm {
 
         this.inputNames = ["name", "description"];        
         this.state = {dictionary_id: this.props.dictionary_id};
-
-        // this.handleChange = this.handleChange.bind(this);
-    }
-
-    componentDidMount(){
-        super.initState(this.inputNames);
     }
     
     submit(event){
         event.stopPropagation();
         //console.log(event)
-        super.add("lesson");
+        super.add("lessons");
     }
 
     render(){
