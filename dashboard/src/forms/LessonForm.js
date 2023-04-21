@@ -9,7 +9,7 @@ export default class LessonForm extends MyForm {
     constructor(props){
         super(props);
 
-        this.inputNames = ["name", "description", "picture"];        
+        this.inputNames = ["name", "description"];        
         this.state = {dictionary_id: this.props.dictionary_id};
 
         // this.handleChange = this.handleChange.bind(this);
@@ -30,7 +30,6 @@ export default class LessonForm extends MyForm {
             <FormWrapper submit={this.submit.bind(this)}>
                 <TextFormGroup text="Initulé du cours" id="name" value={this.state.name} handleChange={this.handleChange}/>
                 <TextFormGroup text="Description" id="description" value={this.state.description} handleChange={this.handleChange}/>
-                <PictureInputGroup text="Image de couverture" name="picture" onChange={this.handleChange}/>
             </FormWrapper>
         );
     }

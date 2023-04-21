@@ -78,7 +78,7 @@ class CoursesOverview extends React.Component { // Show all courses
             <Row className='mt-3 mx-5 w-100 justify-content-center'>
                 {this.state.dictionaries && this.state.dictionaries.map((course, index) => 
                     <Card key={index} style={{ width: '18rem' }}>
-                        <img src={`${this.apiUrl}pictures/courses/${course.file_name}`}/>
+                        <img crossOrigin='use-credentials' src={`${this.apiUrl}pictures/courses/${course.file_name}`}/>
                         <CardBody>
                             <CardTitle tag="h5">
                                 {capitalizeFirstLetter(course.language)}
