@@ -12,12 +12,13 @@ export default class CourseForm extends MyForm {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    componentDidMount =()=> super.initState(this.inputNames); 
+    componentDidMount(){ super.initState(this.inputNames); }
 
-    handleChange =(e)=> super.handleChange(e);
+    handleChange (e) { super.handleChange(e); }
 
-    submit(){
+    submit(event){
         var cbk =()=> this.props.close();
+
         super.add("dictionaries/dictionary", cbk, cbk);
     }
 
@@ -28,7 +29,7 @@ export default class CourseForm extends MyForm {
                 <TextFormGroup text="Langue pivot" id="pivot_language" value={this.state.pivot_language} handleChange={this.handleChange} required/>
                 <PictureInputGroup text="Drapeau" description="Ajouter un drapeau" name="file" onChange={this.handleChange}/>
                 <TextFormGroup 
-                    text="Nom du dictionnaire en anglais au format suivant: language_from_pivotlanguage)" 
+                    text="Nom du dictionnaire en anglais au format suivant: language_from_pivotlanguage" 
                     id="raw_name" 
                     value={this.state.raw_name} 
                     handleChange={this.handleChange}

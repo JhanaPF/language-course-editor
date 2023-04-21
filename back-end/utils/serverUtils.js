@@ -33,4 +33,4 @@ module.exports = {
     normalizePort,
     errorHandler,
     isIdValid,
-};
+}

@@ -25,7 +25,7 @@ export default class MyForm extends React.Component{
 
     handleChange = (event) =>{
         const {name, value} = event.currentTarget;
-        //console.log('handle change', name, value)
+        console.log('handle change', name, value)
 
         const files = event.target.files;
        // console.log(files)

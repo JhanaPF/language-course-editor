@@ -5,6 +5,8 @@ const {dictionary} = require('../schemas/schemas.js')
 const commonDao = require('../dao/common')
 const log = console.log
 const {writeFile, isBuffer} = require('../utils/fileUtils')
+const {controlFields, isObjectEmpty} = require('../utils/utils')
+
 
 router.fetch = (req, res) => {     
     commonDao.fetch(res, dictionary, "dictionnaries", (r)=>{return res.status(200).json(r)}, ()=>{return res.status(500).end()})
@@ -22,26 +24,26 @@ router.add = (req, res) => {
             log("Error parsing form: ", err)
             return res.status(500).end()
         }
-
+        if(!fields) return res.status(400).end()
+        
         // Scan and analyse file then write the file on system 
         // Check if raw_name already exists in database 
-
+        // Check mimetype and size
         
-        const file = files.file
-        const {newFilename, filepath} = file
-        const fileName = `${Date.now()}-${newFilename}.png`
-        const tempFile = fs.readFileSync(filepath)
-
-        if(!isBuffer(tempFile)) return res.status(500).end()
+        let fileName = ''
+        if(!isObjectEmpty(files)){
+            const file = files.file
+            const {newFilename, filepath} = file
+            fileName = `${Date.now()}-${newFilename}.png`
+            const tempFile = fs.readFileSync(filepath)
+            
+            if(!isBuffer(tempFile)) {return res.status(500).end()}
+            
+            writeFile(res, fileName, "public/pictures/courses", tempFile)
+        }
         
-        let controlledFields = {}
-        Object.keys(fields).forEach(field=>{ // Lowercase string fields
-            if(typeof fields[field] === "string") controlledFields[field] = fields[field].toLowerCase()
-            else controlledFields[field] = fields[field]
-        }) 
+        let controlledFields = controlFields(fields)
         controlledFields.file_name = fileName
-
-        writeFile(res, fileName, "public/pictures/courses", tempFile)
         
         commonDao.save(res, dictionary, "dictionnary", controlledFields)
     })

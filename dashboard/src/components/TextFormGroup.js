@@ -1,6 +1,7 @@
 import React from "react";
 import { Input } from "reactstrap";
 import MyFormGroup from "./MyFormGroup";
+import { capitalizeFirstLetter } from "../utils/stringUtils";
 
 /**
  * 
@@ -14,7 +15,7 @@ import MyFormGroup from "./MyFormGroup";
  */
 export default function TextFormGroup (props) {
     return (
-        <MyFormGroup text={props.text}>
+        <MyFormGroup text={capitalizeFirstLetter(props.text)} inputId={props.id}>
             <Input
                 type={props.type ? props.type : null}
                 id={props.id}

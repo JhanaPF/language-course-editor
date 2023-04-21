@@ -12,14 +12,25 @@ const dictionarySchema = mongoose.Schema({ // Carry informations about available
     released: {type: Boolean, default: false}, // Is the dictionary accessible for public
 })
 
-const dictionary = mongoose.model('dictionary', dictionarySchema) 
+const dictionary = mongoose.model('Dictionary', dictionarySchema) 
 
 // --- Level creator schemas ---
+
+const courseSchema = mongoose.Schema({
+    language: String,
+    pivot_language: String,
+    raw_name: uniqueRequiredString, // spanish_from_french for example to link with the dictionary word collection
+    dictionary: {type: Boolean, default: false},
+    file_name: entities_schemas.fileUrl, 
+    released: {type: Boolean, default: false}, // Is the dictionary accessible for public
+})
+const course = mongoose.model('Course', courseSchema) 
+
+
 const lessonSchema = mongoose.Schema({
     dictionary_id: entities_schemas.mongoId,
     name: String,
     description: String,
-    picture: entities_schemas.fileUrl,
 })
 const lesson = mongoose.model('Lesson', lessonSchema) 
 
@@ -40,7 +51,7 @@ const questionSchema = mongoose.Schema({
 const question = mongoose.model('Question', questionSchema) 
 // ------------
 
-// dictionary Schemas: word and additional data
+// dictionary word schemas: word and additional data
 const wordSchema = mongoose.Schema({
     word : {type: String, required: true, unique: true}, 
     class : {type: Number}, // noun, verb, adjective, etc
@@ -97,4 +108,4 @@ for (const language of languages) { // Dynamic generation of Mongo models
 
 const user = mongoose.model('User', userSchema) 
 
-module.exports = {...dictionaryModels, user, wordSchema, additionalDataSchema, question, lesson, dictionary}
+module.exports = {...dictionaryModels, user, wordSchema, additionalDataSchema, question, lesson, dictionary, course}
