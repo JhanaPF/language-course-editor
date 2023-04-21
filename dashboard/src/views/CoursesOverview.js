@@ -60,9 +60,6 @@ class CoursesOverview extends React.Component { // Show all courses
 
     render() {
 
-        let courses = this.courses;
-        if(this.state.course !== undefined) courses = this.courses.filter(course => course._id === this.state.course);
-
         return(<>
             <Row className='w-100 mt-5'>
                 <Col></Col>
