@@ -68,7 +68,7 @@ const fetchById = (res, model, objName, idKey, id) => {
  * 
  * @param {*} res http response 
  * @param {Model} model 
- * @param {string} objName 
+ * @param {string} objName for console log
  * @param {object} data 
  * @returns 
  */

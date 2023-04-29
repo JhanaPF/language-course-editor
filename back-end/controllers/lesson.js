@@ -10,7 +10,7 @@ const log = console.log
 // ======= LESSONS ========
 // ========================
 
-router.fetchLessonList = (req, res) => {     
+router.fetch = (req, res) => {     
     commonDao.fetch(res, lesson, "lessons", (r)=>{return res.status(200).json(r)}, ()=>{return res.status(500).end()})
 }
 
@@ -28,17 +28,17 @@ router.add = (req, res) => {
 
     const data = req.body
     if(!data) return res.status(400).json()
-    
+
     const form = formidable({ multiples: true })
     form.parse(req, function (err, fields, files) { 
         if (err) {
             log("Error parsing form: ", err)
             return res.status(500).end()
         }
-        
-        let controlledFields = controlFields(fields)
 
-        commonDao.save(res, course, "dictionnary", controlledFields)
+        let controlledFields = controlFields(fields)
+        log(fields)
+        commonDao.save(res, lesson, "lesson", controlledFields)
     })
 } 
 

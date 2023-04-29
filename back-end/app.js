@@ -66,9 +66,9 @@ app.use((req, res, next) => {
 app.use(isAdmin) // Next routes are restricted for admins
 app.use('/dictionaries', dicRoutes)
 app.use('/courses', coursesRoutes)
-app.use('/lesson', lessonRoutes)
+app.use('/lessons', lessonRoutes)
 
 
-log("Routes list: ", listEndpoints(app));
+// log("Routes list: ", listEndpoints(app));
 
 module.exports = app // For testing

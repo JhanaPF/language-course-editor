@@ -7,14 +7,14 @@ export default class LessonForm extends MyForm {
 
     constructor(props){
         super(props);
+        this.inputNames = ["name", "description", "dictionary_id"];        
+    }
 
-        this.inputNames = ["name", "description"];        
-        this.state = {dictionary_id: this.props.dictionary_id};
+    componentDidMount(){
+        this.initState(this.inputNames, {dictionary_id: this.props.courseId});
     }
     
     submit(event){
-        event.stopPropagation();
-        //console.log(event)
         super.add("lessons");
     }
 

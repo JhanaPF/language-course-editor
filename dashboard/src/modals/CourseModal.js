@@ -10,9 +10,9 @@ import CourseForm from '../forms/CourseForm';
 export default function CourseModal (props) {
     
     return(
-        <MyModal isOpen={props.isOpen ? this.props.isOpen : true} title="Ajouter un cours" closeModal={props.closeModal}>
+        <MyModal isOpen={props.isOpen ? props.isOpen : true} title="Ajouter un cours" closeModal={props.closeModal}>
             <ModalBody>   
-                <CourseForm close={props.closeModal}/>
+                <CourseForm close={props.closeModal} fetchCourses={props.fetchCourses}/>
             </ModalBody>
         </MyModal>
     )

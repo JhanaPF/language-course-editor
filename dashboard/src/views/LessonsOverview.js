@@ -1,14 +1,16 @@
 import React from 'react';
-import {Card, CardBody, CardSubtitle, CardTitle, CardText, Input, Label, Button, Row, Col, ButtonGroup, Modal, FormGroup} from 'reactstrap';
+import {Card, CardBody, CardSubtitle, CardTitle, CardText, Button, ButtonGroup} from 'reactstrap';
 import LessonModal from '../modals/LessonModal';
 import AddButton from '../components/AddButton';
-import {put, post} from '../apiRequests';
 
+/**
+ * @props {object} course
+ */
 export default class LessonsOverview extends React.Component { // Show all lessons of a course
 
     constructor(props){
         super(props);
-
+        console.log(this.props.course)
         this.lessons = [
             {
                 _id: "fdslkj67575",
@@ -34,7 +36,6 @@ export default class LessonsOverview extends React.Component { // Show all lesso
 
         this.closeModal = this.closeModal.bind(this);
         this.openLessonModal = this.openLessonModal.bind(this);
-
     }
 
     handleSelectChange = (param, e) =>{
@@ -46,7 +47,7 @@ export default class LessonsOverview extends React.Component { // Show all lesso
     }
 
     closeModal(){
-        this.setState({lessonModal: false})
+        this.setState({lessonModal: false});
     }
 
     openLessonModal(){
@@ -91,7 +92,7 @@ export default class LessonsOverview extends React.Component { // Show all lesso
             )}
 
             {this.state.lessonModal && 
-               <LessonModal closeModal={this.closeModal}/>
+               <LessonModal courseId={this.props.course._id} closeModal={this.closeModal}/>
             }
 
         </>);

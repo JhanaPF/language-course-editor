@@ -42,7 +42,7 @@ router.add = (req, res) => {
 
         writeFile(res, fileName, "public/pictures/courses", tempFile)
         
-        commonDao.save(res, course, "dictionnary", controlledFields)
+        commonDao.save(res, course, "dictionary", controlledFields)
     })
 } 
 

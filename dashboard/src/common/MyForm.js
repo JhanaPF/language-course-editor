@@ -1,6 +1,5 @@
 import React from "react";
-import {fetch, put, post, del} from '../apiRequests';
-const log = console.log;
+import {put, post} from '../apiRequests';
 
 export default class MyForm extends React.Component{
     // parent class for all forms
@@ -18,13 +17,13 @@ export default class MyForm extends React.Component{
         this.initState(this.inputNames);
     }
     
-    initState(inputNames){
+    initState(inputNames, additionalFields){
         let state = {};
         inputNames.forEach(name => {
             state[name] = this.props.levelData ? this.props.levelData[name] : undefined;
         });
         state.fieldError=false;
-        this.setState({...state});
+        this.setState({...state, ...additionalFields});
     }
 
     handleChange = (event) =>{
@@ -70,7 +69,7 @@ export default class MyForm extends React.Component{
 
     add (url, successCbk, errorCbk){  
         const {formData} = this.getData();
-        console.log("submitting form", formData);      
+        console.log("submitting form", formData);
         put(url, formData, successCbk, errorCbk);        
     }
 

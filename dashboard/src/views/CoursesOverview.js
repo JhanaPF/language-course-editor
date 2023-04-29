@@ -25,16 +25,20 @@ class CoursesOverview extends React.Component { // Show all courses
     }
 
     componentDidMount(){
-        get("dictionaries", {}, (res)=>this.initState(res), ()=>this.setState({loading: false}))
+        this.fetchCourses();
+    }
+    
+    fetchCourses(){
+        get("dictionaries", {}, (res)=>this.initState(res), ()=>this.setState({loading: false, courseModal: false}));
     }
 
     componentDidUpdate(){
-        console.log(this.state)
+        console.log("state: ",  this.state)
     }
 
     initState(data){
-        console.log("Courses fetched", data)
-        this.setState({dictionaries: data, loading: false})
+        //console.log("Courses fetched", data)
+        this.setState({dictionaries: data, loading: false, courseModal: false})
     }
     
     handleSelectChange = (param, e) =>{
@@ -54,11 +58,19 @@ class CoursesOverview extends React.Component { // Show all courses
         this.setState({courseModal: !this.state.courseModal});
     }
     
-    setCourse(index){
-        this.setState({course: index})
+    setCourse(id){
+        this.setState({courseId: id})
+    }
+
+    getCourse(id){
+        return this.state.dictionaries.find(course=>course._id === id);
     }
 
     render() {
+
+        if(!this.state.dictionaries) return null;
+
+        let courses = this.state.courseId ? this.state.dictionaries.filter(course => course._id === this.state.courseId) : this.state.dictionaries;
 
         return(<>
             <Row className='w-100 mt-5'>
@@ -71,14 +83,14 @@ class CoursesOverview extends React.Component { // Show all courses
                 </Col>
             </Row>
 
-            {this.state.course !== undefined && 
+            {this.state.courseId !== undefined && 
                 <ReturnButton goBack={function(){this.setCourse(undefined)}.bind(this)}/>
             }
 
             <Row className='mt-3 mx-5 w-100 justify-content-center'>
-                {this.state.dictionaries && this.state.dictionaries.map((course, index) => 
+                {courses.map((course, index) => 
                     <Card key={index} style={{ width: '18rem' }}>
-                        <img crossOrigin='use-credentials' src={`${this.apiUrl}pictures/courses/${course.file_name}`}/>
+                        <img alt="flag" crossOrigin='use-credentials' src={`${this.apiUrl}pictures/courses/${course.file_name}`}/>
                         <CardBody>
                             <CardTitle tag="h5">
                                 {capitalizeFirstLetter(course.language)}
@@ -86,7 +98,7 @@ class CoursesOverview extends React.Component { // Show all courses
                             <CardSubtitle className="mb-2 text-muted" tag="h6" >
                                 Depuis {course.pivot_language}
                             </CardSubtitle>
-                            {this.state.course === undefined && 
+                            {this.state.courseId === undefined && 
                                 <Button onClick={this.setCourse.bind(this, course._id)}> Modifier </Button>
                             }
                         </CardBody>
@@ -96,11 +108,11 @@ class CoursesOverview extends React.Component { // Show all courses
             
 
             {this.state.courseModal &&
-                <CourseModal closeModal={this.toggleCourseModal}/>
+                <CourseModal closeModal={this.toggleCourseModal} fetchCourses={this.fetchCourses.bind(this)}/>
             }
 
-            {this.state.course &&
-                <LessonsOverview course={this.state.course}/>
+            {this.state.courseId &&
+                <LessonsOverview course={this.getCourse(this.state.courseId)}/>
             }
 
             {this.state.lesson &&
