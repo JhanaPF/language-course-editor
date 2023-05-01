@@ -1,6 +1,8 @@
 import React from 'react';
 import {Card, CardBody, CardSubtitle, CardTitle, CardText, Button, Row, Col, ButtonGroup} from 'reactstrap';
 import QuestionModal from '../modals/QuestionModal';
+import { get } from '../apiRequests';
+
 
 export default class QuestionsOverview extends React.Component { // Show all questions of a lesson
 
@@ -8,10 +10,20 @@ export default class QuestionsOverview extends React.Component { // Show all que
         super(props);
 
         this.state = {
+            lesson: this.props.lesson,
             questionModal: false,
         }
 
         this.closeModal = this.closeModal.bind(this);
+    }
+
+    componentDidMount(){
+        this.fetchQuestions();
+    }
+
+    fetchQuestions(){
+        var initState=(fields)=>{this.setState({loading: false, questionModal: false, ...fields})};
+        get("questions", {'lesson': this.props.lesson._id}, (res)=>initState({questions: res}), ()=>initState());
     }
 
     questionIndexChange(lessonId, index) {
