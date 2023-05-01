@@ -29,7 +29,7 @@ export default class LessonsOverview extends React.Component { // Show all lesso
 
     fetchLessons(){
         var initState=(fields)=>{this.setState({loading: false, lessonModal: false, ...fields})};
-        get("lessons", {dictionary_id: this.props.course._id}, (res)=>initState({lessons: res}), ()=>initState());
+        get("lessons", {'course': this.props.course._id}, (res)=>initState({lessons: res}), ()=>initState());
     }
 
     handleSelectChange = (param, e) =>{

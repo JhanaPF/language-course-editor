@@ -8,7 +8,7 @@ const {course} = require('../schemas/schemas.js')
 
 router.fetch =  (req, res) => {  // All lessons of a course
     const {dictionary_id} = req.body 
-    commonDao.fetch(res, course, "courses", "dictionary_id", dictionary_id)
+    commonDao.fetch(res, course, {}, "courses", "dictionary_id", dictionary_id)
 }
 
 router.add = (req, res) => {   

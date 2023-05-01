@@ -2,6 +2,8 @@ const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
 require('dotenv').config()
 
+const createdAtSchema = { type: Date, default: Date.now }
+
 const updates = [{
     user_id: {type: mongoose.Schema.ObjectId}, 
     date: {type: Date},
@@ -33,6 +35,7 @@ const pictureChoice = [{
 const textChoice =  {type: [Array]}
 
 module.exports = {
+    createdAtSchema,
     updates,
     fileUrl,
     mongoId,

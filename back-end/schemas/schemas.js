@@ -10,6 +10,7 @@ const dictionarySchema = mongoose.Schema({ // Carry informations about available
     pivot_language: String,
     file_name: entities_schemas.fileUrl, 
     released: {type: Boolean, default: false}, // Is the dictionary accessible for public
+    createdAt: entities_schemas.createdAtSchema,
 })
 
 const dictionary = mongoose.model('Dictionary', dictionarySchema) 
@@ -20,9 +21,10 @@ const courseSchema = mongoose.Schema({
     language: String,
     pivot_language: String,
     raw_name: uniqueRequiredString, // spanish_from_french for example to link with the dictionary word collection
-    dictionary: {type: Boolean, default: false},
+    dictionary: {type: Boolean, default: false}, // Has a dictionary 
     file_name: entities_schemas.fileUrl, 
-    released: {type: Boolean, default: false}, // Is the dictionary accessible for public
+    released: {type: Boolean, default: false}, // Is it accessible for public
+    createdAt: entities_schemas.createdAtSchema,
 })
 const course = mongoose.model('Course', courseSchema) 
 
@@ -31,6 +33,7 @@ const lessonSchema = mongoose.Schema({
     dictionary_id: entities_schemas.mongoId,
     name: String,
     description: String,
+    createdAt: entities_schemas.createdAtSchema,
 })
 const lesson = mongoose.model('Lesson', lessonSchema) 
 
@@ -47,6 +50,7 @@ const questionSchema = mongoose.Schema({
     text_choice: entities_schemas.textChoice,
     answer_index: {type: Number, min: 0, max: 100},
     // answerType: {type: String, enum: ["translation", "pictureChoice", "textChoice", ""]},
+    createdAt: entities_schemas.createdAtSchema,
 })
 const question = mongoose.model('Question', questionSchema) 
 // ------------
@@ -64,6 +68,7 @@ const wordSchema = mongoose.Schema({
     phonetic: {type: String},
     vocal_url: entities_schemas.fileUrl, 
     updates: entities_schemas.updates,
+    createdAt: entities_schemas.createdAtSchema,
 })
 
 const additionalDataSchema = mongoose.Schema({
@@ -74,6 +79,7 @@ const additionalDataSchema = mongoose.Schema({
     translated_riddle: {type: String}, 
     story: {type: String}, // Anecdotes
     updates: entities_schemas.updates,
+    createdAt: entities_schemas.createdAtSchema,
 })
 // ------
 
@@ -84,6 +90,7 @@ const userSchema = mongoose.Schema({ // User schema for dahsboard's users
     password : {type: String},
     role:{type: String, enum: ['guest', 'admin', 'superAdmin', 'player']}, // SuperAdmin, Admin, Joueur, etc...
     dialects: {type: Array}, // languages the user can crud
+    createdAt: entities_schemas.createdAtSchema,
 })
 
 // Add unique validator plugin to all schemas

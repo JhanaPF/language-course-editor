@@ -9,7 +9,7 @@ const log = console.log
 
 
 router.fetch = (req, res) => {     
-    commonDao.fetch(res, dictionary, "dictionnaries", (r)=>{return res.status(200).json(r)}, ()=>{return res.status(500).end()})
+    commonDao.fetch(res, dictionary, {}, (r)=>{return res.status(200).json(r)}, ()=>{return res.status(500).end()})
 }
 
 router.add = (req, res) => {   

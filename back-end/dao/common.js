@@ -14,7 +14,7 @@ const errorCbk = (res, msg, error) => {
     res.status(400).json()
 }
 
-const resultHandler = (res, successCbk, errorCbk, err, result) => {
+const resultHandler = (res, objName, successCbk, errorCbk, err, result) => {
     if(err) {
         log(err)
         if(errorCbk) return errorCbk()
@@ -31,19 +31,19 @@ const resultHandler = (res, successCbk, errorCbk, err, result) => {
  * 
  * @param {*} res http response 
  * @param {Model} model 
- * @param {string} objName 
+ * @param {object} param filters
  * @param {Function} successCbk 
  * @param {Function} errorCbk 
- * @returns 
+ * @returns {object} {[model] + 's': result}
  */
-const fetch = (res, model, objName, successCbk, errorCbk) => {
+const fetch = (res, model, param = {}, successCbk, errorCbk) => {
     if(!model){
         log("Model missing to fetch in collection")
         return res.status(500).end()
     }
-
-    model.find({}, function(err, result){
-        resultHandler(res, (data)=>successCbk(data), errorCbk, err, result, objName)
+    
+    model.find(param, function(err, result){
+        resultHandler(res, [model] + 's', (data)=>successCbk(data), errorCbk, err, result)
     })
 }
 
