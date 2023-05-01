@@ -7,7 +7,7 @@ function axiosRequest(url, options, successCbk, errorCbk) {
     //log(options)
     return axios({ url:apiUrl + url, headers: {'Accept' : 'application/json'},  ...options})
         .then(res => {
-            log("Request success: ", res);
+            //log("Request success: ", res);
             if(successCbk) successCbk(res.data);
         })
         .catch(err => {

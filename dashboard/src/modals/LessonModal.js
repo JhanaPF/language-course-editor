@@ -2,17 +2,18 @@ import React from "react";
 import LessonForm from "../forms/LessonForm";
 import MyModal from "../components/MyModal";
 
-export default class LessonModal extends React.Component {
 
-    constructor(props){
-        super(props);    
-    }
+/**
+ * @param {boolean} isOpen - optionnal 
+ * @param {function} closeModal  
+ * @param courseId
+ * @param fetchLessons
+ */
+export default function LessonModal (props) {
 
-    render(){   
-        return(
-            <MyModal title="Ajouter une leçon" closeModal={this.props.closeModal}>
-                <LessonForm courseId={this.props.courseId}/>
-            </MyModal>
-        )
-    }
+    return(
+        <MyModal isOpen={props.isOpen} title="Ajouter une leçon" closeModal={props.closeModal}>
+            <LessonForm close={props.closeModal} fetchLessons={props.fetchLessons} courseId={props.courseId}/>
+        </MyModal>
+    )
 }

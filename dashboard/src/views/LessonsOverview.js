@@ -2,6 +2,8 @@ import React from 'react';
 import {Card, CardBody, CardSubtitle, CardTitle, CardText, Button, ButtonGroup} from 'reactstrap';
 import LessonModal from '../modals/LessonModal';
 import AddButton from '../components/AddButton';
+import { get } from '../apiRequests';
+
 
 /**
  * @props {object} course
@@ -10,32 +12,24 @@ export default class LessonsOverview extends React.Component { // Show all lesso
 
     constructor(props){
         super(props);
-        console.log(this.props.course)
-        this.lessons = [
-            {
-                _id: "fdslkj67575",
-                name: "Se présenter",
-                description: "Se présenter à quelqu'un"
-            },
-            {
-                _id: "fd77hhdgdgd75",
-                name: "Réserver un hôtel",
-                description: "Dialogue avec un receptionniste pour louer un chambre"
-            },
-            {
-                _id: "fd77hsfzehdgdgd75",
-                name: "Les verbes",
-                description: ""
-            },
-        ]
-
+        //console.log(this.props.course)
 
         this.state = {
-            course: this.props.course
+            course: this.props.course,
+            lessonModal: false,
         }
 
         this.closeModal = this.closeModal.bind(this);
         this.openLessonModal = this.openLessonModal.bind(this);
+    }
+
+    componentDidMount(){
+        this.fetchLessons();
+    }
+
+    fetchLessons(){
+        var initState=(fields)=>{this.setState({loading: false, lessonModal: false, ...fields})};
+        get("lessons", {dictionary_id: this.props.course._id}, (res)=>initState({lessons: res}), ()=>initState());
     }
 
     handleSelectChange = (param, e) =>{
@@ -55,12 +49,14 @@ export default class LessonsOverview extends React.Component { // Show all lesso
     }
 
     render() {
+        if(!this.state.lessons) return null;
+
         return(<>
 
             <AddButton addFunction={this.openLessonModal}>Ajouter une leçon</AddButton>
 
     
-            {this.lessons.map((lesson, i) => 
+            {this.state.lessons.map((lesson, i) => 
                 <Card key={i} style={{ width: '18rem' }}>
                     {this.props.course.flag_url &&
                         <img src={this.props.course.flag_url} />
@@ -91,9 +87,11 @@ export default class LessonsOverview extends React.Component { // Show all lesso
                 </Card>
             )}
 
-            {this.state.lessonModal && 
-               <LessonModal courseId={this.props.course._id} closeModal={this.closeModal}/>
-            }
+            <LessonModal 
+                isOpen={this.state.lessonModal} 
+                fetchLessons={this.fetchLessons.bind(this)} 
+                courseId={this.props.course._id} 
+                closeModal={this.closeModal}/>
 
         </>);
     }

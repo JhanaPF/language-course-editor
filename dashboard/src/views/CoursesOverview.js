@@ -32,10 +32,6 @@ class CoursesOverview extends React.Component { // Show all courses
         get("dictionaries", {}, (res)=>this.initState(res), ()=>this.setState({loading: false, courseModal: false}));
     }
 
-    componentDidUpdate(){
-        console.log("state: ",  this.state)
-    }
-
     initState(data){
         //console.log("Courses fetched", data)
         this.setState({dictionaries: data, loading: false, courseModal: false})
