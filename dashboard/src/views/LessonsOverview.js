@@ -3,6 +3,7 @@ import {Card, CardBody, CardSubtitle, CardTitle, CardText, Button, ButtonGroup} 
 import LessonModal from '../modals/LessonModal';
 import AddButton from '../components/AddButton';
 import { get } from '../apiRequests';
+import Overview from '../components/Overview';
 
 
 /**
@@ -50,42 +51,14 @@ export default class LessonsOverview extends React.Component { // Show all lesso
 
     render() {
         if(!this.state.lessons) return null;
+        let lessons = this.state.lessonId ? this.state.lessons.find(lesson => lesson._id === this.state.lessonId) : this.state.lessons;
 
         return(<>
 
-            <AddButton addFunction={this.openLessonModal}>Ajouter une leçon</AddButton>
+            <Overview objName="lessons" filter={{'course': this.props.course._id}}>
 
-    
-            {this.state.lessons.map((lesson, i) => 
-                <Card key={i} style={{ width: '18rem' }}>
-                    {this.props.course.flag_url &&
-                        <img src={this.props.course.flag_url} />
-                    }
+            </Overview>
 
-                    <CardBody>
-                        <CardTitle tag="h5">
-                            {lesson.name}
-                        </CardTitle>
-                        <CardSubtitle className="mb-2 text-muted" tag="h6" >
-                            {lesson.sentence}
-                        </CardSubtitle>
-                        <CardText>
-                            Détail
-                        </CardText>
-                        <Button onClick={this.openLessonModal}>
-                            Modifier
-                        </Button>
-                        <ButtonGroup>
-                            <Button onClick={this.lessonIndexChange.bind(this, lesson._id, -1)}>
-                                {"<"}
-                            </Button>
-                            <Button onClick={this.lessonIndexChange.bind(this, lesson._id, 1)}>
-                                {">"}
-                            </Button>
-                        </ButtonGroup>
-                    </CardBody>
-                </Card>
-            )}
 
             <LessonModal 
                 isOpen={this.state.lessonModal} 

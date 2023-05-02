@@ -72,7 +72,7 @@ class CoursesOverview extends React.Component { // Show all courses
             <Row className='w-100 mt-5'>
                 <Col></Col>
                 <Col >
-                    <h3 className='my-auto'>Liste des cours disponibles:</h3>
+                    <h3 className='my-auto'>Liste des cours/dictionnaires :</h3>
                 </Col>
                 <Col className='text-left m-auto'>
                     <AddButton addFunction={this.toggleCourseModal.bind(this)}>Ajouter un cours</AddButton>

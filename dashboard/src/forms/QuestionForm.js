@@ -1,6 +1,5 @@
 import React from 'react';
-import {Modal, ModalBody, ModalFooter, Form, FormText, FormGroup, Input, Label, Button, Row, Col} from 'reactstrap';
-import Select from 'react-select';
+import {Form, FormText, FormGroup, Input, Label, Col} from 'reactstrap';
 import {validString} from '../rgx/regex'
 import AudioRecorder from '../components/AudioRecorder';
 import MyForm from '../common/MyForm';

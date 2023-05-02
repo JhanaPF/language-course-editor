@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, CardBody, CardSubtitle, CardTitle, CardText, Button, ButtonGroup} from 'reactstrap';
+import {Card, CardBody, CardSubtitle, CardTitle, CardText, CardGroup, Button, ButtonGroup} from 'reactstrap';
 import AddButton from '../components/AddButton';
 import { get } from '../apiRequests';
 
@@ -9,28 +9,28 @@ import { get } from '../apiRequests';
  * @param {string} objName
  * @param {object} filter param for fetch request
  */
-export default class Overview extends React.Component { // Show all lessons of a course
+export default class Overview extends React.Component { // Common component for all overviews
 
     constructor(props){
         super(props);
         //console.log(this.props.course)
-
+        this.objName = this.props.objName;
         this.state = {
             elements: this.props.elements,
+            elemId: null,
             modal: false,
         }
-
         this.closeModal = this.closeModal.bind(this);
         this.openModal = this.openModal.bind(this);
     }
 
     componentDidMount(){
-        this.fetchLessons();
+        this.onFetch();
     }
 
-    fetchLessons(){
-        var initState=(fields)=>{this.setState({loading: false, lessonModal: false, ...fields})};
-        get(this.props.objName, this.props.filter, (res)=>initState({lessons: res}), ()=>initState());
+    onFetch(){
+        var initState=(fields)=>{this.setState({loading: false, modal: false, ...fields})};
+        get(this.props.objName, this.props.filter, (res)=>initState({elements: res}), ()=>initState());
     }
 
     handleSelectChange = (param, e) =>{
@@ -38,31 +38,34 @@ export default class Overview extends React.Component { // Show all lessons of a
     }
 
     handleIndexChange(id, index) {
-        console.log("update lesson index");
+        console.log("update index");
     }
 
     closeModal(){
-        this.setState({lessonModal: false});
+        this.setState({modal: false});
     }
 
     openModal(){
-        this.setState({lessonModal: true});
+        this.setState({modal: true});
+    }
+
+    toggleModal(){
+        this.setState({modal: !this.state.modal});
+    }
+
+    setElement(id){
+        this.setState({courseId: id})
     }
 
     render() {
-        if(!this.state.lessons) return null;
-
+        if(!this.state.elements) return null;
+        let elements = this.state.elemId ? this.state.elements.find(elem => elem._id === this.state.elemId) : this.state.elements;
         return(<>
 
             <AddButton addFunction={this.openModal}>Ajouter</AddButton>
 
-    
-            {this.state.elements.map((elem, i) => 
+            {elements.map((elem, i) => 
                 <Card key={i} style={{ width: '18rem' }}>
-                    {this.props.course.flag_url &&
-                        <img src={this.props.course.flag_url} />
-                    }
-
                     <CardBody>
                         <CardTitle tag="h5">
                             {elem.name}
@@ -71,11 +74,14 @@ export default class Overview extends React.Component { // Show all lessons of a
                             {elem.sentence}
                         </CardSubtitle>
                         <CardText>
-                            Détail
+                            {i}
                         </CardText>
-                        <Button onClick={this.openModal}>
-                            Modifier
-                        </Button>
+                        <CardGroup>
+                            <Button className="mx-auto" onClick={this.openModal}>
+                                Modifier
+                            </Button>
+                        </CardGroup>
+
                         <ButtonGroup>
                             <Button onClick={this.handleIndexChange.bind(this, elem._id, -1)}>
                                 {"<"}
