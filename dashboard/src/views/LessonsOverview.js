@@ -1,71 +1,29 @@
 import React from 'react';
-import {Card, CardBody, CardSubtitle, CardTitle, CardText, Button, ButtonGroup} from 'reactstrap';
 import LessonModal from '../modals/LessonModal';
-import AddButton from '../components/AddButton';
-import { get } from '../apiRequests';
-import Overview from '../components/Overview';
-
+import OverviewWrapper from '../components/OverviewWrapper';
+import Overview from '../common/Overview';
 
 /**
- * @props {object} course
+ * @param {object} course
  */
-export default class LessonsOverview extends React.Component { // Show all lessons of a course
+export default class LessonsOverview extends Overview { // Show all lessons of a course
 
     constructor(props){
         super(props);
-        //console.log(this.props.course)
-
-        this.state = {
-            course: this.props.course,
-            lessonModal: false,
-        }
-
-        this.closeModal = this.closeModal.bind(this);
-        this.openLessonModal = this.openLessonModal.bind(this);
+        this.lessonFilter = {'course': this.props.course._id};
     }
 
-    componentDidMount(){
-        this.fetchLessons();
-    }
-
-    fetchLessons(){
-        var initState=(fields)=>{this.setState({loading: false, lessonModal: false, ...fields})};
-        get("lessons", {'course': this.props.course._id}, (res)=>initState({lessons: res}), ()=>initState());
-    }
-
-    handleSelectChange = (param, e) =>{
-        this.setState({ [param] : e });
-    }
-
-    lessonIndexChange(lessonId, index) {
-        console.log("update lesson index");
-    }
-
-    closeModal(){
-        this.setState({lessonModal: false});
-    }
-
-    openLessonModal(){
-        this.setState({lessonModal: true});
-    }
+    componentDidMount(){this.onFetch();}
 
     render() {
-        if(!this.state.lessons) return null;
-        let lessons = this.state.lessonId ? this.state.lessons.find(lesson => lesson._id === this.state.lessonId) : this.state.lessons;
-
         return(<>
-
-            <Overview objName="lessons" filter={{'course': this.props.course._id}}>
-
-            </Overview>
-
-
-            <LessonModal 
-                isOpen={this.state.lessonModal} 
-                fetchLessons={this.fetchLessons.bind(this)} 
-                courseId={this.props.course._id} 
-                closeModal={this.closeModal}/>
-
+            <OverviewWrapper objName="lessons" toggleModal={this.toggleModal} filter={this.lessonFilter}>
+                <LessonModal 
+                    isOpen={this.state.modal}
+                    fetchLessons={this.closeModalAfterRequest} 
+                    courseId={this.props.course._id} 
+                    closeModal={this.toggleModal}/>
+            </OverviewWrapper>
         </>);
     }
 

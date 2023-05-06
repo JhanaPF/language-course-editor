@@ -12,10 +12,6 @@ export default class MyForm extends React.Component{
         this.handleChange = this.handleChange.bind(this);
         this.type = this.props.addModal ? 'addModal' : 'editModal';
     }
-
-    componentDidMount(){
-        this.initState(this.inputNames);
-    }
     
     initState(inputNames, additionalFields){
         let state = {};

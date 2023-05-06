@@ -6,8 +6,7 @@ export default class MyModal extends React.Component {
 
     constructor(props){
         super(props);
-        this.openProp = false;
-        if(typeof props.isOpen === "boolean") this.openProp = true;
+        this.openProp = typeof props.isOpen === "boolean";
     }
 
     handleChange = (event) => {
@@ -16,7 +15,6 @@ export default class MyModal extends React.Component {
     }
 
     render(){
-
         return (
             <Modal isOpen={this.openProp ? this.props.isOpen : true} size='lg'>
                 <Row className='p-3'>

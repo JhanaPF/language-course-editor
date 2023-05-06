@@ -1,6 +1,4 @@
 const mongoose = require('mongoose')
-const uniqueValidator = require('mongoose-unique-validator')
-require('dotenv').config()
 
 const createdAtSchema = { type: Date, default: Date.now }
 

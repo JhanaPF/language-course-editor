@@ -5,12 +5,14 @@ import CourseForm from '../forms/CourseForm';
 
 /**
  * @param {boolean} isOpen - optionnal 
+ * @param {string} title
  * @param {function} closeModal  
+ * @param {function} fetchCourses  
  */
 export default function CourseModal (props) {
     
     return(
-        <MyModal isOpen={props.isOpen ? props.isOpen : true} title="Ajouter un cours" closeModal={props.closeModal}>
+        <MyModal isOpen={props.isOpen} title="Ajouter un cours" closeModal={props.closeModal}>
             <ModalBody>   
                 <CourseForm close={props.closeModal} fetchCourses={props.fetchCourses}/>
             </ModalBody>

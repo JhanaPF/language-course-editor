@@ -1,27 +1,25 @@
 import React from 'react';
 import {Card, CardBody, CardSubtitle, CardTitle, CardText, CardGroup, Button, ButtonGroup} from 'reactstrap';
-import AddButton from '../components/AddButton';
+import AddButton from './AddButton';
 import { get } from '../apiRequests';
-
 
 /**
  * @props children - wrap modal
  * @param {string} objName
  * @param {object} filter param for fetch request
+ * @param {function} toggleModal
+ * Modal is managed in Overwiew class
  */
-export default class Overview extends React.Component { // Common component for all overviews
+export default class OverviewWrapper extends React.Component { // Common component for all overviews
 
     constructor(props){
         super(props);
-        //console.log(this.props.course)
+
         this.objName = this.props.objName;
         this.state = {
             elements: this.props.elements,
             elemId: null,
-            modal: false,
         }
-        this.closeModal = this.closeModal.bind(this);
-        this.openModal = this.openModal.bind(this);
     }
 
     componentDidMount(){
@@ -39,30 +37,18 @@ export default class Overview extends React.Component { // Common component for 
 
     handleIndexChange(id, index) {
         console.log("update index");
-    }
-
-    closeModal(){
-        this.setState({modal: false});
-    }
-
-    openModal(){
-        this.setState({modal: true});
-    }
-
-    toggleModal(){
-        this.setState({modal: !this.state.modal});
-    }
+    }   
 
     setElement(id){
-        this.setState({courseId: id})
+        this.setState({elemId: id});
     }
 
     render() {
         if(!this.state.elements) return null;
         let elements = this.state.elemId ? this.state.elements.find(elem => elem._id === this.state.elemId) : this.state.elements;
-        return(<>
 
-            <AddButton addFunction={this.openModal}>Ajouter</AddButton>
+        return(<>
+            <AddButton addFunction={this.props.toggleModal}>Ajouter</AddButton>
 
             {elements.map((elem, i) => 
                 <Card key={i} style={{ width: '18rem' }}>
@@ -77,7 +63,7 @@ export default class Overview extends React.Component { // Common component for 
                             {i}
                         </CardText>
                         <CardGroup>
-                            <Button className="mx-auto" onClick={this.openModal}>
+                            <Button className="mx-auto" onClick={this.setElement.bind(this, elem._id)}>
                                 Modifier
                             </Button>
                         </CardGroup>
