@@ -1,6 +1,7 @@
 import axios from 'axios';
 axios.defaults.withCredentials = true;
 const apiUrl = localStorage.getItem('apiUrl');
+
 const log = console.log;
 
 function axiosRequest(url, options, successCbk, errorCbk) { 
@@ -25,7 +26,7 @@ export function get(url, data, successCbk, errorCbk, noty=false){
 }
 
 export function put(url, data, successCbk, errorCbk, noty=false){
-    axiosRequest(url, {method: 'PUT', data: data, headers: {'Content-Type': 'multipart/form-data'},}, successCbk, errorCbk);
+    axiosRequest(url, {method: 'PUT', data: data, headers: {'Content-Type': 'multipart/form-data'}}, successCbk, errorCbk);
 }
 
 export function post(url, data, successCbk, errorCbk, noty=false){

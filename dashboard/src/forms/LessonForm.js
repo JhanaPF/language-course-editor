@@ -15,7 +15,8 @@ export default class LessonForm extends MyForm {
     }
     
     submit(event){
-        super.add("lessons");
+        if(!this.state.name || !this.state.description) return;
+        super.add("lessons", this.props.fetchLessons);
     }
 
     render(){

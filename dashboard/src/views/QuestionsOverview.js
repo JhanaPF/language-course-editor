@@ -8,14 +8,14 @@ export default class QuestionsOverview extends Overview { // Show all questions 
 
     constructor(props){
         super(props);
-        this.filter = {'lesson': this.props.lesson._id};
+        this.filter = {'lesson': props.lesson._id};
         this.fetchQuestions = this.fetchQuestions.bind(this);
     }
 
-    componentDidMount(){this.onFetch(this.filter);}
+    componentDidMount(){super.onFetch(this.filter);}
 
     render() {
-        return(<>
+        return(this.props.lesson ? <>
             <OverviewWrapper objName="questions" toggleModal={this.toggleModal} filter={this.filter}>
                 <QuestionModal 
                     isOpen={this.state.modal}
@@ -23,6 +23,6 @@ export default class QuestionsOverview extends Overview { // Show all questions 
                     lessonId={this.props.lesson._id} 
                     closeModal={this.closeModal}/>  
             </OverviewWrapper>
-        </>);
+        </> : null);
     }
 }

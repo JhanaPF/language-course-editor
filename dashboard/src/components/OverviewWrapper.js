@@ -8,6 +8,7 @@ import { get } from '../apiRequests';
  * @param {string} objName
  * @param {object} filter param for fetch request
  * @param {function} toggleModal
+ * @param {JSX} children modal
  * Modal is managed in Overwiew class
  */
 export default class OverviewWrapper extends React.Component { // Common component for all overviews
@@ -17,18 +18,8 @@ export default class OverviewWrapper extends React.Component { // Common compone
 
         this.objName = this.props.objName;
         this.state = {
-            elements: this.props.elements,
             elemId: null,
         }
-    }
-
-    componentDidMount(){
-        this.onFetch();
-    }
-
-    onFetch(){
-        var initState=(fields)=>{this.setState({loading: false, modal: false, ...fields})};
-        get(this.props.objName, this.props.filter, (res)=>initState({elements: res}), ()=>initState());
     }
 
     handleSelectChange = (param, e) =>{
@@ -37,15 +28,15 @@ export default class OverviewWrapper extends React.Component { // Common compone
 
     handleIndexChange(id, index) {
         console.log("update index");
-    }   
+    }
 
     setElement(id){
         this.setState({elemId: id});
     }
 
     render() {
-        if(!this.state.elements) return null;
-        let elements = this.state.elemId ? this.state.elements.find(elem => elem._id === this.state.elemId) : this.state.elements;
+        if(!this.props.elements) return null;
+        let elements = this.state.elemId ? this.props.elements.find(elem => elem._id === this.state.elemId) : this.props.elements;
 
         return(<>
             <AddButton addFunction={this.props.toggleModal}>Ajouter</AddButton>
@@ -80,7 +71,7 @@ export default class OverviewWrapper extends React.Component { // Common compone
                 </Card>
             )}
 
-            {this.props.children}
+            {this.props.children} 
 
         </>);
     }
