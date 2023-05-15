@@ -7,12 +7,10 @@ import Overview from '../common/Overview';
 export default class QuestionsOverview extends Overview { // Show all questions of a lesson
 
     constructor(props){
-        super(props);
-        this.filter = {'lesson': props.lesson._id};
-        this.fetchQuestions = this.fetchQuestions.bind(this);
+        super(props, {'lesson': props.lesson._id}, "questions");
     }
 
-    componentDidMount(){super.onFetch(this.filter);}
+    componentDidMount(){ this.onFetch(); }
 
     render() {
         return(this.props.lesson ? <>

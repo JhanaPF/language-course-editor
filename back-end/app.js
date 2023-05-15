@@ -22,7 +22,8 @@ const userRoutes = require('./routes/user')
 const dicRoutes = require('./routes/dictionaries')
 const coursesRoutes = require('./routes/courses')
 const lessonRoutes = require('./routes/lessons')
-
+const questionRoutes = require('./routes/questions')
+const { question } = require('./schemas/schemas')
 
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
@@ -67,6 +68,7 @@ app.use(isAdmin) // Next routes are restricted for admins
 app.use('/dictionaries', dicRoutes)
 app.use('/courses', coursesRoutes)
 app.use('/lessons', lessonRoutes)
+app.use('/questions', questionRoutes)
 
 
 // log("Routes list: ", listEndpoints(app));

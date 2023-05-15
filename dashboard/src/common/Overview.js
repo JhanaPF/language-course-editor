@@ -8,15 +8,21 @@ import {get} from '../apiRequests';
 export default class Overview extends React.Component{
     // parent class for all overviews views
 
-    constructor(props){
+    constructor(props, filter, objName){
         super(props);
-        this.filter = props.filter;
-        this.objName = props.objName;
-        this.state = {modal: false};
+        this.state = {
+            elements: null,
+            elemId: null,
+            modal: false
+        };
+        this.filter = filter;
+        this.objName = objName;
         this.closeModal = this.closeModal.bind(this);
         this.openModal = this.openModal.bind(this);
         this.toggleModal = this.toggleModal.bind(this);
         this.closeModalAfterRequest = this.closeModalAfterRequest.bind(this);
+        this.setElement = this.setElement.bind(this);
+        this.getElement = this.getElement.bind(this);
     }
 
     componentDidMount(){
@@ -40,5 +46,16 @@ export default class Overview extends React.Component{
 
     openModal(){
         this.setState({modal: true});
+    }
+
+    setElement(id){
+        this.setState({
+            elemId: id,
+            element: this.getElement(id)
+        });
+    }
+
+    getElement(id){
+        return this.state.elements.find(e=>e._id === id);
     }
 }

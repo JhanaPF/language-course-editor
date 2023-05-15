@@ -36,12 +36,14 @@ export default class OverviewWrapper extends React.Component { // Common compone
 
     render() {
         if(!this.props.elements) return null;
-        let elements = this.state.elemId ? this.props.elements.find(elem => elem._id === this.state.elemId) : this.props.elements;
+        let elements = this.props.elemId ? this.props.elements.filter(elem => elem._id === this.state.elemId) : this.props.elements;
 
         return(<>
-            <AddButton addFunction={this.props.toggleModal}>Ajouter</AddButton>
 
-            {elements.map((elem, i) => 
+            {!this.props.elemId && <AddButton addFunction={this.props.toggleModal}>Ajouter</AddButton>}
+            
+
+            {elements && elements.map((elem, i) => 
                 <Card key={i} style={{ width: '18rem' }}>
                     <CardBody>
                         <CardTitle tag="h5">
@@ -54,7 +56,7 @@ export default class OverviewWrapper extends React.Component { // Common compone
                             {i}
                         </CardText>
                         <CardGroup>
-                            <Button className="mx-auto" onClick={this.setElement.bind(this, elem._id)}>
+                            <Button className="mx-auto" onClick={this.props.setElement.bind(this, elem._id)}>
                                 Modifier
                             </Button>
                         </CardGroup>

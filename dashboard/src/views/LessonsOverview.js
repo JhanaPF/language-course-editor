@@ -11,18 +11,14 @@ import QuestionsOverview from './QuestionsOverview';
 export default class LessonsOverview extends Overview { // Show all lessons of a course
 
     constructor(props){
-        super({
-            ...props, 
-            filter: {'course': props.course._id},
-            objName: "lessons"
-        });
+        super(props, {'course': props.course._id}, "lessons");
     }
 
-    componentDidMount(){this.onFetch();}
+    componentDidMount(){ this.onFetch(); }
 
     render() {
         return(<>
-            <OverviewWrapper objName="lessons" toggleModal={this.toggleModal} elements={this.state.elements}>
+            <OverviewWrapper objName="lessons" toggleModal={this.toggleModal} elemId={this.state.elemId} elements={this.state.elements} setElement={this.setElement}>
                 <LessonModal 
                     isOpen={this.state.modal}
                     fetchLessons={this.closeModalAfterRequest} 
@@ -30,8 +26,8 @@ export default class LessonsOverview extends Overview { // Show all lessons of a
                     closeModal={this.closeModal}/>
             </OverviewWrapper>
 
-            {this.state.lesson &&
-                <QuestionsOverview isOpen={this.state.elemId} lesson={null}/>
+            {this.state.element &&
+                <QuestionsOverview isOpen={this.state.elemId} lesson={this.getElement(this.state.elemId)}/>
             }
         </>);
     }
