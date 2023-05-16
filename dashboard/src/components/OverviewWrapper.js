@@ -6,8 +6,8 @@ import { get } from '../apiRequests';
 /**
  * @props children - wrap modal
  * @param {string} objName
- * @param {object} filter param for fetch request
  * @param {function} toggleModal
+ * @param {mongoId} elemId
  * @param {JSX} children modal
  * Modal is managed in Overwiew class
  */

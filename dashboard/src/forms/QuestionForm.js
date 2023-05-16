@@ -3,7 +3,8 @@ import {Form, FormText, FormGroup, Input, Label, Col} from 'reactstrap';
 import {validString} from '../rgx/regex'
 import AudioRecorder from '../components/AudioRecorder';
 import MyForm from '../common/MyForm';
-
+import FormWrapper from '../components/FormWrapper';
+import TextFormGroup from '../components/TextFormGroup';
 export default class QuestionForm extends MyForm {
 
     constructor(props){
@@ -24,24 +25,11 @@ export default class QuestionForm extends MyForm {
 
         // Index de la question dans la leçon
 
-        this.inputNames = ["picture", "sentence", "sentence_audio", "translation", "picture_choice", "text_choice", "answer_index"];        
-
-        this.state = {course_id: this.props.lessonId};
-
-
-        this.handleChange = super.handleChange.bind(this);
+        this.inputNames = ["picture", "sentence", "sentence_audio", "translation", "picture_choice", "text_choice", "answer_index", "course_id"];        
     }
 
     componentDidMount(){
-        super.initState(this.inputNames);
-    }
-
-
-    isValid(){
-        return true;
-    }
-
-    formValidation () {
+        this.initState(this.inputNames, {course_id: this.props.lessonId});
     }
 
     render() {
