@@ -13,7 +13,7 @@ import { capitalizeFirstLetter } from "../utils/stringUtils";
 
  * @returns Formfroup with label and input
  */
-export default function TextFormGroup (props) {
+export default function SimpleFormGroup (props) {
     return (
         <MyFormGroup text={capitalizeFirstLetter(props.text)} inputId={props.id}>
             <Input

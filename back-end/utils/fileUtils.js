@@ -2,21 +2,19 @@ const log = console.log
 const fs = require('fs')
 
 /**
- * 
- * @param {res} res 
  * @param {string} fileName 
  * @param {string} filePath 
  * @param {Buffer} tempFile 
  */
-const writeFile = (res, fileName, filePath, tempFile) => {
+const writeFile = (fileName, filePath, tempFile, successCbk, errCbk) => {
     fs.writeFile(`./${filePath}/${fileName}`, tempFile, (err) => {
         if (err) {
             log("Error writing file on system: ", err)
-            return res.status(500).end()
+            if(errCbk) return errCbk()
         }
 
-        // Fichier enregistré avec succès
         log("File " + fileName + " saved with success")
+        if(successCbk) return successCbk()
     })
 }
 

@@ -1,8 +1,12 @@
 import React from "react";
 import {put, post} from '../apiRequests';
 
+/**
+ * @param {*} props 
+ * @param {*} inputNames 
+ */
 export default class MyForm extends React.Component{
-    // parent class for all forms
+    // In the children, call componentdidmount with this.initState([list of inputs], {additional fields})
 
     constructor(props, inputNames){
         //console.log(other)

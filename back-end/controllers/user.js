@@ -50,8 +50,6 @@ router.signin = (req, res) => {
     const {mail, password} = req.body
     if(!mail || !password) return res.status(401).json()
     log("User connection attempt " + mail)
-    
-    // const token = req.cookies ? req.cookies.my_cookie.token : null //  Let's check the token from cookieparser
 
     user.findOne({ mail })
     .then(userFound => {

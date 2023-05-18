@@ -29,25 +29,21 @@ class App extends React.Component {
         }
 
         post('auth/token', {},
-            () => {
-                this.unlockApp(); // Token still valid
-            },
-            () => {
+            () => this.unlockApp(), // Token still valid
+            () => { // No token or not valid anymore
                 if(isIdSaved){
                     const mail = localStorage.getItem("mail");
                     const password = localStorage.getItem("password");
                     this.signIn(mail, password);
-                }
+                } else {this.setState({loading: false})};
             }
         );
     }
 
     signIn = (mail, password) => {
-        post(
-            'auth/signin', 
-            { mail, password },
+        post('auth/signin', { mail, password },
             (res)=>{
-                localStorage.setItem('userId', res.data.userId)
+                localStorage.setItem('userId', res.data.userId);
                 this.unlockApp();
             }
         );

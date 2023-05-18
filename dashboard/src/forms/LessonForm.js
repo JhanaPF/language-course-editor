@@ -1,7 +1,7 @@
 import React from 'react';
 import MyForm from '../common/MyForm';
 import FormWrapper from '../components/FormWrapper';
-import TextFormGroup from '../components/TextFormGroup';
+import SimpleFormGroup from '../components/SimpleFormGroup';
 
 export default class LessonForm extends MyForm {
 
@@ -22,8 +22,8 @@ export default class LessonForm extends MyForm {
     render(){
         return (
             <FormWrapper submit={this.submit.bind(this)}>
-                <TextFormGroup text="Intitulé du cours" id="name" value={this.state.name} handleChange={this.handleChange}/>
-                <TextFormGroup text="Description" id="description" value={this.state.description} handleChange={this.handleChange}/>
+                <SimpleFormGroup text="Intitulé du cours" id="name" value={this.state.name} handleChange={this.handleChange}/>
+                <SimpleFormGroup text="Description" id="description" value={this.state.description} handleChange={this.handleChange}/>
             </FormWrapper>
         );
     }

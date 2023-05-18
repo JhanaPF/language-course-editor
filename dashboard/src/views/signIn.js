@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import {  Form, FormGroup, Input, Label, Button, Col} from 'reactstrap';
 import {validEmail, validPassword} from '../rgx/regex';
-import TextFormGroup from '../components/TextFormGroup';
+import SimpleFormGroup from '../components/SimpleFormGroup';
 import { post } from '../apiRequests';
 
 /**
@@ -106,7 +106,7 @@ class SignIn extends React.Component {
                     </Col>   
                 </FormGroup>
 
-                <TextFormGroup type="checkbox" id="keepConnection" value={this.state.keepConnection} handleChange={this.handleChekbox.bind(this)} text="Restez connecté"/>
+                <SimpleFormGroup type="checkbox" id="keepConnection" value={this.state.keepConnection} handleChange={this.handleChekbox.bind(this)} text="Restez connecté"/>
                 
                 <Col md="6" className='ml-auto'>
                     <Button className=' position-absoluto r-0 text-right ml-auto text-dark bg-white' onClick={this.handleSubtmit.bind(this)}>

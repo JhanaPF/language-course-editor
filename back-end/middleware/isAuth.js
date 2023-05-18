@@ -2,18 +2,18 @@ const jwt = require('jsonwebtoken')
 require('dotenv').config()
 const cookie = require('cookie')
 
-
 module.exports = (req, res, next) => {
     //console.log("cookies:", req.signedCookies)
     const myCookie = req.signedCookies.credentials
-    let token
+    if(!myCookie) return res.status(401).json()
 
+    let token
     try {
         const parsedCookie = cookie.parse(myCookie)
         token = parsedCookie.token
-        token = token.substring(1, token.length-1);
+        token = token.substring(1, token.length-1)
     } catch (err) {
-        console.error(`Parsing error : ${err}`)
+        console.error(`IsAuth. Parsing error : ${err}`)
         return res.status(500).json()
     }
 

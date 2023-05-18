@@ -29,6 +29,13 @@ router.add = (req, res) => {
         // Scan and analyse file then write the file on system 
         // Check if raw_name already exists in database 
         // Check mimetype and size
+
+        var saveDictionary = () => {
+            let controlledFields = controlFields(fields)
+            controlledFields.file_name = fileName
+            
+            commonDao.save(res, dictionary, "dictionnary", controlledFields)
+        }
         
         let fileName = ''
         if(!isObjectEmpty(files)){
@@ -37,15 +44,10 @@ router.add = (req, res) => {
             fileName = `${Date.now()}-${newFilename}.png`
             const tempFile = fs.readFileSync(filepath)
             
-            if(!isBuffer(tempFile)) {return res.status(500).end()}
+            if(!isBuffer(tempFile)) return res.status(500).end()
             
-            writeFile(res, fileName, "public/pictures/courses", tempFile)
+            writeFile(fileName, "public/pictures/courses", tempFile, saveDictionary, () => res.status(500).end())
         }
-        
-        let controlledFields = controlFields(fields)
-        controlledFields.file_name = fileName
-        
-        commonDao.save(res, dictionary, "dictionnary", controlledFields)
     })
 } 
 

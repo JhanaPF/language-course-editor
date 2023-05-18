@@ -1,10 +1,12 @@
 import React from 'react';
-import {Form, FormText, FormGroup, Input, Label, Col} from 'reactstrap';
+import {FormText, FormGroup, Input, Label, Col, Row} from 'reactstrap';
 import {validString} from '../rgx/regex'
 import AudioRecorder from '../components/AudioRecorder';
 import MyForm from '../common/MyForm';
 import FormWrapper from '../components/FormWrapper';
-import TextFormGroup from '../components/TextFormGroup';
+import SimpleFormGroup from '../components/SimpleFormGroup';
+import PictureInputGroup from '../components/PictureInputGroup';
+
 export default class QuestionForm extends MyForm {
 
     constructor(props){
@@ -25,37 +27,24 @@ export default class QuestionForm extends MyForm {
 
         // Index de la question dans la leçon
 
-        this.inputNames = ["picture", "sentence", "sentence_audio", "translation", "picture_choice", "text_choice", "answer_index", "course_id"];        
+        this.inputNames = ["picture", "sentence", "sentence_audio", "translation", "picture_choice", "text_choice", "answer_index", "course_id", "lesson_id"];        
     }
 
     componentDidMount(){
         this.initState(this.inputNames, {course_id: this.props.lessonId});
     }
 
+    submit(event){
+        super.add("questions", this.props.fetchQuestions);
+    }
+
     render() {
         return (
-            <Form>
-                <FormGroup className='mx-2 mb-3' >
-                    <Label for="picture">
-                        Image:
-                    </Label>
-                    <Col sm={10}>
-                        <Input id="picture" name="picture" type="file" onChange={this.handleChange}/>
-                        <FormText>
-                            Ajouter une image
-                        </FormText>
-                    </Col>
-                </FormGroup>
-                <FormGroup className='mx-2'>
-                    <Label className='text-left mr-4' for="picture">
-                        Phrase correspondante:
-                    </Label>
-                    <Input
-                        id="sentence"
-                        name="sentence"
-                        value={this.state.sentence}
-                        onChange={this.handleChange} />
-                </FormGroup>
+            <FormWrapper submit={this.submit.bind(this)}>
+                <SectionTitle>Question:</SectionTitle>
+                
+                <PictureInputGroup text="Image" description="Ajouter une image" name="picture" onChange={this.handleChange}/>
+                <SimpleFormGroup text="Phrase correspondante" id="sentence" value={this.state.sentence} handleChange={this.handleChange}/>
                 <FormGroup className='mx-2 mb-3' >
                     <Label for="vocal">
                         Enregistrement audio:
@@ -67,16 +56,11 @@ export default class QuestionForm extends MyForm {
                         </FormText>
                     </Col>
                 </FormGroup>
-                <FormGroup className='mx-2 mb-3'>
-                    <Label className='text-left'>
-                        Traduction (réponse):
-                    </Label>
-                    <Input
-                        id="translation"
-                        name="translation"
-                        value={this.state.translation}
-                        onChange={this.handleChange} />
-                </FormGroup>
+                <SectionTitle>
+                    Réponse:
+                </SectionTitle>
+                <SimpleFormGroup text="Traduction/Réponse" id="translation" value={this.state.translation} handleChange={this.handleChange}/>
+
                 <FormGroup className='mx-2 mb-3'>
                     <Label className='text-left'>
                         Choix de réponses:
@@ -102,6 +86,7 @@ export default class QuestionForm extends MyForm {
                         value={this.state.answerChoices4}
                         onChange={this.handleChange}/>                 
                 </FormGroup>
+
                 <FormGroup className='mx-2 mb-3' >
                     <Label>
                         Choix d'images:
@@ -116,30 +101,13 @@ export default class QuestionForm extends MyForm {
                         </FormText>
                     </Col>
                 </FormGroup>
-                <FormGroup className='mx-2'>
-                    <Label className='text-left' for="indexAnswer">
-                        Index de la réponse dans la phrase:
-                    </Label>                        
-                    <Input
-                        id="indexAnswer"
-                        name="indexAnswer"
-                        value={this.state.indexAnswer}
-                        onChange={this.handleChange}
-                        type='number' />                         
-                </FormGroup>
-                <FormGroup className='mx-2'>
-                    <Label className='text-left' for="indexAnswer">
-                        Index de la réponse dans la phrase:
-                    </Label>                        
-                    <Input
-                        id="indexAnswer"
-                        name="indexAnswer"
-                        value={this.state.indexAnswer}
-                        onChange={this.handleChange}
-                        type='number' />                         
-                </FormGroup>
-            </Form>             
+                
+                <SimpleFormGroup text="Index de la réponse dans la phrase" type="number" id="indexAnswer" value={this.state.indexAnswer} handleChange={this.handleChange}/>
+
+            </FormWrapper>
         );
     }
 
 }
+
+const SectionTitle = (props) => <Row className='mx-3 my-2 border-bottom'><strong>{props.children}</strong></Row>

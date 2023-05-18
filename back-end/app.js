@@ -4,7 +4,6 @@
 
 const express = require('express')
 const app = express()
-const listEndpoints = require("express-list-endpoints")
 require('dotenv').config()
 const log = console.log
 const cors = require('cors')
@@ -33,8 +32,8 @@ const limiter = rateLimit({
 })
 app.use(limiter)
 
-
 app.use((req, res, next) => { 
+    console.log(req.url)
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization')
     res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE')
     next()
@@ -70,7 +69,7 @@ app.use('/courses', coursesRoutes)
 app.use('/lessons', lessonRoutes)
 app.use('/questions', questionRoutes)
 
-
+// const listEndpoints = require("express-list-endpoints")
 // log("Routes list: ", listEndpoints(app));
 
 module.exports = app // For testing
