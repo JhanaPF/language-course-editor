@@ -18,12 +18,18 @@ export default class LessonsOverview extends Overview { // Show all lessons of a
 
     render() {
         return(<>
-            <OverviewWrapper objName="lessons" toggleModal={this.toggleModal} elemId={this.state.elemId} elements={this.state.elements} setElement={this.setElement}>
-                <LessonModal 
-                    isOpen={this.state.modal}
-                    fetchLessons={this.closeModalAfterRequest} 
-                    courseId={this.props.course._id} 
-                    closeModal={this.closeModal}/>
+            <OverviewWrapper 
+                objName="lessons" 
+                buttonObjName="Une leçon"
+                toggleModal={this.toggleModal} 
+                elemId={this.state.elemId} 
+                elements={this.state.elements} 
+                setElement={this.setElement}>
+                    <LessonModal 
+                        isOpen={this.state.modal}
+                        fetchLessons={this.closeModalAfterRequest} 
+                        courseId={this.props.course._id} 
+                        closeModal={this.closeModal}/>
             </OverviewWrapper>
 
             {this.state.element &&

@@ -14,12 +14,18 @@ export default class QuestionsOverview extends Overview { // Show all questions 
 
     render() {
         return(this.props.lesson ? <>
-            <OverviewWrapper objName="questions" toggleModal={this.toggleModal} elemId={this.state.elemId} elements={this.state.elements} setElement={this.setElement}>
-                <QuestionModal 
-                    isOpen={this.state.modal}
-                    fetchQuestions={this.closeModalAfterRequest} 
-                    lessonId={this.props.lesson._id} 
-                    closeModal={this.closeModal}/>  
+            <OverviewWrapper 
+                objName="questions" 
+                buttonObjName="Une question"
+                toggleModal={this.toggleModal} 
+                elemId={this.state.elemId} 
+                elements={this.state.elements} 
+                setElement={this.setElement}>
+                    <QuestionModal 
+                        isOpen={this.state.modal}
+                        fetchQuestions={this.closeModalAfterRequest} 
+                        lessonId={this.props.lesson._id} 
+                        closeModal={this.closeModal}/>  
             </OverviewWrapper>
         </> : null);
     }

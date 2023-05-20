@@ -36,11 +36,11 @@ export default class OverviewWrapper extends React.Component { // Common compone
 
     render() {
         if(!this.props.elements) return null;
-        let elements = this.props.elemId ? this.props.elements.filter(elem => elem._id === this.state.elemId) : this.props.elements;
+        let elements = this.props.elemId ? this.props.elements.filter(elem => elem._id === this.props.elemId) : this.props.elements;
 
         return(<>
 
-            {!this.props.elemId && <AddButton addFunction={this.props.toggleModal}>Ajouter</AddButton>}
+            {!this.props.elemId && <AddButton addFunction={this.props.toggleModal}>Ajouter {this.props.buttonObjName}</AddButton>}
             
 
             {elements && elements.map((elem, i) => 
@@ -50,7 +50,7 @@ export default class OverviewWrapper extends React.Component { // Common compone
                             {elem.name}
                         </CardTitle>
                         <CardSubtitle className="mb-2 text-muted" tag="h6" >
-                            {elem.sentence}
+                            {elem.description}
                         </CardSubtitle>
                         <CardText>
                             {i}

@@ -1,6 +1,13 @@
 import React from "react";
-import {Modal, ModalHeader, Row, Col} from 'reactstrap';
+import {Modal, Row, Col} from 'reactstrap';
 
+/**
+ * Wrap your modal body
+ * @param openProp
+ * @param size - default = "lg"
+ * @param title
+ * @param closeModal
+ */
 export default class MyModal extends React.Component {
     // Wrapper for modals
 
@@ -16,7 +23,7 @@ export default class MyModal extends React.Component {
 
     render(){
         return (
-            <Modal isOpen={this.openProp ? this.props.isOpen : true} size='lg'>
+            <Modal isOpen={this.openProp ? this.props.isOpen : true} size={this.props.size ? this.props.size : 'lg'}>
                 <Row className='p-3'>
                     <Col className="border-bottom" md='10'>
                         <p style={{fontSize: 28}}>{this.props.title}</p>

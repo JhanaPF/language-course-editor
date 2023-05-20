@@ -1,17 +1,12 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import React from 'react';
-import {
-    Modal, ModalBody, Button,
-    Row, Col, Card, CardBody, CardTitle,  
-    CardText, Table, Collapse
-} from 'reactstrap';
+import { Modal, ModalBody, Button, Row, Col, Table, Collapse } from 'reactstrap';
 import axios from 'axios';
 import Select from 'react-select';
 import WordModal from '../modals/WordModal';
-import Classes from '../enum/classes';
-// import Categories from './enum/categories';
-import Sources from '../enum/sources';
 import CoursesOverview from './CoursesOverview';
+import WordDetail from '../components/WordDetail';
+import DeleteModal from '../modals/DeleteModal';
 
 class Dashboard extends React.Component {
 
@@ -25,8 +20,6 @@ class Dashboard extends React.Component {
             editModal: false,
             deleteModal: false,
             selectedWord: undefined, 
-            showNativeDefinition: false,
-            showTranslatedWord: true,
             dictionary: null,
         }
         
@@ -45,7 +38,7 @@ class Dashboard extends React.Component {
     }
     
     onFetchdictionary(){
-        axios.get(this.apiUrl + 'dictionaries/dictionary', {  headers: { 'Authorization': this.props.token } } )
+        axios.get(this.apiUrl + 'dictionaries/dictionary')
         .then(res => {
             // console.log(res.data.message)
             let setWords = [];
@@ -103,6 +96,11 @@ class Dashboard extends React.Component {
     }
 
     delete(){
+        if(!this.state.selectedWord){
+            console.log("No word selected for deletion");
+            return;
+        }
+        
         axios.delete(
             this.apiUrl + 'word',              
             {
@@ -143,66 +141,36 @@ class Dashboard extends React.Component {
                             options={this.state.words} 
                             noOptionsMessage={() => null}
                             value={this.state.selectedWord}
-                            onChange={this.handleSelectChange.bind(this, 'selectedWord')} /> 
+                            onChange={this.handleSelectChange.bind(this, 'selectedWord')} 
+                        /> 
 
-                            {!this.state.loading &&                            
-                                <Table className='mt-2' style={{borderRadius:10 }} bordered hover responsive >
-                                    <thead>
-                                      <tr>
-                                        <th>Mot</th>
-                                        <th>Définition</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                        {this.state.dictionary.map((wordData, i) => {
-                                            return(
-                                                <tr key={i} onClick={this.selectWord.bind(this, wordData._id)}>
-                                                    <th scope="row">{wordData.word}</th>
-                                                    <td>{wordData.translated_definition}</td>
-                                                </tr>
-                                            )
-                                        })}        
-                                    </tbody>
-                                </Table>    
-                            }
+                        {!this.state.loading &&                            
+                            <Table className='mt-2' style={{borderRadius:10 }} bordered hover responsive >
+                                <thead>
+                                  <tr>
+                                    <th>Mot</th>
+                                    <th>Définition</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                    {this.state.dictionary.map((wordData, i) => {
+                                        return(
+                                            <tr key={i} onClick={this.selectWord.bind(this, wordData._id)}>
+                                                <th scope="row">{wordData.word}</th>
+                                                <td>{wordData.translated_definition}</td>
+                                            </tr>
+                                        )
+                                    })}        
+                                </tbody>
+                            </Table>    
+                        }
                     </Col>
                     <Col md='6'>
                         {this.state.selectedWordData &&
-                        <Collapse isOpen={this.state.selectedWordData}>
-                            <Card color="warning" className='text-left my-3'>
-                                <CardBody className='p-1'>
-                                    <CardTitle tag="h5">
-                                        Détail du mot sélectionné
-                                    </CardTitle>  
-                                    <CardText className="p-2"> 
-                                        <i onClick={this.toggleModal.bind(this, "editModal")} 
-                                            className="fas fa-edit position-absolute mr-3 fa-xl" style={{right: 15, top: 0}}/>
-                                        <i onClick={this.toggleModal.bind(this, 'deleteModal')} 
-                                            className="fas fa-trash-alt fa-xl position-absolute mr-1" style={{right: 0, top: 0}}/>
-                                        <span className="font-weight-bold"> Mot : </span>
-                                        {this.state.selectedWordData.word}{', '}{ this.state.selectedWordData.class && Classes.getName(this.state.selectedWordData.class)} <br/>
-                                        <span className="font-weight-bold">Définition en français : </span> 
-                                        {this.state.selectedWordData.translated_definition} <br/>
-                                        <span className="font-weight-bold">Définition : </span> 
-                                        {this.state.selectedWordData.definition} <br/>
-                                        <span className="font-weight-bold">Niveau de langage : </span> 
-                                        {this.state.selectedWordData.level} <br/>
-                                        <span className="font-weight-bold">Catégorie(s) : </span> 
-                                        {this.state.selectedWordData.categories} <br/>
-                                        <span className="font-weight-bold">Source : </span> 
-                                        {(this.state.selectedWordData.source !== null) && Sources.getName(this.state.selectedWordData.source)} <br/>
-                                        <span className="font-weight-bold">Devinette : </span> 
-                                        {this.state.selectedWordData.additionalData.riddle} <br/>
-                                        <span className="font-weight-bold">Devinette en français : </span> 
-                                        {this.state.selectedWordData.additionalData.translated_riddle} <br/>
-                                        <span className="font-weight-bold">Anecdotes : </span> 
-                                        {this.state.selectedWordData.additionalData.story} <br/>
-                                        <span className="font-weight-bold">Mot en contexte : </span> 
-                                        { this.state.selectedWordData.additionalData.sentence} <br/>
-                                    </CardText>
-                                </CardBody>
-                            </Card>  
-                        </Collapse>}
+                            <Collapse isOpen={this.state.selectedWordData}>
+                                <WordDetail selectedWordData={this.state.selectedWordData} toggleModal={this.toggleModal.bind(this)}/>
+                            </Collapse>
+                        }
 
                         <Col className='text-right'>
                             <Button className='text-right mt-1' onClick={this.toggleModal.bind(this, "addModal")}>
@@ -227,19 +195,8 @@ class Dashboard extends React.Component {
 
                 {/********** MODALES ***********/}
                 
-                <Modal size='sm' isOpen={this.state.deleteModal} >   {/* Modale de confirmation de suppression */}             
-                    <ModalBody>
-                        <Col className='text-center'>
-                            <Button onClick={this.toggleModal.bind(this, "deleteModal")} >
-                                Annuler
-                            </Button>
-                            {'  '}
-                            <Button onClick={this.delete.bind(this)} color='danger'>
-                                Supprimer
-                            </Button>                       
-                        </Col> 
-                    </ModalBody>
-                </Modal>
+
+                <DeleteModal isOpen={this.state.deleteModal} toggleModal={this.toggleModal.bind(this)} delete={this.delete.bind(this)} />
 
                 {this.state.addModal &&
                     <WordModal
