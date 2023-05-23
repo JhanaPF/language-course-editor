@@ -15,10 +15,11 @@ router.fetch = (req, res) => {
 }
 
 router.add = (req, res) => {   
-    log("Add question")
-
+    
     const data = req.body
-    if(!data) return res.status(400).json()
+    log("Add question !", data)
+    if(!data) return res.status(400).json({message: "No data"})
+    
 
     const form = formidable({ multiples: true })
     form.parse(req, function (err, fields, files) { 
@@ -27,8 +28,15 @@ router.add = (req, res) => {
             return res.status(500).end()
         }
 
+        Object.keys(fields).forEach(field => {
+            if(field === "sentence" || field === "translation"){ 
+                fields[field] = JSON.parse(fields[field])
+            }
+        });
         let controlledFields = controlFields(fields)
+        
         log(fields)
+        
         commonDao.save(res, question, "question", controlledFields)
     })
 } 

@@ -1,5 +1,4 @@
 /**
- * 
  * @param {*} object 
  * @returns object with lowercased strings
  */

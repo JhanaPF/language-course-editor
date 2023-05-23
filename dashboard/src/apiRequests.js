@@ -3,11 +3,10 @@
 import axios from 'axios';
 axios.defaults.withCredentials = true;
 const apiUrl = localStorage.getItem('apiUrl');
-
 const log = console.log;
 
 function axiosRequest(url, options, successCbk, errorCbk) { 
-    log(options)
+    //log(options)
     return axios({ url:apiUrl + url, headers: {'Accept' : 'application/json'},  ...options})
     .then(res => {
         //log("Request success: ", res);

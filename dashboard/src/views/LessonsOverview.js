@@ -14,13 +14,13 @@ export default class LessonsOverview extends Overview { // Show all lessons of a
         super(props, {'course': props.course._id}, "lessons");
     }
 
-    componentDidMount(){ this.onFetch(); }
+    componentDidMount =()=> this.onFetch();
 
     render() {
         return(<>
             <OverviewWrapper 
                 objName="lessons" 
-                buttonObjName="Une leçon"
+                buttonObjName="une leçon"
                 toggleModal={this.toggleModal} 
                 elemId={this.state.elemId} 
                 elements={this.state.elements} 
@@ -33,7 +33,7 @@ export default class LessonsOverview extends Overview { // Show all lessons of a
             </OverviewWrapper>
 
             {this.state.element &&
-                <QuestionsOverview isOpen={this.state.elemId} lesson={this.getElement(this.state.elemId)}/>
+                <QuestionsOverview isOpen={this.state.elemId} courseId={this.props.course._id} lesson={this.getElement(this.state.elemId)}/>
             }
         </>);
     }

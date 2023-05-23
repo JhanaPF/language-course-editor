@@ -3,14 +3,16 @@ import QuestionModal from '../modals/QuestionModal';
 import OverviewWrapper from '../components/OverviewWrapper';
 import Overview from '../common/Overview';
 
-
+/**
+ * lesson, courseId
+ */
 export default class QuestionsOverview extends Overview { // Show all questions of a lesson
 
     constructor(props){
         super(props, {'lesson': props.lesson._id}, "questions");
     }
 
-    componentDidMount(){ this.onFetch(); }
+    componentDidMount =()=> this.onFetch();
 
     render() {
         return(this.props.lesson ? <>
@@ -25,6 +27,7 @@ export default class QuestionsOverview extends Overview { // Show all questions 
                         isOpen={this.state.modal}
                         fetchQuestions={this.closeModalAfterRequest} 
                         lessonId={this.props.lesson._id} 
+                        courseId={this.props.courseId}
                         closeModal={this.closeModal}/>  
             </OverviewWrapper>
         </> : null);

@@ -30,7 +30,7 @@ const pictureChoice = [{
     url: fileUrl,
 }] 
 
-const textChoice =  {type: [Array]}
+const textChoice =  {type: [String]}
 
 module.exports = {
     createdAtSchema,

@@ -17,7 +17,7 @@ class AudioRecorder extends Component {
     }
 
     handleStartRecording = () => {
-        console.log('start recording')
+        console.log('start recording');
         navigator.mediaDevices.getUserMedia({ audio: true })
         .then(stream => {
             const mediaRecorder = new MediaRecorder(stream);
@@ -35,14 +35,13 @@ class AudioRecorder extends Component {
     }
 
     handleStopRecording = () => {
-        console.log('stop recording')
+        console.log('stop recording');
         this.state.mediaRecorder.stop();
         this.setState({ isRecording: false });
 
         const audioBlob = new Blob(this.state.audioChunks, { type: "audio/wav" });
-//        if(this.props.saveAudio) this.props.saveAudio(audioBlob);
         const file = new File([audioBlob], "audio.wav", { type: "audio/wav" })
-        console.log(file)
+        //console.log(file)
         if(this.props.saveAudio) this.props.saveAudio(file);
     }
 

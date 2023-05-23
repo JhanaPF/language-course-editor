@@ -10,10 +10,8 @@ export default class CourseForm extends MyForm {
         super(props, ["language", "pivot_language", "file", "raw_name"]);
     }
 
-
     submit(event){
         var cbk =()=> this.props.fetchCourses();
-
         super.add("dictionaries/dictionary", cbk, cbk);
     }
 

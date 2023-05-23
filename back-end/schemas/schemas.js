@@ -39,8 +39,8 @@ const lesson = mongoose.model('Lesson', lessonSchema)
 
 const questionSchema = mongoose.Schema({
     lesson_id: entities_schemas.mongoId,
-    dictionary_id: entities_schemas.mongoId,// ex spanish_from_french
-    course_id: entities_schemas.uniqueMongoId, // Relation to dictionaries
+    dictionary_id: entities_schemas.mongoId,// Ex spanish_from_french
+    course_id: entities_schemas.mongoId, // Relation to dictionaries
     question_index: {type: Number, min: 0, max: 100},
     picture: entities_schemas.fileUrl,
     sentence: {type: [String]}, // Can be a single word
