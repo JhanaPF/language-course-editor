@@ -15,7 +15,7 @@ DICTIONARIES="learninglanguage_from_pivottongue, secondlearninglanguage_from_ano
 NODE_ENV= "production" or "development"
 SECRET= 32 characters secret key for jwt signature
 PORT
-DATABASE= url connection to your mongo db
+DATABASE= url connection to your mongo db, required for production
 
 Before first start init the database by adding some admin users with init_database.js
 node init_database.js

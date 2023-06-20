@@ -3,7 +3,6 @@ import React from 'react';
 import {  Form, FormGroup, Input, Label, Button, Col} from 'reactstrap';
 import {validEmail, validPassword} from '../rgx/regex';
 import SimpleFormGroup from '../components/SimpleFormGroup';
-import { post } from '../apiRequests';
 
 /**
  * @param props: signIn()

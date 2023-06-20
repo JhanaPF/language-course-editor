@@ -7,17 +7,19 @@ const fetchCtrl = require('../controllers/fetch')
 const wordCtrl = require('../controllers/word')
 const dicoCtrl = require('../controllers/dictionary')
 
+const dictionaryEndpoint = '/dictionary'
+const wordEndpoint = '/word'
+
 router.get('/dictionary', fetchCtrl.fetchOneDictionary)
 router.get('/word/_id/:_id', fetchCtrl.fetchOneWord) 
 
-router.put('/word', isAdmin, wordValidator, wordCtrl.addWord)
-router.post('/word', isAdmin, wordValidator, wordCtrl.updateWord)
-router.delete('/word', isAdmin, wordCtrl.deleteWord)
+router.put(wordEndpoint, isAdmin, wordValidator, wordCtrl.addWord)
+router.post(wordEndpoint, isAdmin, wordValidator, wordCtrl.updateWord)
+router.delete(wordEndpoint, isAdmin, wordCtrl.deleteWord)
 
-const dicoUrl = '/dictionary'
-router.get("/", isAdmin, dicoCtrl.fetch)
-router.put(dicoUrl, isAdmin, dicoCtrl.add)
-router.post(dicoUrl, isAdmin, dicoCtrl.upd)
-router.delete(dicoUrl, isAdmin, dicoCtrl.del)
+router.get("/", dicoCtrl.fetch)
+router.put(dictionaryEndpoint, isAdmin, dicoCtrl.add)
+router.post(dictionaryEndpoint, isAdmin, dicoCtrl.upd)
+router.delete(dictionaryEndpoint, isAdmin, dicoCtrl.del)
 
 module.exports = router

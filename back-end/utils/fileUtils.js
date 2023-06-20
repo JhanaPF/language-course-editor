@@ -37,9 +37,13 @@ const getFile = (res, filePath, successCbk, errorCbk) => {
     })
 }
 
+/**
+ * @description Check if it's a temporary zone to store a file
+ * @param {*} file 
+ */
 const isBuffer = (file) => {
     if (!Buffer.isBuffer(file)) {
-        log("File is not buffer")
+        log("File is not buffer") 
         return false
     } else return true
 }

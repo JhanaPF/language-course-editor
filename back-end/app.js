@@ -22,7 +22,6 @@ const dicRoutes = require('./routes/dictionaries')
 const coursesRoutes = require('./routes/courses')
 const lessonRoutes = require('./routes/lessons')
 const questionRoutes = require('./routes/questions')
-const { question } = require('./schemas/schemas')
 
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
@@ -34,8 +33,10 @@ app.use(limiter)
 
 app.use((req, res, next) => { 
     console.log(req.url)
+    const ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    console.log("Client's ip:", ipAddress);
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization')
-    res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE')
+    res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE')    
     next()
 })
 app.use(cors({origin: !isProduction, credentials: true}))
@@ -63,13 +64,12 @@ app.use((req, res, next) => {
     next()
 })
 
-app.use(isAdmin) // Next routes are restricted for admins
 app.use('/dictionaries', dicRoutes)
 app.use('/courses', coursesRoutes)
 app.use('/lessons', lessonRoutes)
 app.use('/questions', questionRoutes)
 
-// const listEndpoints = require("express-list-endpoints")
-// log("Routes list: ", listEndpoints(app));
+//const listEndpoints = require("express-list-endpoints")
+//log("Routes list: ", listEndpoints(app));
 
 module.exports = app // For testing

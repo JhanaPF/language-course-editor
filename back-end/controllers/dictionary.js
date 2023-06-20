@@ -8,7 +8,8 @@ const {controlFields, isObjectEmpty} = require('../utils/utils')
 const log = console.log
 
 
-router.fetch = (req, res) => {     
+router.fetch = (req, res) => {
+    console.log("fetch")  
     commonDao.fetch(res, dictionary, {}, (r)=>{return res.status(200).json(r)}, ()=>{return res.status(500).end()})
 }
 
