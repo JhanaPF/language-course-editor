@@ -29,12 +29,12 @@ class CoursesOverview extends React.Component { // Show all courses
     }
     
     fetchCourses(){
-        get("dictionaries", {}, (res)=>this.initState(res), ()=>this.setState({loading: false, courseModal: false}));
+        get("courses", {}, (res)=>this.initState(res), ()=>this.setState({loading: false, courseModal: false}));
     }
 
     initState(data){
         //console.log("Courses fetched", data)
-        this.setState({dictionaries: data, loading: false, courseModal: false})
+        this.setState({courses: data, loading: false, courseModal: false})
     }
     
     handleSelectChange = (param, e) =>{
@@ -59,14 +59,14 @@ class CoursesOverview extends React.Component { // Show all courses
     }
 
     getCourse(id){
-        return this.state.dictionaries.find(course=>course._id === id);
+        return this.state.courses.find(course=>course._id === id);
     }
 
     render() {
 
-        if(!this.state.dictionaries) return null;
+        if(!this.state.courses) return null;
 
-        let courses = this.state.courseId ? this.state.dictionaries.filter(course => course._id === this.state.courseId) : this.state.dictionaries;
+        let courses = this.state.courseId ? this.state.courses.filter(course => course._id === this.state.courseId) : this.state.courses;
 
         return(<>
             <Row className='w-100 mt-5'>

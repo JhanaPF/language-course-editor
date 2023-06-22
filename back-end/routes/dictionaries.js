@@ -1,17 +1,14 @@
 const express = require('express')
 const router = express.Router()
-
 const isAdmin = require('../middleware/isAdmin')
 const wordValidator = require('../middleware/wordValidator')
-const fetchCtrl = require('../controllers/fetch')
 const wordCtrl = require('../controllers/word')
 const dicoCtrl = require('../controllers/dictionary')
-
 const dictionaryEndpoint = '/dictionary'
 const wordEndpoint = '/word'
 
-router.get('/dictionary', fetchCtrl.fetchOneDictionary)
-router.get('/word/_id/:_id', fetchCtrl.fetchOneWord) 
+router.get('/dictionary', dicoCtrl.fetchOneDictionary)
+router.get('/word/_id/:_id', dicoCtrl.fetchOneWord) 
 
 router.put(wordEndpoint, isAdmin, wordValidator, wordCtrl.addWord)
 router.post(wordEndpoint, isAdmin, wordValidator, wordCtrl.updateWord)

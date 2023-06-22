@@ -12,7 +12,7 @@ export default class CourseForm extends MyForm {
 
     submit(event){
         var cbk =()=> this.props.fetchCourses();
-        super.add("dictionaries/dictionary", cbk, cbk);
+        super.add("courses", cbk, cbk);
     }
 
     render() {

@@ -7,9 +7,42 @@ const {writeFile, isBuffer} = require('../utils/fileUtils')
 const {controlFields, isObjectEmpty} = require('../utils/utils')
 const log = console.log
 
+const mongoose = require('mongoose')
+const schemas = require('../schemas/schemas.js')
+
+router.fetchOneWord = (req, res) => {
+    const { dictionary_name } = req.body
+    if (!dictionary_name) return res.status(400).json()
+    const isValid = mongoose.Types.ObjectId.isValid(req.params._id)
+    if (!isValid) return res.status(400).json({})
+
+    schemas[dictionary_name].aggregate([
+        { $match: { _id: mongoose.Types.ObjectId(req.params._id) } },
+        {
+            $lookup: {
+                from: dictionary_name + '_additionals',
+                localField: '_id',
+                foreignField: 'word_id',
+                as: 'additionalData'
+            },
+        },
+        { $unwind: '$additionalData' }
+    ])
+        .then(word => res.status(200).json({ message: word[0] }))
+        .catch(error => res.status(400).json({ error }))
+}
+
+router.fetchOneDictionary = (req, res) => {
+    const { dictionary_name } = req.body
+    if (!dictionary_name) return res.status(400).json()
+
+    schemas[dictionary_name].find()
+        .then(dic => res.status(200).json({ message: dic }))
+        .catch(error => res.status(400).json({ error }))
+}
+
 
 router.fetch = (req, res) => {
-    console.log("fetch")  
     commonDao.fetch(res, dictionary, {}, (r)=>{return res.status(200).json(r)}, ()=>{return res.status(500).end()})
 }
 

@@ -26,11 +26,10 @@ const isValid = (word, additionalData) => {
 }
 
 router.fetch = (req, res) => {   
-
     const isValid = isIdValid(req.params._id) 
     if(!isValid) return res.status(400).json({message: "Invalid id"})
     
-    log("Fetching word ")
+    log("Fetching word")
     const {collection} = req.body
     schemas[collection].aggregate([
         {

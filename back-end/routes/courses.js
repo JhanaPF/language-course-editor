@@ -4,8 +4,8 @@ const isAdmin = require('../middleware/isAdmin')
 const courseCtrl = require('../controllers/course')
 
 router.get('/', courseCtrl.fetch)
-router.put('/course', isAdmin, courseCtrl.add)
-router.post('/course', isAdmin, courseCtrl.upd)
-router.delete('/course', isAdmin, courseCtrl.del)
+router.put('/', isAdmin, courseCtrl.add)
+router.post('/', isAdmin, courseCtrl.upd)
+router.delete('/', isAdmin, courseCtrl.del)
 
 module.exports = router

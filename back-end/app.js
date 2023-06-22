@@ -14,7 +14,6 @@ const rateLimit = require('express-rate-limit')
 const mongoSanitize = require('express-mongo-sanitize')
 const helmet = require("helmet")
 // Auth middlewares
-const isAdmin = require('./middleware/isAdmin')
 const isAuth = require('./middleware/isAuth')
 // Routes
 const userRoutes = require('./routes/user')
@@ -56,7 +55,7 @@ app.use(cookieParser(cookieKey ? cookieKey : "RANDOM_SECRET_COOKIE_KEY")) // Put
 app.use('/auth', userRoutes)
 
 
-app.use(isAuth) // Next routes are authenticated users
+//app.use(isAuth) // Next routes are authenticated users
 app.use(express.static(__dirname + '/public')) // Files
 
 app.use((req, res, next) => { 
