@@ -9,11 +9,12 @@ function axiosRequest(url, options, successCbk, errorCbk) {
     //log(options)
     return axios({ url:apiUrl + url, headers: {'Accept' : 'application/json'},  ...options})
     .then(res => {
-        //log("Request success: ", res);
+        log("Request success: ", res);
         if(successCbk) successCbk(res.data);
     })
     .catch(err => {
-        console.error("Request error: ", err);
+        console.error("Request error: ", err, err.response.status);
+        if(err.response.status === 401) sessionStorage.setItem('isLoggedIn', false);
         if(errorCbk) errorCbk(err);
     });
 }

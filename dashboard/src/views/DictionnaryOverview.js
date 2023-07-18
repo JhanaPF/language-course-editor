@@ -1,10 +1,9 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import React from 'react';
-import { Modal, ModalBody, Button, Row, Col, Table, Collapse } from 'reactstrap';
+import { Button, Row, Col, Table, Collapse } from 'reactstrap';
 import axios from 'axios';
 import Select from 'react-select';
 import WordModal from '../modals/WordModal';
-import CoursesOverview from './CoursesOverview';
 import WordDetail from '../components/WordDetail';
 import DeleteModal from '../modals/DeleteModal';
 
@@ -91,8 +90,7 @@ class Dashboard extends React.Component {
     }
 
     reloadModal = (name) =>{ 
-        if(name === "addModal")
-            this.setState({[name]: false, reloadEditModal: true});
+        if(name === "addModal") this.setState({[name]: false, reloadEditModal: true});
     }
 
     delete(){
@@ -188,34 +186,21 @@ class Dashboard extends React.Component {
                 </Row>  
 
 
-                <Row>
-                    <CoursesOverview/>
-                </Row>
-
-
                 {/********** MODALES ***********/}
                 
 
                 <DeleteModal isOpen={this.state.deleteModal} toggleModal={this.toggleModal.bind(this)} delete={this.delete.bind(this)} />
 
-                {this.state.addModal &&
-                    <WordModal
-                        addModal
-                        toggleModal={this.toggleModal.bind(this, "addModal")}
-                        token={this.props.token}
-                        userId={this.props.userId}
-                        reloadModal={this.reloadModal.bind(this, "addModal")}
-                    />
-                }  
                 
-                {this.state.editModal &&
+                {(this.state.addModal || this.state.editModal) &&
                     <WordModal
-                        editModal
+                        addModal={this.state.addModal}
+                        editModal={this.state.editModal}
                         wordData={this.state.selectedWordData}
-                        toggleModal={this.toggleModal.bind(this, "editModal")}
+                        toggleModal={this.toggleModal.bind(this, this.state.addModal ? "addModal" : "editModal")}
                         token={this.props.token}
                         userId={this.props.userId}
-                        reloadModal={this.reloadModal.bind(this, "editModal")}
+                        reloadModal={this.reloadModal.bind(this, this.state.addModal ? "addModal" : "editModal")}
                     />
                 }               
 

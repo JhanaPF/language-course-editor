@@ -1,14 +1,14 @@
 import React from "react";
-import {get} from '../apiRequests';
+import { get } from '../apiRequests';
 
 /**
  * Call componentDidMount with super.onFetch(filter)
  * In render add OverviewWrapper with nested modal
  */
-export default class Overview extends React.Component{
+export default class Overview extends React.Component {
     // parent class for all overviews views
 
-    constructor(props, filter, objName){
+    constructor(props, filter, objName) {
         super(props);
         this.state = {
             elements: null,
@@ -25,37 +25,37 @@ export default class Overview extends React.Component{
         this.getElement = this.getElement.bind(this);
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.onFetch();
     }
 
-    onFetch(){
-        var initState=(fields)=>{this.setState({loading: false, modal: false, ...fields})};
-        get(this.objName, this.filter, (res)=>initState({elements: res}), ()=>initState());
+    onFetch() {
+        var initState = (fields) => { this.setState({ loading: false, modal: false, ...fields }) };
+        get(this.objName, this.filter, (res) => initState({ elements: res.data[this.objName] }), () => initState());
     }
 
-    toggleModal=()=>this.setState({modal: !this.state.modal});
+    toggleModal = () => this.setState({ modal: !this.state.modal });
 
-    closeModalAfterRequest(){
+    closeModalAfterRequest() {
         this.onFetch();
     }
 
-    closeModal(){
-        this.setState({modal: false});
+    closeModal() {
+        this.setState({ modal: false });
     }
 
-    openModal(){
-        this.setState({modal: true});
+    openModal() {
+        this.setState({ modal: true });
     }
 
-    setElement(id){
+    setElement(id) {
         this.setState({
             elemId: id,
             element: this.getElement(id)
         });
     }
 
-    getElement(id){
-        return this.state.elements.find(e=>e._id === id);
+    getElement(id) {
+        return this.state.elements.find(e => e._id === id);
     }
 }

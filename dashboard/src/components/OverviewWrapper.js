@@ -1,7 +1,6 @@
 import React from 'react';
 import {Card, CardBody, CardSubtitle, CardTitle, CardText, CardGroup, Button, ButtonGroup, Row} from 'reactstrap';
 import AddButton from './AddButton';
-import { get } from '../apiRequests';
 
 /**
  * @props children - wrap modal

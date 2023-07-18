@@ -1,5 +1,5 @@
 module.exports = (req, res, next) => {
-    if(!req.decodedToken) return res.status(500).send()
+    if(!req.decodedToken) return res.status(401).send()
     
     const role = req.decodedToken.role // variable set in isAuth middleware
     if(!role){ 
