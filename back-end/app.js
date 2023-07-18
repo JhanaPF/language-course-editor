@@ -14,7 +14,7 @@ const rateLimit = require('express-rate-limit')
 const mongoSanitize = require('express-mongo-sanitize')
 const helmet = require("helmet")
 // Auth middlewares
-const isAuth = require('./middleware/isAuth')
+//const isAuth = require('./middleware/isAuth')
 // Routes
 const userRoutes = require('./routes/user')
 const dicRoutes = require('./routes/dictionaries')
@@ -30,10 +30,11 @@ const limiter = rateLimit({
 })
 app.use(limiter)
 
+const expressip = require('express-ip');
+app.use(expressip().getIpInfoMiddleware);
+
 app.use((req, res, next) => { 
-    console.log(req.url)
-    const ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    console.log("Client's ip:", ipAddress);
+    console.log("Client's ip:", req.ipInfo);
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization')
     res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE')    
     next()
@@ -44,7 +45,6 @@ app.use(cors({origin: !isProduction, credentials: true}))
 app.use(mongoSanitize())
 app.use(helmet())
 //  --------------------------
-
 
 app.use(express.json()) // Put body in req object for all request with Content-Type: application/json
 app.use(express.urlencoded({ extended: true }))
@@ -59,7 +59,7 @@ app.use('/auth', userRoutes)
 app.use(express.static(__dirname + '/public')) // Files
 
 app.use((req, res, next) => { 
-    if(!isProduction) log(req.url, req.body)
+    if(!isProduction) log("Request:", req.url, req.body)
     next()
 })
 

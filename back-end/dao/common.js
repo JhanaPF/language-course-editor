@@ -14,37 +14,24 @@ const errorCbk = (res, msg, error) => {
     res.status(400).json()
 }
 
-const resultHandler = (res, objName, successCbk, errorCbk, err, result) => {
-    if(err) {
-        log(err)
-        if(errorCbk) return errorCbk()
-        else return res.status(400).end()
-    }
-    else {
-        if(successCbk) return successCbk(result)
-        else return res.status(200).json({[objName]: result})
-    }
-}
-
 
 /**
- * 
  * @param {*} res http response 
  * @param {Model} model 
- * @param {object} param filters
- * @param {Function} successCbk 
- * @param {Function} errorCbk 
+ * @param {object} param filters for mongoose query - optional
  * @returns {object} {[model] + 's': result}
  */
-const fetch = (res, model, param = {}, successCbk, errorCbk) => {
+const fetch = (res, model, param = {}) => {
     if(!model){
         log("Model missing to fetch in collection")
         return res.status(500).end()
     }
+
+    const objName = model.modelName.toLowerCase() + 's'
     
-    model.find(param, function(err, result){
-        resultHandler(res, [model] + 's', (data)=>successCbk(data), errorCbk, err, result)
-    })
+    model.find(param)
+    .then((result) => successCbk(res, objName + ' fetch', {[objName]: result}))
+    .catch(error => errorCbk(res, error))
 }
 
 /**
@@ -59,9 +46,9 @@ const fetch = (res, model, param = {}, successCbk, errorCbk) => {
 const fetchById = (res, model, objName, idKey, id) => {
     if(!model || !objName || !idKey || !id) return res.status(500).json()
 
-    model.find({[idKey]: id}, function(err, result){
-        resultHandler(res, successCbk, errorCbk, err, result, objName)
-    })
+    model.find({[idKey]: id})
+    .then((result) => successCbk(res, msg, {[objName]:result}))
+    .catch(error => errorCbk(res, error))
 }
 
 /**
@@ -77,7 +64,7 @@ const save = (res, model, objName, data) => {
     const msg = objName + ' saved'
 
     newData.save() 
-    .then(() => successCbk(res, msg, dictionary))
+    .then((result) => successCbk(res, msg, {[objName]:result}))
     .catch(error => errorCbk(res, error))
 } 
 

@@ -78,10 +78,11 @@ router.signin = (req, res) => {
                 secure: process.env.NODE_ENV === 'production', // Cookie not send if connection is not https
             } 
 
-            const cookieValue = cookie.serialize('token', my_cookieJson, cookieOptions);
+            const cookieValue = cookie.serialize('token', my_cookieJson, cookieOptions)
             
-            res.cookie('credentials', cookieValue, { signed: true, sameSite: 'strict' });
+            res.cookie('credentials', cookieValue, { signed: true, sameSite: 'strict' })
             res.status(200).json({userId: userFound._id,})
+            log("User connection success")
         })
         .catch(error => {
             log(error)

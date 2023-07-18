@@ -32,9 +32,8 @@ class CoursesOverview extends React.Component { // Show all courses
         get("courses", {}, (res)=>this.initState(res), ()=>this.setState({loading: false, courseModal: false}));
     }
 
-    initState(data){
-        //console.log("Courses fetched", data)
-        this.setState({courses: data, loading: false, courseModal: false})
+    initState(res){
+        this.setState({courses: res.data.courses, loading: false, courseModal: false})
     }
     
     handleSelectChange = (param, e) =>{

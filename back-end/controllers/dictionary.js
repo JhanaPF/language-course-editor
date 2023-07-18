@@ -43,7 +43,7 @@ router.fetchOneDictionary = (req, res) => {
 
 
 router.fetch = (req, res) => {
-    commonDao.fetch(res, dictionary, {}, (r)=>{return res.status(200).json(r)}, ()=>{return res.status(500).end()})
+    commonDao.fetch(res, dictionary)
 }
 
 router.add = (req, res) => {   

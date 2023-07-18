@@ -10,7 +10,7 @@ const fs = require('fs')
 
 
 router.fetch = (req, res) => {
-    commonDao.fetch(res, course, {}, (r)=>{return res.status(200).json(r)}, ()=>{return res.status(500).end()})
+    commonDao.fetch(res, course)
 }
 
 router.add = (req, res) => {   

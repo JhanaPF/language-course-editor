@@ -11,7 +11,7 @@ const log = console.log
 // ========================
 
 router.fetch = (req, res) => {   
-    commonDao.fetch(res, lesson, {dictionary_id: req.query.course}, (r)=>{return res.status(200).json(r)}, ()=>{return res.status(500).end()})
+    commonDao.fetch(res, lesson, {dictionary_id: req.query.course})
 }
 
 router.getLessonQuestions = (req, res) => { // Get all questions included in lesson
