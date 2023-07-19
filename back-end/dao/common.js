@@ -4,9 +4,9 @@ const { dictionary } = require("../schemas/schemas")
 const log = console.log
 
 
-const successCbk = (res, msg, data) => {
+const successCbk = (res, msg, data, statusCode = 200) => {
     log(msg + " success", data)
-    res.status(201).json({data})
+    res.status(statusCode).json({data})
 }
 
 const errorCbk = (res, msg, error) => {
@@ -64,7 +64,7 @@ const save = (res, model, objName, data) => {
     const msg = objName + ' saved'
 
     newData.save() 
-    .then((result) => successCbk(res, msg, {[objName]:result}))
+    .then((result) => successCbk(res, msg, {[objName]:result}), 201)
     .catch(error => errorCbk(res, error))
 } 
 

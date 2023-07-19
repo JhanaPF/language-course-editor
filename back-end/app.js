@@ -14,7 +14,7 @@ const rateLimit = require('express-rate-limit')
 const mongoSanitize = require('express-mongo-sanitize')
 const helmet = require("helmet")
 // Auth middlewares
-const isAuth = require('./middleware/isAuth')
+//const isAuth = require('./middleware/isAuth')
 // Routes
 const userRoutes = require('./routes/user')
 const dicRoutes = require('./routes/dictionaries')
@@ -30,11 +30,11 @@ const limiter = rateLimit({
 })
 app.use(limiter)
 
-const expressip = require('express-ip');
-app.use(expressip().getIpInfoMiddleware);
+const expressip = require('express-ip')
+app.use(expressip().getIpInfoMiddleware)
 
 app.use((req, res, next) => { 
-    console.log("Client's ip:", req.ipInfo);
+    console.log("Client's ip:", req.ipInfo)
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization')
     res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE')    
     next()
@@ -55,13 +55,13 @@ app.use(cookieParser(cookieKey ? cookieKey : "RANDOM_SECRET_COOKIE_KEY")) // Put
 app.use('/auth', userRoutes)
 
 
-app.use(express.static(__dirname + '/public')) // Files
-app.use(isAuth) // Next routes are authenticated users
-
 app.use((req, res, next) => { 
     if(!isProduction) log("Request:", req.url, req.method, req.body)
     next()
 })
+app.use(express.static(__dirname + '/public')) // Files
+//app.use(isAuth) // Next routes are authenticated users
+
 
 app.use('/dictionaries', dicRoutes)
 app.use('/courses', coursesRoutes)
@@ -69,6 +69,6 @@ app.use('/lessons', lessonRoutes)
 app.use('/questions', questionRoutes)
 
 //const listEndpoints = require("express-list-endpoints")
-//log("Routes list: ", listEndpoints(app));
+//log("Routes list: ", listEndpoints(app))
 
 module.exports = app // For testing
