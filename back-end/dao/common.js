@@ -35,7 +35,6 @@ const fetch = (res, model, param = {}) => {
 }
 
 /**
- * 
  * @param {*} res http response 
  * @param {Model} model 
  * @param {string} objName objName of the object fetched
@@ -52,7 +51,6 @@ const fetchById = (res, model, objName, idKey, id) => {
 }
 
 /**
- * 
  * @param {*} res http response 
  * @param {Model} model 
  * @param {string} objName for console log
@@ -69,7 +67,6 @@ const save = (res, model, objName, data) => {
 } 
 
 /**
- * 
  * @param {*} res http response
  * @param {Model} model 
  * @param {string} objName 
@@ -88,7 +85,6 @@ const update = (res, model, objName, data, id) => {
 }
 
 /**
- * 
  * @param {*} res http response 
  * @param {Model} model 
  * @param {string} objName 
