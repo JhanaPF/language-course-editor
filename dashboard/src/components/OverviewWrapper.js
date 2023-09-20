@@ -13,7 +13,9 @@ import AddButton from './AddButton';
 export default class OverviewWrapper extends React.Component { // Common component for all overviews
 
     constructor(props){
+        if(props.elemId) console.warn("Elem id is missing, you will not be able to add an element");
         super(props);
+
         this.objName = this.props.objName;
         this.state = {
             elemId: null,
