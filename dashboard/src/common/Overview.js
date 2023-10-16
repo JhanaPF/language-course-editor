@@ -2,11 +2,11 @@ import React from "react";
 import { get } from '../apiRequests';
 
 /**
+ * Overview parent classe
  * Call componentDidMount with super.onFetch(filter)
  * In render add OverviewWrapper with nested modal
  */
 export default class Overview extends React.Component {
-    // parent class for all overviews views
 
     constructor(props, filter, objName) {
         super(props);
