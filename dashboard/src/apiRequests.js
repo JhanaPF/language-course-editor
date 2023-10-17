@@ -20,7 +20,7 @@ function axiosRequest(url, options, successCbk, errorCbk) {
     });
 }
 
-export function verifyToken (successCbk, errorCbk) { // Potentially token stored locally is no longer valid
+export function verifyToken (successCbk, errorCbk) { // Check local stored token
     axiosRequest('auth/token', {method: 'POST'}, successCbk, errorCbk);
 }
 

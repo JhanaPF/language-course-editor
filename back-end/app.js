@@ -55,7 +55,6 @@ const cookieKey = process.env.SECRET_COOKIE
 app.use(cookieParser(cookieKey ? cookieKey : "RANDOM_SECRET_COOKIE_KEY")) // Put cookie in the body
 app.use("/auth", userRoutes)
 
-
 app.use((req, res, next) => { 
 	if(!isProduction) log("Request:", req.url, req.method, req.body)
 	next()

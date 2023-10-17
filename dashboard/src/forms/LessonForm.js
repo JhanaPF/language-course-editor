@@ -7,11 +7,11 @@ export default class LessonForm extends MyForm {
 
     constructor(props){
         super(props);
-        this.inputNames = ["name", "description", "dictionary_id"];        
+        this.inputNames = ["name", "description", "course_id"];        
     }
 
     componentDidMount(){
-        this.initState(this.inputNames, {dictionary_id: this.props.courseId});
+        this.initState(this.inputNames, {course_id: this.props.courseId});
     }
     
     submit(event){

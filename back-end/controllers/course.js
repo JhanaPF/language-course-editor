@@ -2,7 +2,7 @@ const express = require("express")
 const router = express.Router()
 const commonDao = require("../dao/common")
 const formidable = require("formidable")
-const {course} = require("../schemas/schemas.js") 
+const course = require("../schemas/schemas.js").course
 const {writeFile, isBuffer} = require("../utils/fileUtils")
 const {controlFields, isObjectEmpty} = require("../utils/utils")
 const log = console.log
@@ -10,7 +10,7 @@ const fs = require("fs")
 
 
 router.fetch = (req, res) => {
-	commonDao.fetch(res, course)
+	commonDao.fetch(res, course, {released: true})
 }
 
 router.add = (req, res) => {   

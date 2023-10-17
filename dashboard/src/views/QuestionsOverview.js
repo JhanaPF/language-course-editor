@@ -9,7 +9,7 @@ import Overview from '../common/Overview';
 export default class QuestionsOverview extends Overview { // Show all questions of a lesson
 
     constructor(props){
-        super(props, {'lesson': props.lesson._id}, "questions");
+        super(props, {'lesson_id': props.lesson._id}, "questions");
     }
 
     componentDidMount =()=> this.onFetch();

@@ -22,7 +22,6 @@ const courseSchema = mongoose.Schema({
 	description: {type: String},
 	name: {type: String, required: true, unique: true},
 	dictionary_id: {type: mongoose.Schema.ObjectId, unique: true}, // Relation to dictionaries
-	// Les drapeaux sont stockés dans la collection dictionnaire 
 })
 
 const pictureChoice = [{

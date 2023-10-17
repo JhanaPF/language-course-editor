@@ -30,7 +30,7 @@ const course = mongoose.model("Course", courseSchema)
 
 
 const lessonSchema = mongoose.Schema({
-	dictionary_id: entities_schemas.mongoId,
+	course_id: entities_schemas.mongoId,
 	name: String,
 	description: String,
 	createdAt: entities_schemas.createdAtSchema,

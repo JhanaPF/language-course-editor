@@ -14,7 +14,7 @@ class App extends React.Component {
         super();
         this.state = {
             uId: '',
-            loggedin: true,
+            loggedin: false,
             loading: true,
         }
         localStorage.setItem("apiUrl", process.env.REACT_APP_API_URL || "http://localhost:3001/");

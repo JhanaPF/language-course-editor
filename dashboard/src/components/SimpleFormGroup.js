@@ -22,7 +22,7 @@ export default function SimpleFormGroup (props) {
                 name={props.id}
                 value={props.value}
                 onChange={props.handleChange} 
-                maxLength={100}
+                maxLength={1000}
                 required={props.required}/>
             {props.formText && <FormText>{props.formText}</FormText> }
         </MyFormGroup>

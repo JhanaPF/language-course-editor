@@ -11,7 +11,15 @@ const log = console.log
 // ========================
 
 router.fetch = (req, res) => {   
-	commonDao.fetch(res, question, {lesson_id: req.query.lesson})
+	let param = {}
+	const {lesson_id} = req.query
+	if(lesson_id){
+		param = {lesson_id: new ObjectId(lesson_id)}
+		commonDao.fetch(res, lesson, param)
+	} else {
+		log("Lesson id missing to fetch questions")
+		return res.status(500).end()
+	}
 }
 
 router.add = (req, res) => {   

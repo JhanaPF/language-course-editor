@@ -7,11 +7,10 @@ import QuestionsOverview from './QuestionsOverview';
 /**
  * @param {object} course
  */
-
 export default class LessonsOverview extends Overview { // Show all lessons of a course
 
     constructor(props){
-        super(props, {'course': props.course._id}, "lessons");
+        super(props, {'course_id': props.course._id}, "lessons");
     }
 
     componentDidMount =()=> this.onFetch();

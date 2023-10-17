@@ -5,22 +5,22 @@ const commonDao = require("../dao/common")
 const {lesson} = require("../schemas/schemas.js") 
 const {controlFields} = require("../utils/utils")
 const log = console.log
+const { ObjectId } = require("mongodb")
 
 // ========================
 // ======= LESSONS ========
 // ========================
 
 router.fetch = (req, res) => {   
-	commonDao.fetch(res, lesson, {dictionary_id: req.query.course})
-}
-
-router.getLessonQuestions = (req, res) => { // Get all questions included in lesson
-	let pipeline = [
-		{}
-	]
-	lesson.aggregate(pipeline, function(err, result){
-
-	})
+	let param = {}
+	const {course_id} = req.query
+	if(course_id){
+		param = {course_id: new ObjectId(course_id)}
+		commonDao.fetch(res, lesson, param)
+	} else {
+		log("Course id missing to fetch lessons")
+		return res.status(500).end()
+	}
 }
 
 router.add = (req, res) => {   
