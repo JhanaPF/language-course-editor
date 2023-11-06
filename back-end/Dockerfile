@@ -1,11 +1,13 @@
-FROM node:14
+FROM node:18
 
-RUN mkdir -p /opt/app
-WORKDIR /opt/app
-COPY . /opt/app/
-RUN npm install -g node-pre-gyp
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
 RUN npm ci
-COPY . .
-CMD ["npm", "start"]
-EXPOSE 3001
 
+COPY . .
+
+EXPOSE 7006
+
+CMD [ "node", "server.js" ]
