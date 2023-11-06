@@ -14,7 +14,7 @@ class App extends React.Component {
         super();
         this.state = {
             uId: '',
-            loggedin: false,
+            loggedin: true,
             loading: true,
         }
         localStorage.setItem("apiUrl", process.env.REACT_APP_API_URL || "http://localhost:3001/");
@@ -22,11 +22,11 @@ class App extends React.Component {
 
     componentDidMount() { // Starting application    
         const isIdSaved = localStorage.getItem("keepConnection");
-        //const isLoggedIn = sessionStorage.getItem('isLoggedIn');
-//
-        //if (isLoggedIn) {
-        //    this.setState({ loggedin: true, loading: false });
-        //}
+        const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+
+        if (isLoggedIn) {
+            return this.setState({ loggedin: true, loading: false });
+        }
       
         post('auth/token', {},
             () => this.unlockApp(), // Token still valid

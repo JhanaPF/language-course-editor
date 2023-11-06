@@ -4,7 +4,7 @@ import { Row } from 'reactstrap';
 import CoursesOverview from './CoursesOverview';
 
 function Dashboard() {
-    
+
     return (
         <Row>
             <CoursesOverview />
