@@ -66,7 +66,6 @@ const save = (res, model, objName, data) => {
 } 
 
 /**
- * 
  * @param {*} res http response
  * @param {Model} model 
  * @param {string} objName 
@@ -85,7 +84,6 @@ const update = (res, model, objName, data, id) => {
 }
 
 /**
- * 
  * @param {*} res http response 
  * @param {Model} model 
  * @param {string} objName 

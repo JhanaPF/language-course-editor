@@ -10,7 +10,7 @@ const mongoose = require("mongoose")
 const isProduction = process.env.NODE_ENV === "production"
 if (!isProduction) process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0
 
-mongoose.connect(isProduction ? process.env.DATABASE_URL : "mongodb://127.0.0.1:27017/dictionaries",{
+mongoose.connect(isProduction ? process.env.DATABASE_URL : "mongodb://mongolanguagecourse:27017/dictionaries",{
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 		serverSelectionTimeoutMS: 1000, 

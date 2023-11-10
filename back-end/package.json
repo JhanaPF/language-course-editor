@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "npx mocha tests/*.test.js",
-    "start": "nvm use && node app.js"
+    "start": "nvm use && node server.js"
   },
   "author": "",
   "license": "ISC",
