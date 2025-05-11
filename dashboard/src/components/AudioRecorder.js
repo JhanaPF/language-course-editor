@@ -1,61 +1,62 @@
-import React, { Component } from 'react';
-import { Button } from 'reactstrap';
+import React, { Component } from 'react'
+import { Button } from 'reactstrap'
 
 class AudioRecorder extends Component {
-
     constructor (props) {
-        super(props);
+        super(props)
         this.state = {
             isRecording: false,
             audioChunks: [],
             mediaRecorder: null
-        };
+        }
     }
 
-    componentDidUpdate(){
-       // console.log(this.state)
+    componentDidUpdate () {
+        // console.log(this.state)
     }
 
     handleStartRecording = () => {
-        console.log('start recording');
+        console.log('start recording')
         navigator.mediaDevices.getUserMedia({ audio: true })
-        .then(stream => {
-            const mediaRecorder = new MediaRecorder(stream);
-            this.setState({ mediaRecorder });
+            .then(stream => {
+                const mediaRecorder = new MediaRecorder(stream)
+                this.setState({ mediaRecorder })
 
-            mediaRecorder.addEventListener("dataavailable", event => {
-                this.setState(prevState => ({
-                    audioChunks: [...prevState.audioChunks, event.data]
-                }));
-            });
+                mediaRecorder.addEventListener('dataavailable', event => {
+                    this.setState(prevState => ({
+                        audioChunks: [...prevState.audioChunks, event.data]
+                    }))
+                })
 
-            mediaRecorder.start();
-            this.setState({ isRecording: true });
-        });
+                mediaRecorder.start()
+                this.setState({ isRecording: true })
+            })
     }
 
     handleStopRecording = () => {
-        console.log('stop recording');
-        this.state.mediaRecorder.stop();
-        this.setState({ isRecording: false });
+        console.log('stop recording')
+        this.state.mediaRecorder.stop()
+        this.setState({ isRecording: false })
 
-        const audioBlob = new Blob(this.state.audioChunks, { type: "audio/wav" });
-        const file = new File([audioBlob], "audio.wav", { type: "audio/wav" })
-        //console.log(file)
-        if(this.props.saveAudio) this.props.saveAudio(file);
+        const audioBlob = new Blob(this.state.audioChunks, { type: 'audio/wav' })
+        const file = new File([audioBlob], 'audio.wav', { type: 'audio/wav' })
+        // console.log(file)
+        if (this.props.saveAudio) this.props.saveAudio(file)
     }
 
-    render() {
+    render () {
         return (
             <div>
-                {this.state.isRecording ? (
-                    <Button color="danger" onClick={this.handleStopRecording}>Stop Recording</Button>
-                ) : (
-                    <Button color="primary" onClick={this.handleStartRecording}>Start Recording</Button>
-                )}
+                {this.state.isRecording
+                    ? (
+                        <Button color="danger" onClick={this.handleStopRecording}>Stop Recording</Button>
+                    )
+                    : (
+                        <Button color="primary" onClick={this.handleStartRecording}>Start Recording</Button>
+                    )}
             </div>
-        );
+        )
     }
 }
 
-export default AudioRecorder;
+export default AudioRecorder

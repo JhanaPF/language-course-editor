@@ -1,19 +1,18 @@
-import React from "react";
-import MyModal from "../components/MyModal";
-import { ModalBody } from "reactstrap";
-import CourseForm from '../forms/CourseForm';
+import React from 'react'
+import MyModal from '../components/MyModal'
+import { ModalBody } from 'reactstrap'
+import CourseForm from '../forms/CourseForm'
 
 /**
- * @param {boolean} isOpen - optionnal 
+ * @param {boolean} isOpen - optionnal
  * @param {string} title
- * @param {function} closeModal  
- * @param {function} fetchCourses  
+ * @param {function} closeModal
+ * @param {function} fetchCourses
  */
 export default function CourseModal (props) {
-    
-    return(
+    return (
         <MyModal isOpen={props.isOpen} title="Ajouter un cours" closeModal={props.closeModal}>
-            <ModalBody>   
+            <ModalBody>
                 <CourseForm close={props.closeModal} fetchCourses={props.fetchCourses}/>
             </ModalBody>
         </MyModal>

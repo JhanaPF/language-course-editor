@@ -1,5 +1,5 @@
-import React from "react";
-import { FormGroup, Label,  } from "reactstrap";
+import React from 'react'
+import { FormGroup, Label } from 'reactstrap'
 
 export default function MyFormGroup (props) {
     return (

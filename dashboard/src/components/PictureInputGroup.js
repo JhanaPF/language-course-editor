@@ -1,6 +1,5 @@
-import React from "react";
-import {FormText, FormGroup, Input, Label, Col} from 'reactstrap';
-
+import React from 'react'
+import { FormText, FormGroup, Input, Label, Col } from 'reactstrap'
 
 export default function PictureInputGroup (props) {
     return (
@@ -9,7 +8,7 @@ export default function PictureInputGroup (props) {
                 {props.text}:
             </Label>
             <Col>
-                <Input type="file" id={props.name} name={props.name} onChange={(event)=>props.onChange(event)}/>
+                <Input type="file" id={props.name} name={props.name} onChange={(event) => props.onChange(event)}/>
                 <FormText>{props.description}</FormText>
             </Col>
         </FormGroup>

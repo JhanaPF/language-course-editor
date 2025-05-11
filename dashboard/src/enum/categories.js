@@ -1,15 +1,14 @@
-import Enum from "./enum";
+import Enum from './enum'
 
 const options = [
-    {value: 1, label:"L'eau"},
-    {value: 2, label: "Le feu"}
-];
+    { value: 1, label: "L'eau" },
+    { value: 2, label: 'Le feu' }
+]
 
-export default class Categories extends Enum{
+export default class Categories extends Enum {
+    static values () { return options }
 
-    static values(){ return options;  }
-
-    static getName(id, values){
-        return options.find(value => value.value === id).label;
+    static getName (id, values) {
+        return options.find(value => value.value === id).label
     }
 }

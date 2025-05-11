@@ -1,73 +1,71 @@
-import React from 'react';
-import {Card, CardBody, CardSubtitle, CardTitle, Button, Row, Col} from 'reactstrap';
-import LessonsOverview from './LessonsOverview';
-import AddButton from '../components/AddButton';
-import ReturnButton from '../components/ReturnButton';
-import QuestionsOverview from './QuestionsOverview';
-import CourseModal from '../modals/CourseModal';
-import { get } from '../apiRequests';
-import { capitalizeFirstLetter } from '../utils/stringUtils';
+import React from 'react'
+import { Card, CardBody, CardSubtitle, CardTitle, Button, Row, Col } from 'reactstrap'
+import LessonsOverview from './LessonsOverview'
+import AddButton from '../components/AddButton'
+import ReturnButton from '../components/ReturnButton'
+import QuestionsOverview from './QuestionsOverview'
+import CourseModal from '../modals/CourseModal'
+import { get } from '../apiRequests'
+import { capitalizeFirstLetter } from '../utils/stringUtils'
 
 class CoursesOverview extends React.Component { // Show all courses
+    constructor (props) {
+        super(props)
 
-    constructor(props){
-        super(props);
+        this.apiUrl = localStorage.getItem('apiUrl')
 
-        this.apiUrl = localStorage.getItem("apiUrl");
-       
         this.state = {
             course: undefined,
-            loading: true,
+            loading: true
         }
 
-        this.toggleCourseModal = this.toggleCourseModal.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this.toggleCourseModal = this.toggleCourseModal.bind(this)
+        this.handleChange = this.handleChange.bind(this)
     }
 
-    componentDidMount(){
-        this.fetchCourses();
-    }
-    
-    fetchCourses(){
-        get("courses", {}, (res)=>this.initState(res), ()=>this.setState({loading: false, courseModal: false}));
+    componentDidMount () {
+        this.fetchCourses()
     }
 
-    initState(res){
-        this.setState({courses: res.data.courses, loading: false, courseModal: false})
-    }
-    
-    handleSelectChange = (param, e) =>{
-        this.setState({ [param] : e });
+    fetchCourses () {
+        get('courses', {}, (res) => this.initState(res), () => this.setState({ loading: false, courseModal: false }))
     }
 
-    handleChange(event){
-        const {name, value} = event.currentTarget;
-        this.setState({[name]: value});
+    initState (res) {
+        this.setState({ courses: res.data.courses, loading: false, courseModal: false })
     }
 
-    lessonIndexChange(lessonId, index) {
-        
+    handleSelectChange = (param, e) => {
+        this.setState({ [param]: e })
     }
 
-    toggleCourseModal(){
-        this.setState({courseModal: !this.state.courseModal});
-    }
-    
-    setCourse(id){
-        this.setState({courseId: id})
+    handleChange (event) {
+        const { name, value } = event.currentTarget
+        this.setState({ [name]: value })
     }
 
-    getCourse(id){
-        return this.state.courses.find(course=>course._id === id);
+    lessonIndexChange (lessonId, index) {
+
     }
 
-    render() {
+    toggleCourseModal () {
+        this.setState({ courseModal: !this.state.courseModal })
+    }
 
-        if(!this.state.courses) return null;
+    setCourse (id) {
+        this.setState({ courseId: id })
+    }
 
-        let courses = this.state.courseId ? this.state.courses.filter(course => course._id === this.state.courseId) : this.state.courses;
+    getCourse (id) {
+        return this.state.courses.find(course => course._id === id)
+    }
 
-        return(<>
+    render () {
+        if (!this.state.courses) return null
+
+        const courses = this.state.courseId ? this.state.courses.filter(course => course._id === this.state.courseId) : this.state.courses
+
+        return (<>
             <Row className='w-100 mt-5'>
                 <Col></Col>
                 <Col >
@@ -78,12 +76,12 @@ class CoursesOverview extends React.Component { // Show all courses
                 </Col>
             </Row>
 
-            {this.state.courseId !== undefined && 
-                <ReturnButton goBack={function(){this.setCourse(undefined)}.bind(this)}/>
+            {this.state.courseId !== undefined &&
+                <ReturnButton goBack={function () { this.setCourse(undefined) }.bind(this)}/>
             }
 
             <Row className='mt-3 mx-5 w-100 justify-content-center'>
-                {courses.map((course, index) => 
+                {courses.map((course, index) =>
                     <Card key={index} style={{ width: '18rem' }}>
                         <img alt="flag" crossOrigin='use-credentials' src={`${this.apiUrl}pictures/courses/${course.file_name}`}/>
                         <CardBody>
@@ -93,14 +91,13 @@ class CoursesOverview extends React.Component { // Show all courses
                             <CardSubtitle className="mb-2 text-muted" tag="h6" >
                                 Depuis {course.pivot_language}
                             </CardSubtitle>
-                            {this.state.courseId === undefined && 
+                            {this.state.courseId === undefined &&
                                 <Button onClick={this.setCourse.bind(this, course._id)}> Modifier </Button>
                             }
                         </CardBody>
-                    </Card> 
+                    </Card>
                 )}
             </Row>
-            
 
             {this.state.courseModal &&
                 <CourseModal closeModal={this.toggleCourseModal} fetchCourses={this.fetchCourses.bind(this)}/>
@@ -113,9 +110,8 @@ class CoursesOverview extends React.Component { // Show all courses
             {this.state.lesson &&
                 <QuestionsOverview/>
             }
-        </>);
+        </>)
     }
-
 }
 
-export default CoursesOverview;
+export default CoursesOverview

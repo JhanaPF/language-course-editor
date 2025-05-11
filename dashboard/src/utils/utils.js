@@ -1,11 +1,11 @@
 function readFormData (formData) {
-    let data = {};
-    for (var pair of formData.entries()) {
-        var key = pair[0]; 
-        var value = pair[1];
-        data[key] = value;
+    const data = {}
+    for (const pair of formData.entries()) {
+        const key = pair[0]
+        const value = pair[1]
+        data[key] = value
     }
-    console.log("form data = ", data);
+    console.log('form data = ', data)
 }
 
-module.exports = {readFormData}
+module.exports = { readFormData }
