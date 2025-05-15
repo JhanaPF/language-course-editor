@@ -9,12 +9,15 @@ const log = console.log
 const cors = require("cors")
 const cookieParser = require("cookie-parser")
 const isProduction = process.env.NODE_ENV === "production" 
+
 // Sec middlewares
 const rateLimit = require("express-rate-limit")
 const mongoSanitize = require("express-mongo-sanitize")
 const helmet = require("helmet")
+
 // Auth middlewares
 //const isAuth = require('./middleware/isAuth')
+
 // Routes
 const userRoutes = require("./routes/user")
 const dicRoutes = require("./routes/dictionaries")
@@ -40,7 +43,7 @@ app.use((req, res, next) => {
 	res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE")    
 	next()
 })
-app.use(cors({origin: !isProduction, credentials: true}))
+app.use(cors({origin: !isProduction ? false : process.env.ORIGIN, credentials: true}))
 
 // --- Security middlewares ---
 app.use(mongoSanitize())
@@ -60,15 +63,16 @@ app.use((req, res, next) => {
 	next()
 })
 app.use(express.static(__dirname + "/public")) // Files
-//app.use(isAuth) // Next routes are authenticated users
 
+// Next routes needs authentication
+//app.use(isAuth) 
 
 app.use("/dictionaries", dicRoutes)
 app.use("/courses", coursesRoutes)
 app.use("/lessons", lessonRoutes)
 app.use("/questions", questionRoutes)
 
-//const listEndpoints = require("express-list-endpoints")
-//log("Routes list: ", JSON.stringify(listEndpoints(app), null, 4))
+const listEndpoints = require("express-list-endpoints")
+log("Routes list: ", JSON.stringify(listEndpoints(app), null, 4))
 
 module.exports = app

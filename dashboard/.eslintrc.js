@@ -28,7 +28,6 @@ module.exports = {
     ],
     rules: {
         indent: ['error', 4],
-        'react/some-rule': process.env.NODE_ENV === 'production' ? 'error' : 'off',
         'react/prop-types': 'off',
         'react/no-unescaped-entities': 'off'
     }

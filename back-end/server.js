@@ -8,9 +8,12 @@ require("dotenv").config()
 const serverUtil = require("./utils/serverUtils")
 const mongoose = require("mongoose")
 const isProduction = process.env.NODE_ENV === "production"
-if (!isProduction) process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0
+if (!isProduction) {
+	console.log(chalk.red('Running app in development mode, default variables will be used'))
+	process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0 // Deactivate ssl
+}
 
-mongoose.connect(isProduction ? process.env.DATABASE_URL : "mongodb://mongolanguagecourse:27017/dictionaries",{
+mongoose.connect(isProduction ? process.env.DATABASE : "mongodb://localhost:27017/courses",{
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 		serverSelectionTimeoutMS: 1000, 

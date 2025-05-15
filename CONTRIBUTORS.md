@@ -23,3 +23,13 @@ Before you start contributing, make sure you have the following installed:
    ```bash
    git clone https://github.com/JhanaPF/language-course-editor
    cd your-fork
+   ```
+
+
+3. **Follow these steps**
+
+   1. Create a branch for your feature: `git checkout -b my-feature`.
+   2. Make your changes.
+   3. Commit and push your changes: `git commit -m "Add my feature"`.
+   4. Create a pull request.
+   5. Add your name in CONTRIBUTORS.md  

@@ -1,0 +1,33 @@
+# ⛔ Ne pas inclure les dépendances locales
+node_modules
+.pnp
+.pnp.js
+
+# 🔧 Eviter les configs inutiles
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 🧪 Fichiers de test / coverage
+coverage
+__tests__
+*.spec.js
+*.test.js
+
+# 🧹 Éviter les fichiers liés à l’éditeur
+.vscode
+.idea
+.DS_Store
+
+# 🧾 Git & Docker
+.git
+.gitignore
+.dockerignore
+
+# 📦 Build local (inutile si build dans Docker)
+build
+dist
+
+Dockerfile
+.env.example

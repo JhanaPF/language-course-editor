@@ -1,7 +1,7 @@
 {
   "name": "course-editor",
   "version": "1.0.0",
-  "description": "dashboard and Api for collaborative course editor and level creator",
+  "description": "Collaborative language course editor",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "install": "cd back-end && npm ci && cd ../dashboard && npm ci",

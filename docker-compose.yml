@@ -1,0 +1,39 @@
+services:
+  be:
+    container_name: linguito-lerni-be
+    environment:
+      - DATABASE=${DATABASE}
+      - PORT=${PORT}
+      - NODE_ENV=${NODE_ENV}
+      - ORIGIN=${ORIGIN}
+    build:
+      context: back-end
+      dockerfile: Dockerfile
+    ports:
+      - "7006:7006"
+    depends_on:
+      - language-course-db
+    networks:
+      - be
+
+  front:
+    build:
+      context: dashboard
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - be
+
+  language-course-db:
+    container_name: language-course-db
+    image: mongo:8
+    ports:
+      - "27017:27017"
+    networks:
+      - be
+
+
+networks:
+  be:
+    driver: bridge
