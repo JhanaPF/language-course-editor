@@ -16,6 +16,7 @@ import { capitalizeFirstLetter } from '../utils/stringUtils'
 export default function SimpleFormGroup (props) {
     return (
         <MyFormGroup text={capitalizeFirstLetter(props.text)} inputId={props.id}>
+
             <Input
                 type={props.type ? props.type : 'text'}
                 id={props.id}
@@ -23,8 +24,13 @@ export default function SimpleFormGroup (props) {
                 value={props.value}
                 onChange={props.handleChange}
                 maxLength={1000}
-                required={props.required}/>
-            {props.formText && <FormText>{props.formText}</FormText> }
+                required={props.required}
+            />
+
+            {props.formText && 
+                <FormText>{props.formText}</FormText> 
+            }
+
         </MyFormGroup>
     )
 }

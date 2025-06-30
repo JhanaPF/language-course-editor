@@ -24,12 +24,15 @@ services:
       - "80:80"
     depends_on:
       - be
+    networks:
+      - be
+
 
   language-course-db:
     container_name: language-course-db
     image: mongo:8
     ports:
-      - "27017:27017"
+      - "34567:27017"
     networks:
       - be
 

@@ -21,7 +21,7 @@ describe("Course routes", function () {
 
 	before(async function () {
 
-		await mongoose.connect("mongodb://localhost:27017/dictionaries-test", { useNewUrlParser: true, useUnifiedTopology: true, })
+		await mongoose.connect(process.env.DATABASE + "/dictionaries-test", { useNewUrlParser: true, useUnifiedTopology: true, })
 			.then(() => console.log("Connected to Mongo !"))
 			.catch(() => {
 				console.log("Failed to connect to Mongo database")

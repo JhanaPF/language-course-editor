@@ -6,20 +6,27 @@ import 'bootstrap-icons/font/bootstrap-icons.css'
 import Dashboard from './views/Dashboard'
 import SignIn from './views/SignIn'
 import { post } from './apiRequests'
-import { Row, Spinner } from 'reactstrap'
+import { Spinner } from 'reactstrap'
 
 class App extends React.Component {
-    constructor () {
+    constructor() {
         super()
+
         this.state = {
             uId: '',
             loggedin: false,
             loading: true
         }
-        localStorage.setItem('apiUrl', process.env.REACT_APP_API_URL || 'http://localhost:3001/')
+
+        if (!process.env.REACT_APP_API_URL) {
+            throw new Error("REACT_APP_API_URL is not defined in your environment variables.");
+        }
+
+        localStorage.setItem('apiUrl', process.env.REACT_APP_API_URL)
     }
 
-    componentDidMount () { // Starting application
+    componentDidMount() { // Starting application
+
         const isIdSaved = localStorage.getItem('keepConnection')
         const isLoggedIn = sessionStorage.getItem('isLoggedIn')
 
@@ -27,21 +34,40 @@ class App extends React.Component {
             return this.setState({ loggedin: true, loading: false })
         }
 
-        post('auth/token', {},
+
+        if (isIdSaved) {
+            const mail = localStorage.getItem('mail')
+            const password = localStorage.getItem('password')
+            this.signIn(mail, password)
+            return
+        }
+
+        const headers = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }
+
+        post('auth/token', headers,
             () => this.unlockApp(), // Token still valid
             () => { // No token or not valid anymore
-                if (isIdSaved) {
-                    const mail = localStorage.getItem('mail')
-                    const password = localStorage.getItem('password')
-                    this.signIn(mail, password)
-                } else { this.setState({ loading: false }) };
+                console.log("No token")
+                this.setState({ loading: false })
             }
         )
     }
 
     signIn = (mail, password) => {
-        post('auth/signin', { mail, password },
+        const headers = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }
+
+
+        post('auth/signin', { mail, password }, headers,
             (res) => {
+                console.log(res)
                 localStorage.setItem('userId', res.data.userId)
                 this.unlockApp()
             },
@@ -49,17 +75,19 @@ class App extends React.Component {
         )
     }
 
-    unlockApp () {
+    unlockApp() {
         this.setState({ loggedin: true, loading: false })
         sessionStorage.setItem('isLoggedIn', true)
     }
 
-    render () {
+    render() {
         if (this.state.loading) {
             return (
-                <Row className='h-100 m-auto'>
-                    <Spinner className='m-auto' color="warning" />;
-                </Row>
+                <div className='d-flex justify-content-center align-items-center vh-100'>
+                    <Spinner className='m-auto' color="warning">
+                        .
+                    </Spinner>
+                </div>
             )
         }
 

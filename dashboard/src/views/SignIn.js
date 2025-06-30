@@ -8,7 +8,7 @@ import SimpleFormGroup from '../components/SimpleFormGroup'
  * @param props: signIn()
  */
 class SignIn extends React.Component {
-    constructor () {
+    constructor() {
         super()
 
         const keepConnection = localStorage.getItem('keepConnection')
@@ -37,7 +37,9 @@ class SignIn extends React.Component {
         this.setState({ [name]: value })
     }
 
-    handleSubtmit () {
+    handleSubtmit() {
+        console.log("handle submit")
+
         const mailError = !validEmail.test(this.state.email)
         const passwordError = !validPassword.test(this.state.password)
 
@@ -52,65 +54,76 @@ class SignIn extends React.Component {
         this.props.signIn(this.state.email, this.state.password)
     }
 
-    handleChekbox (event) {
+    handleChekbox(event) {
         const checked = event.currentTarget.checked
         this.setState({ keepConnection: checked })
     }
 
-    render () {
+    render() {
         return (
-            <div className='border mx-auto mt-5' style={{ borderRadius: 15, height: 275, width: 415 }}>
-                <Form>
-                    <FormGroup >
-                        <Col className='text-left mt-2' md="10">
-                            <Label className='bg-white' for="email">
-                            Courriel :
-                            </Label>
-                        </Col>
-                        <Col>
-                            <Input
-                                id="email"
-                                name="email"
-                                placeholder="Adresse mail"
-                                type="email"
-                                className='bg-white'
-                                value={this.state.email}
-                                onChange={this.handleChange}
-                                invalid={this.state.mailError}
-                                required
-                            />
-                        </Col>
-                    </FormGroup>
-                    {' '}
-                    <FormGroup>
-                        <Col className='text-left'>
-                            <Label className=' mr-auto bg-white' for="Password">
-                            Mot de passe :
-                            </Label>
-                        </Col>
-                        <Col>
-                            <Input
-                                id=" Password"
-                                name="password"
-                                placeholder="Mot de passe"
-                                type="password"
-                                className='bg-white'
-                                value={this.state.password}
-                                onChange={this.handleChange}
-                                invalid={this.state.passwordError}
-                                required
-                            />
-                        </Col>
-                    </FormGroup>
+            <div className='d-flex justify-content-center align-items-center vh-100 pb-5'>
 
-                    <SimpleFormGroup type="checkbox" id="keepConnection" value={this.state.keepConnection} handleChange={this.handleChekbox.bind(this)} text="Restez connecté"/>
+                <div className='border ' style={{ borderRadius: 15, height: 275, width: 415 }}>
+                    <Form>
+                        <FormGroup >
+                            <Col className='text-left mt-2' md="10">
+                                <Label className='bg-white' for="email">
+                                    Mail :
+                                </Label>
+                            </Col>
+                            <Col>
+                                <Input
+                                    id="email"
+                                    name="email"
+                                    placeholder="Adresse mail"
+                                    type="email"
+                                    className='bg-white'
+                                    value={this.state.email}
+                                    onChange={this.handleChange}
+                                    invalid={this.state.mailError}
+                                    required
+                                />
+                            </Col>
+                        </FormGroup>
+                        {' '}
+                        <FormGroup>
+                            <Col className='text-left'>
+                                <Label className=' mr-auto bg-white' for="Password">
+                                    Mot de passe :
+                                </Label>
+                            </Col>
+                            <Col>
+                                <Input
+                                    id=" Password"
+                                    name="password"
+                                    placeholder="Mot de passe"
+                                    type="password"
+                                    className='bg-white'
+                                    value={this.state.password}
+                                    onChange={this.handleChange}
+                                    invalid={this.state.passwordError}
+                                    required
+                                />
+                            </Col>
+                        </FormGroup>
 
-                    <Col md="6" className='ml-auto'>
-                        <Button className=' position-absoluto r-0 text-right ml-auto text-dark bg-white' onClick={this.handleSubtmit.bind(this)}>
-                        Connexion
-                        </Button>
-                    </Col>
-                </Form>
+                        {/**    
+                        <SimpleFormGroup 
+                            type="checkbox" 
+                            id="keepConnection" 
+                            value={this.state.keepConnection} 
+                            handleChange={this.handleChekbox.bind(this)} 
+                            text="Restez connecté"
+                        />
+                     */}
+
+                        <Col md="6" className='ml-auto'>
+                            <Button className=' position-absoluto r-0 text-right ml-auto text-dark bg-white' onClick={this.handleSubtmit.bind(this)}>
+                                Connexion
+                            </Button>
+                        </Col>
+                    </Form>
+                </div>
             </div>
 
         )

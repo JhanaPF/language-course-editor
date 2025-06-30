@@ -8,7 +8,6 @@ const mongoose = require("mongoose")
 const chai = require('chai')
 const fail = require("assert").fail
 const expect = chai.expect
-const should = chai.should()
 chai.use(require('chai-json-schema'))
 const { randomString } = require("../utils/stringUtils")
 
@@ -21,7 +20,7 @@ describe("lesson routes", function () {
 
 	before(async function () {
 
-		await mongoose.connect("mongodb://localhost:27017/dictionaries-test", { useNewUrlParser: true, useUnifiedTopology: true, })
+		await mongoose.connect(process.env.DATABASE + "/dictionaries-test", { useNewUrlParser: true, useUnifiedTopology: true, })
 			.then(() => console.log("Connected to Mongo !"))
 			.catch(() => {
 				console.log("Failed to connect to Mongo database")
