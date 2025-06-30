@@ -20,13 +20,15 @@ if (!process.env.DATABASE) {
 	throw new Error("DATABASE is not defined in your environment variables.");
 }
 
-mongoose.connect(process.env.DATABASE,
-	{
-		useNewUrlParser: true,
-		useUnifiedTopology: true,
-		serverSelectionTimeoutMS: 1000,
-		socketTimeoutMS: 2000,
-	})
+
+const mongoParams = {
+	useNewUrlParser: true,
+	useUnifiedTopology: true,
+	serverSelectionTimeoutMS: 1000,
+	socketTimeoutMS: 2000,
+}
+
+mongoose.connect(process.env.DATABASE, mongoParams)
 	.then(() => console.log("Connected to Mongo !"))
 	.catch((err) => {
 		console.dir(err)

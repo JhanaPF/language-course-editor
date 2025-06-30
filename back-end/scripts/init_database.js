@@ -1,7 +1,10 @@
 const mongoose = require("mongoose")
 require("dotenv").config()
-const isProduction = process.env.NODE_ENV === "production"
+//const isProduction = process.env.NODE_ENV === "production"
 const crypto = require('crypto');
+const bcrypt = require("bcryptjs");
+const { raw } = require("express");
+
 
 // Add admin accounts 
 
@@ -34,27 +37,29 @@ function generateRandomPassword(length = 16) {
 	return passwordChars.join('');
 }
 
-mongoose.connect(
-	isProduction ? process.env.DATABASE : "mongodb://localhost:34567/courses",
-	{ useNewUrlParser: true, useUnifiedTopology: true }
-)
+mongoose.connect(process.env.DATABASE, { useNewUrlParser: true, useUnifiedTopology: true })
 db = mongoose.connection
 
 db.on("error", console.error.bind(console, "Connection error:"))
-db.once("open", function () {
+db.once("open", async function () {
 	console.log("Connecté à Mongoose")
+	
+	const saltRounds = 12;
+	const rawPassword = generateRandomPassword(12);
+	console.log(rawPassword)
+	const hashedPassword = await bcrypt.hash(rawPassword, saltRounds);
 
 	const admin = {
 		name: "admin",
 		mail: "admin@example.com",
-		password: generateRandomPassword(12),
+		password: hashedPassword,
 		role: "admin",
 	}
 
 	const superAdmin = {
 		name: "superAdmin",
 		mail: "superadmin@example.com",
-		password: generateRandomPassword(12),
+		password: hashedPassword,
 		role: "superAdmin",
 	}
 
@@ -70,8 +75,6 @@ db.once("open", function () {
 	addAdmins
 		.then((value) => {
 			console.log(value)
-			console.log("Admin pwd: ", admin.password)
-			console.log("Super admin pwd: ", superAdmin.password)
 			process.exit()
 		})
 		.catch((error) => {

@@ -53,6 +53,8 @@ router.signin = (req, res) => {
 
 	user.findOne({ mail })
 		.then(userFound => {
+			if(!userFound)  return res.status(500).json({message: "user not found"})
+
 
 			bcrypt.compare(password, userFound.password)
 				.then(valid => {

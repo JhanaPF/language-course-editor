@@ -1,5 +1,5 @@
 import React from 'react'
-import { put, post } from '../apiRequests'
+import { put, post } from '../api/apiRequests'
 
 /**
  * @constructor (props, inputNames)

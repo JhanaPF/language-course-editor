@@ -1,5 +1,5 @@
 import React from 'react'
-import { get } from '../apiRequests'
+import { get } from '../api/apiRequests'
 
 /**
  * Overview parent classe

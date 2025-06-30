@@ -61,8 +61,6 @@ export default class WordModal extends React.Component {
             }
         }
 
-        this.apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3001/'
-
         this.handleChange = this.handleChange.bind(this)
         this.save = this.save.bind(this)
 
@@ -140,7 +138,7 @@ export default class WordModal extends React.Component {
         const save = this.getData()
         // console.log(save.word, this.state.translated_definition)
         axios.post(
-            this.apiUrl + 'word',
+            REACT_APP_API_URL + 'word',
             save,
             { headers: { Authorization: this.props.token, 'Content-Type': 'multipart/form-data' } }
         )
@@ -157,7 +155,7 @@ export default class WordModal extends React.Component {
         //  console.log(this.state)
         formData.append('audio-file', this.state.vocalFile)
         axios.put(
-            this.apiUrl + 'dictionaries/word',
+            REACT_APP_API_URL + 'dictionaries/word',
             formData,
             {
                 headers: {

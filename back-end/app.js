@@ -27,7 +27,6 @@ const lessonRoutes = require("./routes/lessons")
 const questionRoutes = require("./routes/questions")
 
 const allowedOrigins = [
-	'http://localhost:3000/',
 	process.env.ORIGIN,
 ];
 
@@ -45,13 +44,16 @@ const corsOptions = {
 app.use((req, res, next) => {
 	console.log("Client's ip:", req.ipInfo)
 	console.log('Incoming request origin:', req.headers.origin);
+
 	res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization")
+	res.header("Access-Control-Allow-Credentials", "true")
 	res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE")
 	next()
 })
 
-//app.options('*', cors(corsOptions))
-//app.use(cors(corsOptions))
+app.options('*', cors(corsOptions))
+app.use(cors(corsOptions))
+
 
 if(!isProduction) {
 	app.use(debug)

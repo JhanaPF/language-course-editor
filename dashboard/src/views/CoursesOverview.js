@@ -5,14 +5,12 @@ import AddButton from '../components/AddButton'
 import ReturnButton from '../components/ReturnButton'
 import QuestionsOverview from './QuestionsOverview'
 import CourseModal from '../modals/CourseModal'
-import { get } from '../apiRequests'
+import { get } from '../api/apiRequests'
 import { capitalizeFirstLetter } from '../utils/stringUtils'
 
 class CoursesOverview extends React.Component { // Show all courses
     constructor (props) {
         super(props)
-
-        this.apiUrl = localStorage.getItem('apiUrl')
 
         this.state = {
             course: undefined,
@@ -83,7 +81,7 @@ class CoursesOverview extends React.Component { // Show all courses
             <Row className='mt-3 mx-5 w-100 justify-content-center'>
                 {courses.map((course, index) =>
                     <Card key={index} style={{ width: '18rem' }}>
-                        <img alt="flag" crossOrigin='use-credentials' src={`${this.apiUrl}pictures/courses/${course.file_name}`}/>
+                        <img alt="flag" crossOrigin='use-credentials' src={`${process.env.REACT_APP_API_URL}pictures/courses/${course.file_name}`}/>
                         <CardBody>
                             <CardTitle tag="h5">
                                 {capitalizeFirstLetter(course.language)}

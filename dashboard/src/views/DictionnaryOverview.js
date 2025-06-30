@@ -21,7 +21,6 @@ class Dashboard extends React.Component {
             dictionary: null
         }
 
-        this.apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3001/'
         this.handleChange = this.handleChange.bind(this)
         this.delete = this.delete.bind(this)
     }
@@ -36,7 +35,7 @@ class Dashboard extends React.Component {
     }
 
     onFetchdictionary () {
-        axios.get(this.apiUrl + 'dictionaries/dictionary')
+        axios.get(REACT_APP_API_URL + 'dictionaries/dictionary')
             .then(res => {
             // console.log(res.data.message)
                 const setWords = []
@@ -58,7 +57,7 @@ class Dashboard extends React.Component {
 
         const word = this.state.dictionary.find(w => w._id === id)
         axios.get(
-            this.apiUrl + 'word/_id/' + id,
+            REACT_APP_API_URL + 'word/_id/' + id,
             { headers: { Authorization: this.props.token } }
         )
             .then(res => {
@@ -98,7 +97,7 @@ class Dashboard extends React.Component {
         }
 
         axios.delete(
-            this.apiUrl + 'word',
+            REACT_APP_API_URL + 'word',
             {
                 headers: { Authorization: this.props.token },
                 data: { word_id: this.state.selectedWord.value, userId: this.props.userId } // req.data = req.body dans le serveur
@@ -123,7 +122,7 @@ class Dashboard extends React.Component {
     }
 
     openCrossWord () {
-        window.open(this.apiUrl + 'crossword/')
+        window.open(REACT_APP_API_URL + 'crossword/')
     }
 
     render () {

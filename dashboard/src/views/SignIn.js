@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import React from 'react'
 import { Form, FormGroup, Input, Label, Button, Col } from 'reactstrap'
 import { validEmail, validPassword } from '../rgx/regex'
-import SimpleFormGroup from '../components/SimpleFormGroup'
+//import SimpleFormGroup from '../components/SimpleFormGroup'
 
 /**
  * @param props: signIn()
