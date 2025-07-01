@@ -1,6 +1,8 @@
 import React from 'react'
-import { Card, CardBody, CardSubtitle, CardTitle, CardText, CardGroup, Button, ButtonGroup, Row, Col } from 'reactstrap'
+import { Card, CardBody, CardSubtitle, CardTitle, CardText, Row } from 'reactstrap'
 import AddButton from './AddButton'
+import ClickableCard from '../components/cards/ClickableCard'
+
 
 /**
  * @props children - wrap modal
@@ -47,28 +49,7 @@ export default class OverviewWrapper extends React.Component { // Common compone
 
             <Row className='mt-3 w-100 justify-content-center'>
                 {elements && elements.map((elem, i) =>
-                    <Card
-                        key={i}
-                        style={{ width: '18rem', cursor: 'pointer' }}
-                        onClick={() => this.props.setElement(elem._id)}
-                    >
-                        <CardBody>
-                            <CardTitle tag="h5">{elem.name}</CardTitle>
-                            <CardSubtitle className="mb-2 text-muted" tag="h6">{i}</CardSubtitle>
-                            <CardText>{elem.description}</CardText>
-                            {/**
-                             * 
-                            <ButtonGroup>
-                                <Button onClick={this.handleIndexChange.bind(this, elem._id, -1)}>
-                                    {'<'}
-                                </Button>
-                                <Button onClick={this.handleIndexChange.bind(this, elem._id, 1)}>
-                                    {'>'}
-                                </Button>
-                            </ButtonGroup>
-                             */}
-                        </CardBody>
-                    </Card>
+                    <ClickableCard key={i} type="" item={elem} onClick={this.setElement.bind(this)}/>
                 )}
             </Row>
 

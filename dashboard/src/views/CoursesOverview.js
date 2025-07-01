@@ -1,12 +1,12 @@
 import React from 'react'
-import { Card, CardBody, CardSubtitle, CardTitle, Button, Row, Col } from 'reactstrap'
+import { Row, Col } from 'reactstrap'
 import LessonsOverview from './LessonsOverview'
 import AddButton from '../components/AddButton'
 import ReturnButton from '../components/ReturnButton'
 import QuestionsOverview from './QuestionsOverview'
 import CourseModal from '../modals/CourseModal'
 import { get } from '../api/apiRequests'
-import { capitalizeFirstLetter } from '../utils/stringUtils'
+import ClickableCard from '../components/cards/ClickableCard'
 
 class CoursesOverview extends React.Component { // Show all courses
     constructor(props) {
@@ -40,10 +40,6 @@ class CoursesOverview extends React.Component { // Show all courses
     handleChange(event) {
         const { name, value } = event.currentTarget
         this.setState({ [name]: value })
-    }
-
-    lessonIndexChange(lessonId, index) {
-
     }
 
     toggleCourseModal() {
@@ -80,33 +76,7 @@ class CoursesOverview extends React.Component { // Show all courses
 
             <div className='mt-3 d-flex w-100 justify-content-center'>
                 {courses.map((course, index) =>
-                    <Card
-                        key={index}
-                        style={{ width: '18rem', cursor: 'pointer' }}
-                        onClick={() => this.setCourse(course._id)}
-                    >
-                        <img
-                            alt="flag"
-                            crossOrigin="use-credentials"
-                            src={`${process.env.REACT_APP_API_URL}pictures/courses/${course.file_name}`}
-                        />
-                        <CardBody>
-                            <CardTitle tag="h5">
-                                {capitalizeFirstLetter(course.language)}
-                            </CardTitle>
-                            <CardSubtitle className="mb-2 text-muted" tag="h6">
-                                Depuis {course.pivot_language}
-                            </CardSubtitle>
-                            {/**this.state.courseId === undefined && (
-                                <Button onClick={(e) => {
-                                    e.stopPropagation();
-                                    this.setCourse(course._id);
-                                }}>
-                                    Modifier
-                                </Button>
-                            )*/}
-                        </CardBody>
-                    </Card>
+                    <ClickableCard key={index} type="course" item={course} onClick={this.setCourse.bind(this)}/>
                 )}
             </div>
 
