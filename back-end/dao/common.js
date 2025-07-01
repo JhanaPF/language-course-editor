@@ -4,7 +4,7 @@ const log = console.log
 
 
 const successCbk = (res, msg, data, statusCode = 200) => {
-	//log(msg + " success", data)
+	log(msg + " success", data)
 	res.status(statusCode).json(data)
 }
 

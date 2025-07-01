@@ -10,7 +10,7 @@ const fs = require("fs")
 
 
 router.fetch = (req, res) => {
-	commonDao.fetch(res, course, {released: true})
+	commonDao.fetch(res, course, {})
 }
 
 router.add = (req, res) => {   

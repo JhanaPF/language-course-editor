@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, CardBody, CardSubtitle, CardTitle, CardText, CardGroup, Button, ButtonGroup, Row } from 'reactstrap'
+import { Card, CardBody, CardSubtitle, CardTitle, CardText, CardGroup, Button, ButtonGroup, Row, Col } from 'reactstrap'
 import AddButton from './AddButton'
 
 /**
@@ -11,7 +11,7 @@ import AddButton from './AddButton'
  * Modal is managed in Overwiews class components
  */
 export default class OverviewWrapper extends React.Component { // Common component for all overviews
-    constructor (props) {
+    constructor(props) {
         if (props.elemId) console.warn('Elem id is missing, you will not be able to add an element')
         super(props)
 
@@ -25,34 +25,39 @@ export default class OverviewWrapper extends React.Component { // Common compone
         this.setState({ [param]: e })
     }
 
-    handleIndexChange (id, value) {
+    handleIndexChange(id, value) {
         console.log('update index', id, value)
     }
 
-    setElement (id) {
+    setElement(id) {
         this.setState({ elemId: id })
     }
 
-    render () {
+    render() {
         if (!this.props.elements) return null
         const elements = this.props.elemId ? this.props.elements.filter(elem => elem._id === this.props.elemId) : this.props.elements
 
-        return (<Row>
+        return (<Row className='w-100'>
 
-            {!this.props.elemId && <AddButton className="ml-4" addFunction={this.props.toggleModal}>Ajouter {this.props.buttonObjName}</AddButton>}
+            {!this.props.elemId && (
+                <AddButton className="mx-auto mt-5" addFunction={this.props.toggleModal}>
+                    Ajouter {this.props.buttonObjName}
+                </AddButton>
+            )}
 
-            <Row className='mt-3 mx-5 w-100 justify-content-center'>
+            <Row className='mt-3 w-100 justify-content-center'>
                 {elements && elements.map((elem, i) =>
-                    <Card key={i} style={{ width: '18rem' }}>
+                    <Card
+                        key={i}
+                        style={{ width: '18rem', cursor: 'pointer' }}
+                        onClick={() => this.props.setElement(elem._id)}
+                    >
                         <CardBody>
                             <CardTitle tag="h5">{elem.name}</CardTitle>
                             <CardSubtitle className="mb-2 text-muted" tag="h6">{i}</CardSubtitle>
                             <CardText>{elem.description}</CardText>
-                            <CardGroup>
-                                <Button className="mx-auto" onClick={this.props.setElement.bind(this, elem._id)}>
-                                    Modifier
-                                </Button>
-                            </CardGroup>
+                            {/**
+                             * 
                             <ButtonGroup>
                                 <Button onClick={this.handleIndexChange.bind(this, elem._id, -1)}>
                                     {'<'}
@@ -61,6 +66,7 @@ export default class OverviewWrapper extends React.Component { // Common compone
                                     {'>'}
                                 </Button>
                             </ButtonGroup>
+                             */}
                         </CardBody>
                     </Card>
                 )}

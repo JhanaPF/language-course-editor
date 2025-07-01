@@ -9,7 +9,7 @@ import { get } from '../api/apiRequests'
 import { capitalizeFirstLetter } from '../utils/stringUtils'
 
 class CoursesOverview extends React.Component { // Show all courses
-    constructor (props) {
+    constructor(props) {
         super(props)
 
         this.state = {
@@ -21,15 +21,15 @@ class CoursesOverview extends React.Component { // Show all courses
         this.handleChange = this.handleChange.bind(this)
     }
 
-    componentDidMount () {
+    componentDidMount() {
         this.fetchCourses()
     }
 
-    fetchCourses () {
+    fetchCourses() {
         get('courses', {}, (res) => this.initState(res), () => this.setState({ loading: false, courseModal: false }))
     }
 
-    initState (res) {
+    initState(res) {
         this.setState({ courses: res.data.courses, loading: false, courseModal: false })
     }
 
@@ -37,76 +37,89 @@ class CoursesOverview extends React.Component { // Show all courses
         this.setState({ [param]: e })
     }
 
-    handleChange (event) {
+    handleChange(event) {
         const { name, value } = event.currentTarget
         this.setState({ [name]: value })
     }
 
-    lessonIndexChange (lessonId, index) {
+    lessonIndexChange(lessonId, index) {
 
     }
 
-    toggleCourseModal () {
+    toggleCourseModal() {
         this.setState({ courseModal: !this.state.courseModal })
     }
 
-    setCourse (id) {
+    setCourse(id) {
         this.setState({ courseId: id })
     }
 
-    getCourse (id) {
+    getCourse(id) {
         return this.state.courses.find(course => course._id === id)
     }
 
-    render () {
+    render() {
         if (!this.state.courses) return null
 
         const courses = this.state.courseId ? this.state.courses.filter(course => course._id === this.state.courseId) : this.state.courses
 
         return (<>
-            <Row className='w-100 mt-5'>
-                <Col></Col>
-                <Col >
-                    <h3 className='my-auto'>Liste des cours/dictionnaires :</h3>
-                </Col>
-                <Col className='text-left m-auto'>
-                    <AddButton addFunction={this.toggleCourseModal.bind(this)}>Ajouter un cours</AddButton>
-                </Col>
-            </Row>
-
-            {this.state.courseId !== undefined &&
-                <ReturnButton goBack={function () { this.setCourse(undefined) }.bind(this)}/>
+            {!this.state.courseId &&
+                <Row className='w-100 mt-5'>
+                    <Col className='text-right ml-auto'>
+                        <AddButton addFunction={this.toggleCourseModal.bind(this)}>Ajouter un cours</AddButton>
+                    </Col>
+                </Row>
             }
 
-            <Row className='mt-3 mx-5 w-100 justify-content-center'>
+            {this.state.courseId !== undefined &&
+                <Row>
+                    <ReturnButton goBack={function () { this.setCourse(undefined) }.bind(this)} />
+                </Row>
+            }
+
+            <div className='mt-3 d-flex w-100 justify-content-center'>
                 {courses.map((course, index) =>
-                    <Card key={index} style={{ width: '18rem' }}>
-                        <img alt="flag" crossOrigin='use-credentials' src={`${process.env.REACT_APP_API_URL}pictures/courses/${course.file_name}`}/>
+                    <Card
+                        key={index}
+                        style={{ width: '18rem', cursor: 'pointer' }}
+                        onClick={() => this.setCourse(course._id)}
+                    >
+                        <img
+                            alt="flag"
+                            crossOrigin="use-credentials"
+                            src={`${process.env.REACT_APP_API_URL}pictures/courses/${course.file_name}`}
+                        />
                         <CardBody>
                             <CardTitle tag="h5">
                                 {capitalizeFirstLetter(course.language)}
                             </CardTitle>
-                            <CardSubtitle className="mb-2 text-muted" tag="h6" >
+                            <CardSubtitle className="mb-2 text-muted" tag="h6">
                                 Depuis {course.pivot_language}
                             </CardSubtitle>
-                            {this.state.courseId === undefined &&
-                                <Button onClick={this.setCourse.bind(this, course._id)}> Modifier </Button>
-                            }
+                            {/**this.state.courseId === undefined && (
+                                <Button onClick={(e) => {
+                                    e.stopPropagation();
+                                    this.setCourse(course._id);
+                                }}>
+                                    Modifier
+                                </Button>
+                            )*/}
                         </CardBody>
                     </Card>
                 )}
-            </Row>
+            </div>
 
             {this.state.courseModal &&
-                <CourseModal closeModal={this.toggleCourseModal} fetchCourses={this.fetchCourses.bind(this)}/>
+                <CourseModal closeModal={this.toggleCourseModal} fetchCourses={this.fetchCourses.bind(this)} />
             }
 
             {this.state.courseId &&
-                <LessonsOverview course={this.getCourse(this.state.courseId)}/>
+                <LessonsOverview course={this.getCourse(this.state.courseId)} />
             }
 
             {this.state.lesson &&
-                <QuestionsOverview/>
+                <QuestionsOverview />
             }
         </>)
     }
