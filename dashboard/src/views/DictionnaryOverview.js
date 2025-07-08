@@ -7,7 +7,8 @@ import WordModal from '../modals/WordModal'
 import WordDetail from '../components/WordDetail'
 import DeleteModal from '../modals/DeleteModal'
 
-class Dashboard extends React.Component {
+export default class DictionnaryOverview extends React.Component {
+
     constructor (props) {
         super(props)
 
@@ -30,20 +31,17 @@ class Dashboard extends React.Component {
     }
 
     componentDidUpdate () {
-        // console.log(this.state)
         if (this.state.reloadEditModal) this.setState({ editModal: true, reloadEditModal: false })
     }
 
     onFetchdictionary () {
         axios.get(REACT_APP_API_URL + 'dictionaries/dictionary')
             .then(res => {
-            // console.log(res.data.message)
                 const setWords = []
                 const newDictionary = res.data.message.slice()
                 newDictionary.map(w => setWords.push({ label: w.word, value: w._id }))
 
                 if (this.state.selectedWordData) {
-                // console.log(this.state.selectedWordData)
                     this.onFetchWord(this.state.selectedWordData._id)
                 }
 
@@ -121,10 +119,6 @@ class Dashboard extends React.Component {
         this.selectWord(e.value)
     }
 
-    openCrossWord () {
-        window.open(REACT_APP_API_URL + 'crossword/')
-    }
-
     render () {
         return (
             <div className="App">
@@ -173,11 +167,6 @@ class Dashboard extends React.Component {
                             </Button>
                         </Col>
 
-                        <Col className='text-right'>
-                            <Button className='text-right' onClick={this.openCrossWord.bind(this)}>
-                                Jeu de mots-croisés
-                            </Button>
-                        </Col>
                     </Col>
 
                 </Row>
@@ -202,5 +191,3 @@ class Dashboard extends React.Component {
         )
     }
 }
-
-export default Dashboard

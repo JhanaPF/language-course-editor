@@ -11,10 +11,6 @@ class AudioRecorder extends Component {
         }
     }
 
-    componentDidUpdate () {
-        // console.log(this.state)
-    }
-
     handleStartRecording = () => {
         console.log('start recording')
         navigator.mediaDevices.getUserMedia({ audio: true })

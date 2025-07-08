@@ -39,22 +39,24 @@ export default class OverviewWrapper extends React.Component { // Common compone
         if (!this.props.elements) return null
         const elements = this.props.elemId ? this.props.elements.filter(elem => elem._id === this.props.elemId) : this.props.elements
 
-        return (<Row className='w-100'>
+        return (
+            <Row className='w-100'>
 
-            {!this.props.elemId && (
-                <AddButton className="mx-auto mt-5" addFunction={this.props.toggleModal}>
-                    Ajouter {this.props.buttonObjName}
-                </AddButton>
-            )}
-
-            <Row className='mt-3 w-100 justify-content-center'>
-                {elements && elements.map((elem, i) =>
-                    <ClickableCard key={i} type="" item={elem} onClick={this.setElement.bind(this)}/>
+                {!this.props.elemId && (
+                    <AddButton className="mx-auto mt-5" addFunction={this.props.toggleModal}>
+                        Ajouter {this.props.buttonObjName}
+                    </AddButton>
                 )}
+
+                <Row className='mt-3 w-100 justify-content-center'>
+                    {elements && elements.map((elem, i) =>
+                        <ClickableCard key={i} type="" item={elem} onClick={this.setElement.bind(this)} />
+                    )}
+                </Row>
+
+                {this.props.children}
+
             </Row>
-
-            {this.props.children}
-
-        </Row>)
+        )
     }
 }

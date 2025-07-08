@@ -2,14 +2,15 @@ import React from 'react'
 import { Modal, ModalBody, ModalFooter, Form, FormText, FormGroup, Input, Label, Button, Row, Col, UncontrolledAccordion, AccordionItem, AccordionHeader, AccordionBody } from 'reactstrap'
 import axios from 'axios'
 import Select from 'react-select'
-import { validString } from '../rgx/regex'
+import { validString } from '../utils/regex'
 import Classes from '../enum/classes'
 import Categories from '../enum/categories'
 import Sources from '../enum/sources'
 import AudioRecorder from '../components/AudioRecorder'
 
 export default class WordModal extends React.Component {
-    constructor (props) {
+
+    constructor(props) {
         super(props)
 
         this.categoriesOptions = Categories.values()
@@ -26,25 +27,23 @@ export default class WordModal extends React.Component {
 
             if (this.props.wordData) {
                 this.state = {
-                    // "translated" = langue pivot, ici le français
                     fieldError: false,
-
-                    word: this.props.wordData ? this.props.wordData.word : undefined,
-                    class: this.props.wordData.class ? { value: this.props.wordData.class, label: Classes.getName(this.props.wordData.class) } : undefined,
-                    definition: this.props.wordData ? this.props.wordData.definition : undefined,
-                    translated_word: this.props.wordData ? this.props.wordData.translated_word : undefined,
-                    translated_definition: this.props.wordData ? this.props.wordData.translated_definition : undefined,
-                    level: this.props.wordData.level ? this.props.wordData.level : '1',
+                    word: wordData?.word,
+                    class: wordData?.class ? { value: wordData.class, label: Classes.getName(wordData.class) } : undefined,
+                    definition: wordData?.definition,
+                    translated_word: wordData?.translated_word,
+                    translated_definition: wordData?.translated_definition,
+                    level: wordData?.level || '1',
                     categories,
-                    source: this.props.wordData.source ? { value: this.props.wordData.source, label: Sources.getName(this.props.wordData.source) } : {},
+                    source: wordData?.source ? { value: wordData.source, label: Sources.getName(wordData.source) } : {},
 
-                    story: this.props.wordData.additionalData ? this.props.wordData.additionalData.story : undefined, // Anecdotes
-                    riddle: this.props.wordData.additionalData ? this.props.wordData.additionalData.riddle : undefined, // Devinette
-                    translated_riddle: this.props.wordData.additionalData ? this.props.wordData.additionalData.translated_riddle : undefined, // Devinette en langue pivot
-                    sentence: this.props.wordData.additionalData ? this.props.wordData.additionalData.sentence : undefined, // Mot en contexte dans une phrase
+                    story: additional.story,
+                    riddle: additional.riddle,
+                    translated_riddle: additional.translated_riddle,
+                    sentence: additional.sentence,
 
                     audioFile: null
-                }
+                };
             } else {
                 this.state = {
                     level: '1',
@@ -66,14 +65,6 @@ export default class WordModal extends React.Component {
 
         this.update = this.update.bind(this)
         this.type = this.props.addModal ? 'addModal' : 'editModal'
-    }
-
-    componentDidMount () {
-        // console.log(999)
-    }
-
-    componentDidUpdate () {
-        // console.log(this.state)
     }
 
     handleChange = (event) => {
@@ -100,12 +91,12 @@ export default class WordModal extends React.Component {
         this.setState({ [param]: e })
     }
 
-    isValid () {
+    isValid() {
         if (!this.state.word) return false
         else return true
     }
 
-    getData () {
+    getData() {
         const save = {
             word_id: this.props.wordData ? this.props.wordData._id : null,
             word: {
@@ -128,15 +119,13 @@ export default class WordModal extends React.Component {
             audioFile: this.state.audioFile
         }
 
-        // console.log(save)
         return save
     }
 
-    update () {
+    update() {
         if (!this.isValid()) return
 
         const save = this.getData()
-        // console.log(save.word, this.state.translated_definition)
         axios.post(
             REACT_APP_API_URL + 'word',
             save,
@@ -150,9 +139,8 @@ export default class WordModal extends React.Component {
         if (this.isValid() === false) return
 
         // const save = this.getData()
-        // console.log(save)
         const formData = new FormData()
-        //  console.log(this.state)
+
         formData.append('audio-file', this.state.vocalFile)
         axios.put(
             REACT_APP_API_URL + 'dictionaries/word',
@@ -176,14 +164,11 @@ export default class WordModal extends React.Component {
             })
     }
 
-    saveAudio (file) {
+    saveAudio(file) {
         this.setState({ audioFile: file })
     }
 
-    formValidation () {
-    }
-
-    render () {
+    render() {
         return (
             <Modal isOpen={true} size='lg' style={{ overflowY: 'auto' }}>
                 <ModalBody className=''>
@@ -220,20 +205,20 @@ export default class WordModal extends React.Component {
                                 value={this.state.class}
                                 onChange={this.handleSelectChange.bind(this, 'class')}
                                 options={this.classOptions}
-                                placeholder=""/>
+                                placeholder="" />
                         </FormGroup>
                         <FormGroup className='mx-2'>
                             <Label className='text-left mr-4'>
                                 Enregistrement vocal du mot:
                             </Label>
-                            <AudioRecorder saveAudio={this.saveAudio.bind(this)}/>
+                            <AudioRecorder saveAudio={this.saveAudio.bind(this)} />
                         </FormGroup>
                         <FormGroup className='mx-2 mb-3' >
                             <Label for="vocalFile">
                                 Fichier vocal
                             </Label>
                             <Col sm={10}>
-                                <Input id="vocalFile" name="vocalFile" type="file" onChange={this.handleChange}/>
+                                <Input id="vocalFile" name="vocalFile" type="file" onChange={this.handleChange} />
                                 <FormText>
                                     Ajouter un fichier vocal
                                 </FormText>
@@ -248,7 +233,7 @@ export default class WordModal extends React.Component {
                                 name="translated_definition"
                                 value={this.state.translated_definition}
                                 onChange={this.handleChange}
-                                type='textarea'/>
+                                type='textarea' />
                         </FormGroup>
                         <FormGroup className='mx-2 mb-3'>
                             <Label className='text-left' for="definition">
@@ -259,7 +244,7 @@ export default class WordModal extends React.Component {
                                 name="definition"
                                 value={this.state.definition}
                                 onChange={this.handleChange}
-                                type='textarea'/>
+                                type='textarea' />
                         </FormGroup>
                         <FormGroup className='mx-2'>
                             <Label className='text-left' for="story">
@@ -270,7 +255,7 @@ export default class WordModal extends React.Component {
                                 name="story"
                                 value={this.state.story}
                                 onChange={this.handleChange}
-                                type='textarea'/>
+                                type='textarea' />
                         </FormGroup>
                         <FormGroup className='mx-2'>
                             <Label className='text-left' for="sentence">
@@ -280,7 +265,7 @@ export default class WordModal extends React.Component {
                                 id="sentence"
                                 name="sentence"
                                 value={this.state.sentence}
-                                onChange={this.handleChange}/>
+                                onChange={this.handleChange} />
                         </FormGroup>
                         <FormGroup className='mx-2'>
                             <Label className='text-left' for="level">
@@ -309,7 +294,7 @@ export default class WordModal extends React.Component {
                                 value={this.state.categories}
                                 onChange={this.handleSelectChange.bind(this, 'categories')}
                                 options={this.categoriesOptions}
-                                placeholder=""/>
+                                placeholder="" />
                         </FormGroup>
                         <FormGroup className='mx-2'>
                             <Label className='text-left' for="source">
@@ -338,7 +323,7 @@ export default class WordModal extends React.Component {
                                             name="translated_riddle"
                                             value={this.state.translated_riddle}
                                             onChange={this.handleChange}
-                                            type='textarea'/>
+                                            type='textarea' />
                                     </FormGroup>
                                     <FormGroup className='mx-2'>
                                         <Label className='text-left' for="riddle">

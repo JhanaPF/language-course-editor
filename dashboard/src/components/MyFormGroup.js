@@ -9,5 +9,6 @@ export default function MyFormGroup (props) {
             </Label>
             
             {props.children}
-        </FormGroup>)
+        </FormGroup>
+    )
 }

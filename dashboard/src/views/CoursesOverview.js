@@ -9,6 +9,7 @@ import { get } from '../api/apiRequests'
 import ClickableCard from '../components/cards/ClickableCard'
 
 class CoursesOverview extends React.Component { // Show all courses
+    
     constructor(props) {
         super(props)
 

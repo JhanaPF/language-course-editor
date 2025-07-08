@@ -2,7 +2,7 @@ import React from 'react'
 import { Button } from 'reactstrap'
 
 /**
- * @param {*} props: addFunction, classNmae, children
+ * @param {*} props: addFunction, className, children
  */
 export default function AddButton (props) {
     return (

@@ -2,12 +2,9 @@ import React from 'react'
 import { Form, Button, Row } from 'reactstrap'
 
 /**
- *
  * @param {*} props children, isValid
- * @returns
  */
 export default function FormWrapper (props) {
-    // Wrapper for forms
 
     const submit = (e) => {
         // console.log(e)

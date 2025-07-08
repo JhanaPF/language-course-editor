@@ -1,5 +1,3 @@
-// API REQUESTS apiRequests.js
-
 import axios from 'axios'
 axios.defaults.withCredentials = true
 if (!process.env.REACT_APP_API_URL) {
@@ -9,7 +7,7 @@ const apiUrl = process.env.REACT_APP_API_URL
 const log = console.log
 
 function axiosRequest(url, options, successCbk, errorCbk) {
-    // log(options)
+
     return axios({ url: apiUrl + url, headers: { Accept: 'application/json' }, ...options })
         .then(res => {
             log('Request success: ', res)
