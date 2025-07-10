@@ -1,6 +1,7 @@
 import './css/App.css'
 import React from 'react'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 
@@ -58,7 +59,8 @@ class App extends React.Component {
 
     unlockApp() {
         console.log("logged in")
-        this.setState({ loggedin: true, loading: false })
+        this.setState({ loggedin: true })
+        window.location.href = "/dashboard";
         sessionStorage.setItem('isLoggedIn', true)
     }
 

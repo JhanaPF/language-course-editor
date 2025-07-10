@@ -45,7 +45,7 @@ db.once("open", async function () {
 	console.log("Connecté à Mongoose")
 	
 	const saltRounds = 12;
-	const rawPassword = generateRandomPassword(12);
+	const rawPassword = generateRandomPassword(30);
 	console.log(rawPassword)
 	const hashedPassword = await bcrypt.hash(rawPassword, saltRounds);
 
