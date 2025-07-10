@@ -1,6 +1,6 @@
 import React from 'react'
 import LessonModal from '../modals/LessonModal'
-import OverviewWrapper from '../components/OverviewWrapper'
+import OverviewWrapper from '../components/wrappers/OverviewWrapper'
 import Overview from '../common/Overview'
 import QuestionsOverview from './QuestionsOverview'
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import { FormText, Input } from 'reactstrap'
 import MyFormGroup from './MyFormGroup'
-import { capitalizeFirstLetter } from '../utils/stringUtils'
+import { capitalizeFirstLetter } from '../../utils/stringUtils'
 
 /**
  *

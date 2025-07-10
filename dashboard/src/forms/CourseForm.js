@@ -1,8 +1,8 @@
 import React from 'react'
 import MyForm from '../common/MyForm'
-import FormWrapper from '../components/FormWrapper'
-import SimpleFormGroup from '../components/SimpleFormGroup'
-import PictureInputGroup from '../components/PictureInputGroup'
+import FormWrapper from '../components/forms/FormWrapper'
+import SimpleFormGroup from '../components/forms/SimpleFormGroup'
+import PictureInputGroup from '../components/forms/PictureInputGroup'
 
 export default class CourseForm extends MyForm {
     constructor (props) {

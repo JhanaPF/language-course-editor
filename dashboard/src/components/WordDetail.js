@@ -5,6 +5,9 @@ import Classes from '../enum/classes'
 // import Categories from './enum/categories';
 import Sources from '../enum/sources'
 
+/**
+ * @description Word detail from dictionnary
+ */
 export default class WordDetail extends React.Component {
     render () {
         return (

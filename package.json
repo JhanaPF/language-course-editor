@@ -5,7 +5,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "install": "cd back-end && npm ci && cd ../dashboard && npm ci",
-    "start": "cd back-end && npm start && cd ../dashboard && npm start"
+    "start": "cd back-end && npm start && cd ../dashboard && npm start",
+    "start:app1": "cd backend && nodemon",
+    "start:app2": "cd dashboard && npm start",
+    "start:all": "concurrently \"npm run start:app1\" \"npm run start:app2\""
   },
   "author": "Jhana",
   "license": "ISC"

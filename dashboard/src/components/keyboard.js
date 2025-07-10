@@ -1,7 +1,9 @@
 import React from 'react'
-import 'bootstrap/dist/css/bootstrap.min.css'
 import { Button } from 'reactstrap'
 
+/**
+ * @description Display a button for all special characters 
+ */
 class Keyboard extends React.Component {
     constructor () {
         super()

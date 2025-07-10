@@ -1,6 +1,6 @@
 import React from 'react'
 import QuestionForm from '../forms/QuestionForm'
-import MyModal from '../components/MyModal'
+import MyModal from '../components/wrappers/MyModal'
 
 /**
  * @param {boolean} isOpen - optionnal
