@@ -1,7 +1,7 @@
 import React from 'react'
 import MyForm from '../common/MyForm'
-import FormWrapper from '../components/FormWrapper'
-import SimpleFormGroup from '../components/SimpleFormGroup'
+import FormWrapper from '../components/forms/FormWrapper'
+import SimpleFormGroup from '../components/forms/SimpleFormGroup'
 
 export default class LessonForm extends MyForm {
     constructor (props) {

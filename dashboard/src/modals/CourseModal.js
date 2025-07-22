@@ -1,5 +1,5 @@
 import React from 'react'
-import MyModal from '../components/MyModal'
+import MyModal from '../components/wrappers/MyModal'
 import { ModalBody } from 'reactstrap'
 import CourseForm from '../forms/CourseForm'
 

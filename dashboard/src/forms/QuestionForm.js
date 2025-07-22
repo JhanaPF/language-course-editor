@@ -3,9 +3,9 @@ import { FormText, FormGroup, Input, Label, Col, Row } from 'reactstrap'
 // import { validString } from '../rgx/regex'
 // import AudioRecorder from '../components/AudioRecorder'
 import MyForm from '../common/MyForm'
-import FormWrapper from '../components/FormWrapper'
-import SimpleFormGroup from '../components/SimpleFormGroup'
-import PictureInputGroup from '../components/PictureInputGroup'
+import FormWrapper from '../components/forms/FormWrapper'
+import SimpleFormGroup from '../components/forms/SimpleFormGroup'
+import PictureInputGroup from '../components/forms/PictureInputGroup'
 // import { setUrlParams } from '../utils/stringUtils'
 // import { readFormData } from '../utils/utils';
 

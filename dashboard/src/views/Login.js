@@ -7,7 +7,7 @@ import { validEmail, validPassword } from '../utils/regex'
 /**
  * @param props: signIn()
  */
-class SignIn extends React.Component {
+class Login extends React.Component {
     constructor() {
         super()
 
@@ -130,4 +130,4 @@ class SignIn extends React.Component {
     }
 }
 
-export default SignIn
+export default Login

@@ -1,12 +1,16 @@
 import './css/App.css'
 import React from 'react'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 
-import Dashboard from './views/Dashboard'
-import SignIn from './views/SignIn'
+import Login from './views/Login'
 import { post } from './api/apiRequests'
-import { Spinner } from 'reactstrap'
+import CoursesOverview from './views/CoursesOverview';
+import LessonsOverview from './views/LessonsOverview';
+import QuestionsOverview from './views/QuestionsOverview';
+import Layout from './components/wrappers/Layout';
 
 class App extends React.Component {
     constructor() {
@@ -15,11 +19,10 @@ class App extends React.Component {
         this.state = {
             uId: '',
             loggedin: false,
-            loading: false
         }
     }
 
-    componentDidMount() { // Starting application
+    componentDidMount() {
 
         //const isIdSaved = localStorage.getItem('keepConnection')
         //const isLoggedIn = sessionStorage.getItem('isLoggedIn')
@@ -27,7 +30,6 @@ class App extends React.Component {
         //if (isLoggedIn) {
         //    return this.setState({ loggedin: true, loading: false })
         //}
-
 
         //if (isIdSaved) {
         //    const mail = localStorage.getItem('mail')
@@ -46,12 +48,6 @@ class App extends React.Component {
     }
 
     signIn = (mail, password) => {
-        const headers = {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        }
-
 
         post('auth/signin', { mail, password },
             (res) => {
@@ -65,28 +61,24 @@ class App extends React.Component {
 
     unlockApp() {
         console.log("logged in")
-        this.setState({ loggedin: true, loading: false })
+        this.setState({ loggedin: true })
+        window.location.href = "/courses";
         sessionStorage.setItem('isLoggedIn', true)
     }
 
     render() {
-        if (this.state.loading) {
-            return (
-                <div className='d-flex justify-content-center align-items-center vh-100'>
-                    <Spinner className='m-auto' color="warning">
-                        .
-                    </Spinner>
-                </div>
-            )
-        }
-
         return (
-            <div className="App">
-                {this.state.loggedin
-                    ? <Dashboard userId={this.state.userId} />
-                    : <SignIn signIn={this.signIn.bind(this)} />
-                }
-            </div>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<Login signIn={this.signIn.bind(this)} />} />
+
+                    <Route element={<Layout />}>
+                        <Route path="/courses" element={<CoursesOverview/>} />
+                        <Route path="/lessons/:courseId" element={<LessonsOverview/>} />
+                        <Route path="/questions/:lessonId" element={<QuestionsOverview/>} />
+                    </Route>
+                </Routes>
+            </BrowserRouter>
         )
     }
 }

@@ -1,11 +1,11 @@
 import React from 'react'
-import { Card, CardBody, CardSubtitle, CardTitle, CardText, Row } from 'reactstrap'
-import AddButton from './AddButton'
-import ClickableCard from '../components/cards/ClickableCard'
+import { Row } from 'reactstrap'
+import AddButton from '../buttons/AddButton'
+import ClickableCard from '../../components/cards/ClickableCard'
 
 
 /**
- * @props children - wrap modal
+ * @prop {JSX} children - wrap modal
  * @param {string} objName
  * @param {function} toggleModal
  * @param {mongoId} elemId

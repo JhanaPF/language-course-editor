@@ -1,6 +1,6 @@
 import React from 'react'
 import LessonForm from '../forms/LessonForm'
-import MyModal from '../components/MyModal'
+import MyModal from '../components/wrappers/MyModal'
 
 /**
  * @param {boolean} isOpen - optionnal
