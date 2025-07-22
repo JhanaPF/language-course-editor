@@ -5,10 +5,12 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 
-import Dashboard from './views/Dashboard'
 import Login from './views/Login'
-import ProtectedLayout from './components/wrappers/ProtectedLayout';
 import { post } from './api/apiRequests'
+import CoursesOverview from './views/CoursesOverview';
+import LessonsOverview from './views/LessonsOverview';
+import QuestionsOverview from './views/QuestionsOverview';
+import Layout from './components/wrappers/Layout';
 
 class App extends React.Component {
     constructor() {
@@ -60,7 +62,7 @@ class App extends React.Component {
     unlockApp() {
         console.log("logged in")
         this.setState({ loggedin: true })
-        window.location.href = "/dashboard";
+        window.location.href = "/courses";
         sessionStorage.setItem('isLoggedIn', true)
     }
 
@@ -68,12 +70,12 @@ class App extends React.Component {
         return (
             <BrowserRouter>
                 <Routes>
-                    {/* Route login sans layout */}
                     <Route path="/" element={<Login signIn={this.signIn.bind(this)} />} />
 
-                    {/* Routes protégées avec layout */}
-                    <Route element={<ProtectedLayout />}>
-                        <Route path="/dashboard" element={<Dashboard userId={this.state.userId} />} />
+                    <Route element={<Layout />}>
+                        <Route path="/courses" element={<CoursesOverview/>} />
+                        <Route path="/lessons/:courseId" element={<LessonsOverview/>} />
+                        <Route path="/questions/:lessonId" element={<QuestionsOverview/>} />
                     </Route>
                 </Routes>
             </BrowserRouter>
