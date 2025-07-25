@@ -32,6 +32,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -43,14 +44,17 @@ input:-webkit-autofill {
   -webkit-text-fill-color: 'black';
   -webkit-box-shadow: 0 0 0px 1000px white inset;
 }
+
 input:-moz-autofill {
   -moz-text-fill-color: 'black';
   -moz-box-shadow: 0 0 0px 1000px white inset;
 }
+
 input:-o-autofill {
   -o-text-fill-color: 'black';
   -o-box-shadow: 0 0 0px 1000px white inset;
 }
+
 input:-khtml-autofill {
   -khtml-text-fill-color: 'black';
   -khtml-box-shadow: 0 0 0px 1000px white inset;
@@ -60,15 +64,26 @@ input:focus:-webkit-autofill {
   -webkit-text-fill-color: 'black';
   -webkit-box-shadow: 0 0 0px 1000px white inset;
 }
+
 input:focus:-moz-autofill {
   -moz-text-fill-color: 'black';
   -moz-box-shadow: 0 0 0px 1000px white inset;
 }
+
 input:focus:-o-autofill {
   -o-text-fill-color: 'black';
   -o-box-shadow: 0 0 0px 1000px white inset;
 }
+
 input:focus:-khtml-autofill {
   -khtml-text-fill-color: 'black';
   -khtml-box-shadow: 0 0 0px 1000px white inset;
+}
+
+
+.clickable-card-group {
+  margin-top: 1rem;
+  display: flex;
+  width: 100%;
+  justify-content: center;
 }

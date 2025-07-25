@@ -10,6 +10,10 @@ import ClickableCard from '../components/cards/ClickableCard';
 
 import { get } from '../api/apiRequests';
 
+/**
+ * @description 
+ * @returns 
+ */
 function CoursesOverview() {
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -26,7 +30,12 @@ function CoursesOverview() {
     }
 
     const fetchCourses = () => {
-        get('courses', {}, (res) => initState(res), () => this.setState({ loading: false, courseModal: false }))
+        get('courses', {}, 
+            (res) => initState(res), 
+            () => {
+                setLoading(false);
+            }
+        );
     };
 
     const toggleCourseModal = () => {
@@ -59,7 +68,7 @@ function CoursesOverview() {
                 </Row>
             )}
 
-            <div className="mt-3 d-flex w-100 justify-content-center">
+            <div className="clickable-card-group">
                 {displayedCourses.map((course, index) => (
                     <ClickableCard key={index} type="course" item={course} onClick={setCourseId} />
                 ))}
