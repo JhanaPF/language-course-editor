@@ -14,9 +14,11 @@ export default function useOverview(objName, filter) {
 
     useEffect(() => {
         onFetch();
-    }, [objName, JSON.stringify(filter)])
+    }, [objName, JSON.stringify(filter), elemId])
 
     const onFetch = () => {
+        console.log("Fetching elements");
+        
         const initState = (fields = {}) => {
             setModal(false);
             setElements(fields.elements || null);
