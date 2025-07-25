@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button, Row, Col, Table, Collapse } from 'reactstrap'
 import axios from 'axios'
 import Select from 'react-select'
@@ -7,187 +7,190 @@ import WordModal from '../modals/WordModal'
 import WordDetail from '../components/WordDetail'
 import DeleteModal from '../modals/DeleteModal'
 
-export default class DictionnaryOverview extends React.Component {
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL || '' // ou à définir selon votre environnement
 
-    constructor (props) {
-        super(props)
+const DictionnaryOverview = ({ token, userId }) => {
+    const [loading, setLoading] = useState(true)
+    const [words, setWords] = useState([])
+    const [dictionary, setDictionary] = useState([])
+    const [selectedWord, setSelectedWord] = useState(null)
+    const [selectedWordData, setSelectedWordData] = useState(null)
+    const [addModal, setAddModal] = useState(false)
+    const [editModal, setEditModal] = useState(false)
+    const [deleteModal, setDeleteModal] = useState(false)
+    const [reloadEditModal, setReloadEditModal] = useState(false)
 
-        this.state = {
-            loading: true,
-            words: [],
-            addModal: false,
-            editModal: false,
-            deleteModal: false,
-            selectedWord: undefined,
-            dictionary: null
+    useEffect(() => {
+        // onFetchdictionary()
+    }, [])
+
+    useEffect(() => {
+        if (reloadEditModal) {
+            setEditModal(true)
+            setReloadEditModal(false)
         }
+    }, [reloadEditModal])
 
-        this.handleChange = this.handleChange.bind(this)
-        this.delete = this.delete.bind(this)
-    }
-
-    componentDidMount () {
-        // this.onFetchdictionary();
-    }
-
-    componentDidUpdate () {
-        if (this.state.reloadEditModal) this.setState({ editModal: true, reloadEditModal: false })
-    }
-
-    onFetchdictionary () {
-        axios.get(REACT_APP_API_URL + 'dictionaries/dictionary')
+    const onFetchdictionary = () => {
+        axios
+            .get(`${REACT_APP_API_URL}dictionaries/dictionary`)
             .then(res => {
-                const setWords = []
-                const newDictionary = res.data.message.slice()
-                newDictionary.map(w => setWords.push({ label: w.word, value: w._id }))
+                const dict = res.data.message
+                const wordOptions = dict.map(w => ({ label: w.word, value: w._id }))
+                setDictionary(dict)
+                setWords(wordOptions)
+                setLoading(false)
 
-                if (this.state.selectedWordData) {
-                    this.onFetchWord(this.state.selectedWordData._id)
+                if (selectedWordData) {
+                    onFetchWord(selectedWordData._id)
                 }
-
-                this.setState({ dictionary: newDictionary, words: setWords, loading: false })
             })
-            .catch(error => console.log(error))
+            .catch(console.log)
     }
 
-    onFetchWord (id) {
-        this.setState({ loading: true })
+    const onFetchWord = (id) => {
+        setLoading(true)
 
-        const word = this.state.dictionary.find(w => w._id === id)
-        axios.get(
-            REACT_APP_API_URL + 'word/_id/' + id,
-            { headers: { Authorization: this.props.token } }
-        )
+        const word = dictionary.find(w => w._id === id)
+
+        axios.get(`${REACT_APP_API_URL}word/_id/${id}`, {
+            headers: { Authorization: token }
+        })
             .then(res => {
-            // console.log(res.data.message)
-                this.setState({
-                    selectedWordData: res.data.message,
-                    loading: false,
-                    selectedWord: { value: word._id, label: word.word, definition: word.definition, translated_definition: word.translated_definition }
+                const data = res.data.message
+                setSelectedWordData(data)
+                setSelectedWord({
+                    value: word._id,
+                    label: word.word,
+                    definition: word.definition,
+                    translated_definition: word.translated_definition
                 })
+                setLoading(false)
             })
-            .catch(error => console.log(error))
+            .catch(console.log)
     }
 
-    handleChange = (event) => {
-        const { name, value } = event.currentTarget
-        // console.log(name, value)
-        // if([name] === "")
-        this.setState({ [name]: value })
-    }
-
-    toggleModal = (name) => {
-        // console.log("toggleModal")
-        if (this.state[name]) {
-            this.onFetchdictionary()
+    const toggleModal = (name) => {
+        const modalMap = {
+            addModal: [addModal, setAddModal],
+            editModal: [editModal, setEditModal],
+            deleteModal: [deleteModal, setDeleteModal]
         }
-        this.setState({ [name]: !this.state[name] })
+
+        const [value, setter] = modalMap[name]
+        if (value) {
+            onFetchdictionary()
+        }
+        setter(!value)
     }
 
-    reloadModal = (name) => {
-        if (name === 'addModal') this.setState({ [name]: false, reloadEditModal: true })
+    const reloadModal = (name) => {
+        if (name === 'addModal') {
+            setAddModal(false)
+            setReloadEditModal(true)
+        }
     }
 
-    delete () {
-        if (!this.state.selectedWord) {
+    const handleSelectChange = (_, selectedOption) => {
+        selectWord(selectedOption.value)
+    }
+
+    const selectWord = (wordId) => {
+        onFetchWord(wordId)
+    }
+
+    const deleteWord = () => {
+        if (!selectedWord) {
             console.log('No word selected for deletion')
             return
         }
 
-        axios.delete(
-            REACT_APP_API_URL + 'word',
-            {
-                headers: { Authorization: this.props.token },
-                data: { word_id: this.state.selectedWord.value, userId: this.props.userId } // req.data = req.body dans le serveur
+        axios.delete(`${REACT_APP_API_URL}word`, {
+            headers: { Authorization: token },
+            data: {
+                word_id: selectedWord.value,
+                userId: userId
             }
-        )
-            .then((res) => {
-            // console.log(res)
-                this.setState({ deleteModal: false, selectedWord: null, selectedWordData: null }, this.onFetchdictionary)
+        })
+            .then(() => {
+                setDeleteModal(false)
+                setSelectedWord(null)
+                setSelectedWordData(null)
+                onFetchdictionary()
             })
-            .catch(function (error) {
-                this.setState({ deleteModal: false, selectedWord: null, selectedWordData: null }, this.onFetchdictionary)
+            .catch(error => {
+                setDeleteModal(false)
+                setSelectedWord(null)
+                setSelectedWordData(null)
+                onFetchdictionary()
                 console.log(error)
             })
     }
 
-    selectWord (wordId) {
-        this.onFetchWord(wordId)
-    }
-
-    handleSelectChange = (param, e) => {
-        this.selectWord(e.value)
-    }
-
-    render () {
-        return (
-            <div className="App">
-                <Row md='6' className='m-auto mt-4 mx-5'>
-                    <Col md='6'>
-                        <Select
-                            className='mt-3'
-                            placeholder="Rechercher un mot"
-                            options={this.state.words}
-                            noOptionsMessage={() => null}
-                            value={this.state.selectedWord}
-                            onChange={this.handleSelectChange.bind(this, 'selectedWord')}
-                        />
-
-                        {!this.state.loading &&
-                            <Table className='mt-2' style={{ borderRadius: 10 }} bordered hover responsive >
-                                <thead>
-                                    <tr>
-                                        <th>Mot</th>
-                                        <th>Définition</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {this.state.dictionary.map((wordData, i) => {
-                                        return (
-                                            <tr key={i} onClick={this.selectWord.bind(this, wordData._id)}>
-                                                <th scope="row">{wordData.word}</th>
-                                                <td>{wordData.translated_definition}</td>
-                                            </tr>
-                                        )
-                                    })}
-                                </tbody>
-                            </Table>
-                        }
-                    </Col>
-                    <Col md='6'>
-                        {this.state.selectedWordData &&
-                            <Collapse isOpen={this.state.selectedWordData}>
-                                <WordDetail selectedWordData={this.state.selectedWordData} toggleModal={this.toggleModal.bind(this)}/>
-                            </Collapse>
-                        }
-
-                        <Col className='text-right'>
-                            <Button className='text-right mt-1' onClick={this.toggleModal.bind(this, 'addModal')}>
-                                Ajouter un mot
-                            </Button>
-                        </Col>
-
-                    </Col>
-
-                </Row>
-
-                {/** ******** MODALES ***********/}
-
-                <DeleteModal isOpen={this.state.deleteModal} toggleModal={this.toggleModal.bind(this)} delete={this.delete.bind(this)} />
-
-                {(this.state.addModal || this.state.editModal) &&
-                    <WordModal
-                        addModal={this.state.addModal}
-                        editModal={this.state.editModal}
-                        wordData={this.state.selectedWordData}
-                        toggleModal={this.toggleModal.bind(this, this.state.addModal ? 'addModal' : 'editModal')}
-                        token={this.props.token}
-                        userId={this.props.userId}
-                        reloadModal={this.reloadModal.bind(this, this.state.addModal ? 'addModal' : 'editModal')}
+    return (
+        <div className="App">
+            <Row md='6' className='m-auto mt-4 mx-5'>
+                <Col md='6'>
+                    <Select
+                        className='mt-3'
+                        placeholder="Rechercher un mot"
+                        options={words}
+                        noOptionsMessage={() => null}
+                        value={selectedWord}
+                        onChange={handleSelectChange}
                     />
-                }
 
-            </div>
-        )
-    }
+                    {!loading &&
+                        <Table className='mt-2' style={{ borderRadius: 10 }} bordered hover responsive>
+                            <thead>
+                                <tr>
+                                    <th>Mot</th>
+                                    <th>Définition</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {dictionary.map((wordData, i) => (
+                                    <tr key={i} onClick={() => selectWord(wordData._id)}>
+                                        <th scope="row">{wordData.word}</th>
+                                        <td>{wordData.translated_definition}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+                    }
+                </Col>
+
+                <Col md='6'>
+                    {selectedWordData &&
+                        <Collapse isOpen={!!selectedWordData}>
+                            <WordDetail selectedWordData={selectedWordData} toggleModal={() => toggleModal('editModal')} />
+                        </Collapse>
+                    }
+
+                    <Col className='text-right'>
+                        <Button className='text-right mt-1' onClick={() => toggleModal('addModal')}>
+                            Ajouter un mot
+                        </Button>
+                    </Col>
+                </Col>
+            </Row>
+
+            {/* MODALES */}
+            <DeleteModal isOpen={deleteModal} toggleModal={() => toggleModal('deleteModal')} delete={deleteWord} />
+
+            {(addModal || editModal) &&
+                <WordModal
+                    addModal={addModal}
+                    editModal={editModal}
+                    wordData={selectedWordData}
+                    toggleModal={() => toggleModal(addModal ? 'addModal' : 'editModal')}
+                    token={token}
+                    userId={userId}
+                    reloadModal={() => reloadModal(addModal ? 'addModal' : 'editModal')}
+                />
+            }
+        </div>
+    )
 }
+
+export default DictionnaryOverview

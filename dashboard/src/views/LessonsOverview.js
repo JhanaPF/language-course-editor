@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import LessonModal from '../modals/LessonModal';
 import OverviewWrapper from '../components/wrappers/OverviewWrapper';
 import QuestionsOverview from './QuestionsOverview';
-import useOverview from '../common/Overview';
+import useOverview from '../common/useOverview';
 
 /**
  * @param {object} course

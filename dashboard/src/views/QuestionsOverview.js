@@ -1,13 +1,13 @@
 import React from 'react'
 import QuestionModal from '../modals/QuestionModal'
 import OverviewWrapper from '../components/wrappers/OverviewWrapper'
-import useOverview from '../common/Overview';
+import useOverview from '../common/useOverview';
 
 /**
  * @param lesson
  * @param courseId
  */
-export default QuestionsOverview = ({ lesson, courseId }) => {
+function QuestionsOverview ({ lesson, courseId }) {
     const {
         elements,
         elemId,
@@ -48,3 +48,5 @@ export default QuestionsOverview = ({ lesson, courseId }) => {
         : null)
 
 }
+
+export default QuestionsOverview;

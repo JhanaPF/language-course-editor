@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Row, Col } from 'reactstrap';
 
 import LessonsOverview from './LessonsOverview';
-import QuestionsOverview from './QuestionsOverview';
 import AddButton from '../components/buttons/AddButton';
 import ReturnButton from '../components/buttons/ReturnButton';
 import CourseModal from '../modals/CourseModal';
