@@ -5,34 +5,27 @@ import ClickableCard from '../../components/cards/ClickableCard'
 
 
 /**
+ * @description Elements list, add button to toggle form modal and will manage also order of elements
  * @param {string} props.objName
  * @param {function} props.toggleModal
  * @param {string} props.elemId
  * @param {JSX.Element} props.children
  * @param {string} props.buttonObjName
  * @param {array} props.elements
+ * @param {Function} setElement
  */
 export default function OverviewWrapper({
     toggleModal,
     elemId,
     children,
     buttonObjName,
-    elements
+    elements,
+    setElement
 }) {
-    if (elemId) {
-        console.warn('Elem id is missing, you will not be able to add an element');
-    }
-
-    const [localElemId, setLocalElemId] = useState(null);
 
     //const handleIndexChange = (id, value) => {
     //    console.log('update index', id, value)
     //}
-
-    const setElement = (id) => {
-        setLocalElemId(id);
-        // Si le parent veut être notifié, il faut passer un callback prop
-    }
 
     const filteredElements = elemId
         ? elements?.filter(elem => elem._id === elemId)
@@ -54,7 +47,7 @@ export default function OverviewWrapper({
                         key={i}
                         type=""
                         item={elem}
-                        onClick={() => setElement(elem._id)}
+                        onClick={() => setElement(elem)}
                     />
                 ))}
             </Row>

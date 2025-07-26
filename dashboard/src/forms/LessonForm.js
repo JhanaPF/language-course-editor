@@ -14,7 +14,6 @@ const LessonForm = ({ courseId, fetchLessons }) => {
     } = useForm({inputNames})
 
     useEffect(() => {
-        // initState equivalent
         setFormState(prev => ({
             ...prev,
             course_id: courseId
@@ -29,8 +28,8 @@ const LessonForm = ({ courseId, fetchLessons }) => {
 
     return (
         <FormWrapper submit={submit}>
-            <SimpleFormGroup text="Intitulé du cours" id="name" value={name} handleChange={handleChange} />
-            <SimpleFormGroup text="Description" id="description" value={description} handleChange={handleChange} />
+            <SimpleFormGroup text="Intitulé du cours" id="name" value={formState.name} handleChange={handleChange} />
+            <SimpleFormGroup text="Description" id="description" value={formState.description} handleChange={handleChange} />
         </FormWrapper>
     )
 }

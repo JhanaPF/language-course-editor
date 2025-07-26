@@ -30,7 +30,6 @@ const QuestionForm = ({ courseId, lessonId, fetchQuestions }) => {
         formValid
     } = useForm({ inputNames, requiredInputs })
 
-    // initState replacement
     useEffect(() => {
         setFormState(prev => ({
             ...prev,

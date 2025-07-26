@@ -31,9 +31,7 @@ function CoursesOverview() {
     const fetchCourses = () => {
         get('courses', {}, 
             (res) => initState(res), 
-            () => {
-                setLoading(false);
-            }
+            () => setLoading(false)
         );
     };
 

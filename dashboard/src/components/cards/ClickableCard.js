@@ -3,9 +3,10 @@ import { Card, CardBody, CardTitle, CardSubtitle, CardText } from 'reactstrap';
 import { capitalizeFirstLetter } from '../../utils/stringUtils';
 
 /**
- * 
- * @param {Object} item: course/lesson/question 
- * @returns clickable card to cli
+ * @description Clickable card used in all list
+ * @param {Object} item: course/lesson/question
+ * @param  {Function} onClick
+ * @param {Object} type enum course,lesson,question 
  */
 const ClickableCard = ({ item, onClick, type }) => {
 
@@ -26,11 +27,7 @@ const ClickableCard = ({ item, onClick, type }) => {
             onClick={() => onClick(item._id)}
         >
             {imageExists &&
-                <img
-                    alt="flag"
-                    crossOrigin="use-credentials"
-                    src={`${process.env.REACT_APP_API_URL}pictures/courses/${item.file_name}`}
-                />
+                <img alt="flag" crossOrigin="use-credentials" src={imageUrl} />
             }
 
             <CardBody>
@@ -50,7 +47,6 @@ const ClickableCard = ({ item, onClick, type }) => {
 
                 {type !== "course" &&
                     <CardText>{item.description}</CardText>
-
                 }
 
             </CardBody>

@@ -2,12 +2,17 @@ import React, { useState, useEffect, useMemo } from 'react'
 import { put, post } from '../api/apiRequests'
 
 /**
- * @constructor (props, inputNames)
+ * @description Custom hook for form logic - Call it like this:
+ * 	const {
+		 handleChange,
+		 add,
+		 formState
+	 } = useForm({inputNames: ['language', 'pivot_language', 'file', 'raw_name']})
+ * @param {Boolean} addModal
+ * @param {Object} levelData - follows inputNames keys for edit form
+ * @param {Array} inputNames
+ * @param {Array} requiredInputs
  */
-// In the children, call componentdidmount with this.initState([list of inputs], {additional fields like key id})
-// In the children, assign this.inputNames in the constructor or pass it to constructor
-// Assign this.requiredInputs in children constructor
-
 export default function useForm ({ addModal, levelData, inputNames = [], requiredInputs = [], ...props }) {
 	const [formState, setFormState] = useState({})
 	const [formValid, setFormValid] = useState(false)
@@ -15,9 +20,8 @@ export default function useForm ({ addModal, levelData, inputNames = [], require
 
 	const type = useMemo(() => (addModal ? 'addModal' : 'editModal'), [addModal])
 
-	// Initialise les champs de formulaire depuis props.levelData
 	useEffect(() => {
-		const initialState = {}
+		const initialState = {};
 
 		inputNames.forEach(name => {
 			initialState[name] = levelData ? levelData[name] : undefined
@@ -25,7 +29,7 @@ export default function useForm ({ addModal, levelData, inputNames = [], require
 
 		initialState.fieldError = false
 		setFormState(prev => ({ ...prev, ...initialState }))
-	}, [inputNames, levelData])
+	}, [])
 
 	const handleChange = (event) => {
 		const { name, value, files } = event.target
@@ -93,8 +97,11 @@ export default function useForm ({ addModal, levelData, inputNames = [], require
 		handleChange,
 		handleSelectChange,
 		formValid,
+		setFormValid,
 		fieldError,
+		setFieldError,
 		type,
-		formState
+		formState,
+		setFormState
 	}
 }

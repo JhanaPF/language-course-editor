@@ -4,7 +4,11 @@ import FormWrapper from '../components/forms/FormWrapper';
 import SimpleFormGroup from '../components/forms/SimpleFormGroup';
 import PictureInputGroup from '../components/forms/PictureInputGroup';
 
-const CourseForm = ({ fetchCourses }) => {
+/**
+ * @param {Function} close 
+ * @param {Function} fetchCourses
+ */
+const CourseForm = ({ fetchCourses, close }) => {
     const {
         handleChange,
         add,
@@ -13,12 +17,12 @@ const CourseForm = ({ fetchCourses }) => {
 
     const submit = (event) => {
         event.preventDefault()
-        const callback = () => fetchCourses()
-        add('courses', callback, callback)
+        add('courses', fetchCourses)
+        close()
     }
 
     return (
-        <FormWrapper submit={submit}>
+        <FormWrapper submit={(e) => submit(e)}>
             <SimpleFormGroup text="Langage à apprendre" id="language" value={formState.language} handleChange={handleChange} required />
             <SimpleFormGroup text="Langue pivot" id="pivot_language" value={formState.pivot_language} handleChange={handleChange} required />
             <PictureInputGroup text="Drapeau" description="Ajouter un drapeau" name="file" onChange={handleChange} />
