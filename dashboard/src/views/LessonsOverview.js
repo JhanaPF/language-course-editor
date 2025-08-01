@@ -1,38 +1,50 @@
-import React from 'react'
-import LessonModal from '../modals/LessonModal'
-import OverviewWrapper from '../components/wrappers/OverviewWrapper'
-import Overview from '../common/Overview'
-import QuestionsOverview from './QuestionsOverview'
+import React, { useEffect } from 'react';
+import LessonModal from '../modals/LessonModal';
+import OverviewWrapper from '../components/wrappers/OverviewWrapper';
+import QuestionsOverview from './QuestionsOverview';
+import useOverview from '../common/useOverview';
 
 /**
  * @param {object} course
  */
-export default class LessonsOverview extends Overview { // Show all lessons of a course
-    constructor (props) {
-        super(props, { course_id: props.course._id }, 'lessons')
-    }
+export default function LessonsOverview({ course }) {
+    const {
+        modal,
+        toggleModal,
+        closeModal,
+        closeModalAfterRequest,
+        elements,
+        elemId,
+        setElement,
+        getElement,
+    } = useOverview('lessons', { course_id: course._id })
 
-    componentDidMount = () => this.onFetch()
+    const selectedElement = getElement(elemId);
 
-    render () {
-        return (<>
+    return (
+        <>
             <OverviewWrapper
                 objName="lessons"
                 buttonObjName="une leçon"
-                toggleModal={this.toggleModal}
-                elemId={this.state.elemId}
-                elements={this.state.elements}
-                setElement={this.setElement}>
+                toggleModal={toggleModal}
+                elemId={elemId}
+                elements={elements}
+                setElement={setElement}>
                 <LessonModal
-                    isOpen={this.state.modal}
-                    fetchLessons={this.closeModalAfterRequest}
-                    courseId={this.props.course._id}
-                    closeModal={this.closeModal}/>
+                    isOpen={modal}
+                    fetchLessons={closeModalAfterRequest}
+                    courseId={course._id}
+                    closeModal={closeModal}
+                />
             </OverviewWrapper>
 
-            {this.state.element &&
-                <QuestionsOverview isOpen={this.state.elemId} courseId={this.props.course._id} lesson={this.getElement(this.state.elemId)}/>
-            }
-        </>)
-    }
+            {selectedElement && (
+                <QuestionsOverview
+                    isOpen={elemId}
+                    courseId={course._id}
+                    lesson={selectedElement}
+                />
+            )}
+        </>
+    )
 }

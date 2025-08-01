@@ -1,32 +1,39 @@
-import React from 'react'
-import MyForm from '../common/MyForm'
-import FormWrapper from '../components/forms/FormWrapper'
-import SimpleFormGroup from '../components/forms/SimpleFormGroup'
-import PictureInputGroup from '../components/forms/PictureInputGroup'
+import React from 'react';
+import useForm from '../common/useForm';
+import FormWrapper from '../components/forms/FormWrapper';
+import SimpleFormGroup from '../components/forms/SimpleFormGroup';
+import PictureInputGroup from '../components/forms/PictureInputGroup';
 
-export default class CourseForm extends MyForm {
-    constructor (props) {
-        super(props, ['language', 'pivot_language', 'file', 'raw_name'])
+/**
+ * @param {Function} close 
+ * @param {Function} fetchCourses
+ */
+const CourseForm = ({ fetchCourses, close }) => {
+    const {
+        handleChange,
+        add,
+        formState
+    } = useForm({inputNames: ['language', 'pivot_language', 'file', 'raw_name']})
+
+    const submit = (event) => {
+        event.preventDefault()
+        add('courses', fetchCourses)
+        close()
     }
 
-    submit (event) {
-        const cbk = () => this.props.fetchCourses()
-        super.add('courses', cbk, cbk)
-    }
-
-    render () {
-        return (
-            <FormWrapper submit={this.submit.bind(this)}>
-                <SimpleFormGroup text="Langage à apprendre" id="language" value={this.state.language} handleChange={this.handleChange} required/>
-                <SimpleFormGroup text="Langue pivot" id="pivot_language" value={this.state.pivot_language} handleChange={this.handleChange} required/>
-                <PictureInputGroup text="Drapeau" description="Ajouter un drapeau" name="file" onChange={this.handleChange}/>
-                <SimpleFormGroup
-                    text="Nom du dictionnaire en anglais au format suivant: language_from_pivotlanguage"
-                    id="raw_name"
-                    value={this.state.raw_name}
-                    handleChange={this.handleChange}
-                    required />
-            </FormWrapper>
-        )
-    }
+    return (
+        <FormWrapper submit={(e) => submit(e)}>
+            <SimpleFormGroup text="Langage à apprendre" id="language" value={formState.language} handleChange={handleChange} required />
+            <SimpleFormGroup text="Langue pivot" id="pivot_language" value={formState.pivot_language} handleChange={handleChange} required />
+            <PictureInputGroup text="Drapeau" description="Ajouter un drapeau" name="file" onChange={handleChange} />
+            <SimpleFormGroup
+                text="Nom du dictionnaire en anglais au format suivant: language_from_pivotlanguage"
+                id="raw_name"
+                value={formState.raw_name}
+                handleChange={handleChange}
+                required />
+        </FormWrapper>
+    )
 }
+
+export default CourseForm

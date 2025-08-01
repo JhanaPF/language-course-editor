@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal, ModalBody, ModalFooter, Form, FormText, FormGroup, Input, Label, Button, Row, Col, UncontrolledAccordion, AccordionItem, AccordionHeader, AccordionBody } from 'reactstrap'
+import { Modal, ModalBody, ModalFooter, Form, FormText, FormGroup, Input, Label, Button, Row, Col } from 'reactstrap'
 import axios from 'axios'
 import Select from 'react-select'
 import { validString } from '../utils/regex'
@@ -38,8 +38,6 @@ export default class WordModal extends React.Component {
                     source: wordData?.source ? { value: wordData.source, label: Sources.getName(wordData.source) } : {},
 
                     story: additional.story,
-                    riddle: additional.riddle,
-                    translated_riddle: additional.translated_riddle,
                     sentence: additional.sentence,
 
                     audioFile: null
@@ -110,8 +108,6 @@ export default class WordModal extends React.Component {
             },
             additionalData: {
                 sentence: this.state.sentence ? this.state.sentence : null,
-                riddle: this.state.riddle ? this.state.riddle : null,
-                translated_riddle: this.state.translated_riddle ? this.state.translated_riddle : null,
                 story: this.state.story ? this.state.story : null
             },
             userId: this.props.userId,
@@ -308,37 +304,6 @@ export default class WordModal extends React.Component {
                                 options={this.sourceOptions}
                                 placeholder="" />
                         </FormGroup>
-                        <UncontrolledAccordion className="border-0" stayOpen >
-                            <AccordionItem>
-                                <AccordionHeader targetId="1">
-                                    Jeu de mots-croisés
-                                </AccordionHeader>
-                                <AccordionBody accordionId="1">
-                                    <FormGroup className='mx-2'>
-                                        <Label className='text-left' for="riddle">
-                                            Devinette (pour le mot-croisé) en langue pivot:
-                                        </Label>
-                                        <Input
-                                            id="translated_riddle"
-                                            name="translated_riddle"
-                                            value={this.state.translated_riddle}
-                                            onChange={this.handleChange}
-                                            type='textarea' />
-                                    </FormGroup>
-                                    <FormGroup className='mx-2'>
-                                        <Label className='text-left' for="riddle">
-                                            Devinette (pour le mot-croisé):
-                                        </Label>
-                                        <Input
-                                            id="riddle"
-                                            name="riddle"
-                                            value={this.state.riddle}
-                                            onChange={this.handleChange}
-                                            type='textarea' />
-                                    </FormGroup>
-                                </AccordionBody>
-                            </AccordionItem>
-                        </UncontrolledAccordion>
                     </Form>
                 </ModalBody>
                 <ModalFooter>

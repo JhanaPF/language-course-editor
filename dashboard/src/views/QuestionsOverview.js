@@ -1,36 +1,52 @@
 import React from 'react'
 import QuestionModal from '../modals/QuestionModal'
 import OverviewWrapper from '../components/wrappers/OverviewWrapper'
-import Overview from '../common/Overview'
+import useOverview from '../common/useOverview';
 
 /**
- * lesson, courseId
+ * @param lesson
+ * @param courseId
  */
-export default class QuestionsOverview extends Overview { // Show all questions of a lesson
-    constructor (props) {
-        super(props, { lesson_id: props.lesson._id }, 'questions')
-    }
+function QuestionsOverview ({ lesson, courseId }) {
+    const {
+        elements,
+        elemId,
+        modal,
+        onFetch,
+        toggleModal,
+        closeModal,
+        setElement,
+        closeModalAfterRequest,
+    } = useOverview('questions', { params: { lesson_id: lesson?._id } })
 
-    componentDidMount = () => this.onFetch()
+    useEffect(() => {
+        if (lesson) {
+            onFetch()
+        }
+    }, [lesson, onFetch])
 
-    render () {
-        return (this.props.lesson
-            ? <>
-                <OverviewWrapper
-                    objName="questions"
-                    buttonObjName="Une question"
-                    toggleModal={this.toggleModal}
-                    elemId={this.state.elemId}
-                    elements={this.state.elements}
-                    setElement={this.setElement}>
-                    <QuestionModal
-                        isOpen={this.state.modal}
-                        fetchQuestions={this.closeModalAfterRequest}
-                        lessonId={this.props.lesson._id}
-                        courseId={this.props.courseId}
-                        closeModal={this.closeModal}/>
-                </OverviewWrapper>
-            </>
-            : null)
-    }
+    if (!lesson) return null
+
+
+    return (lesson
+        ? <>
+            <OverviewWrapper
+                objName="questions"
+                buttonObjName="Une question"
+                toggleModal={toggleModal}
+                elemId={elemId}
+                elements={elements}
+                setElement={setElement}>
+                <QuestionModal
+                    isOpen={modal}
+                    fetchQuestions={closeModalAfterRequest}
+                    lessonId={lesson._id}
+                    courseId={courseId}
+                    closeModal={closeModal} />
+            </OverviewWrapper>
+        </>
+        : null)
+
 }
+
+export default QuestionsOverview;
