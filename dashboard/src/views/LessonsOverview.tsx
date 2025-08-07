@@ -4,10 +4,14 @@ import OverviewWrapper from '../components/wrappers/OverviewWrapper';
 import QuestionsOverview from './QuestionsOverview';
 import useOverview from '../common/useOverview';
 
+type Props = {
+    course: {_id: string};
+};
+
 /**
  * @param {object} course
  */
-export default function LessonsOverview({ course }) {
+export default function LessonsOverview({ course }: Props) {
     const {
         modal,
         toggleModal,

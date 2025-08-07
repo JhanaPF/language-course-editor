@@ -1,6 +1,6 @@
 import React from 'react'
 import { ModalBody, Button, Col } from 'reactstrap'
-import MyModal from '../components/MyModal'
+import MyModal from '../components/wrappers/MyModal'
 
 /**
  *

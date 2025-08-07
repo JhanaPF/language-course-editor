@@ -29,6 +29,7 @@ module.exports = {
     rules: {
         indent: ['error', 4],
         'react/prop-types': 'off',
-        'react/no-unescaped-entities': 'off'
+        'react/no-unescaped-entities': 'off',
+        'semi': ['error', 'always'] // <== forcer le point-virgule obligatoire
     }
 }
