@@ -1,15 +1,20 @@
-import 'bootstrap/dist/css/bootstrap.min.css'
-import React, { useState, useEffect } from 'react'
-import { Button, Row, Col, Table, Collapse } from 'reactstrap'
-import axios from 'axios'
-import Select from 'react-select'
-import WordModal from '../modals/WordModal'
-import WordDetail from '../components/WordDetail'
-import DeleteModal from '../modals/DeleteModal'
+import React, { useState, useEffect } from 'react';
+import { Button, Row, Col, Table, Collapse } from 'reactstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios';
+import Select from 'react-select';
+import WordModal from '../modals/WordModal';
+import WordDetail from '../components/WordDetail';
+import DeleteModal from '../modals/DeleteModal';
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL || '' // ou à définir selon votre environnement
 
-const DictionnaryOverview = ({ token, userId }) => {
+type AuthParams = {
+  token: string;
+  userId: string;
+};
+
+const DictionnaryOverview = ({ token, userId }: AuthParams) => {
     const [loading, setLoading] = useState(true)
     const [words, setWords] = useState([])
     const [dictionary, setDictionary] = useState([])
@@ -70,7 +75,7 @@ const DictionnaryOverview = ({ token, userId }) => {
             .catch(console.log)
     }
 
-    const toggleModal = (name) => {
+    const toggleModal = (name: any) => {
         const modalMap = {
             addModal: [addModal, setAddModal],
             editModal: [editModal, setEditModal],
@@ -84,18 +89,18 @@ const DictionnaryOverview = ({ token, userId }) => {
         setter(!value)
     }
 
-    const reloadModal = (name) => {
+    const reloadModal = (name: any) => {
         if (name === 'addModal') {
             setAddModal(false)
             setReloadEditModal(true)
         }
     }
 
-    const handleSelectChange = (_, selectedOption) => {
+    const handleSelectChange = (_: any, selectedOption: any) => {
         selectWord(selectedOption.value)
     }
 
-    const selectWord = (wordId) => {
+    const selectWord = (wordId: any) => {
         onFetchWord(wordId)
     }
 

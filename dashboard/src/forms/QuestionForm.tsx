@@ -38,7 +38,7 @@ const QuestionForm = ({ courseId, lessonId, fetchQuestions }) => {
         }))
     }, [courseId, lessonId, setFormState])
 
-    const submit = (event) => {
+    const submit = (event: React.ChangeEvent<HTMLInputElement>) => {
         event.preventDefault()
         if (!formState.sentence || !formState.translation) return
         add('questions', fetchQuestions)

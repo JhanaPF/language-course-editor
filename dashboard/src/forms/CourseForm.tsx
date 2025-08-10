@@ -15,7 +15,7 @@ const CourseForm = ({ fetchCourses, close }) => {
         formState
     } = useForm({inputNames: ['language', 'pivot_language', 'file', 'raw_name']})
 
-    const submit = (event) => {
+    const submit = (event: React.ChangeEvent<HTMLInputElement>) => {
         event.preventDefault()
         add('courses', fetchCourses)
         close()

@@ -23,14 +23,14 @@ function CoursesOverview() {
         fetchCourses();
     }, []);
 
-    const initState = (res) => {
+    const initState = (res: any) => {
         setCourses(res.data.courses);
         setLoading(false);
     }
 
     const fetchCourses = () => {
         get('courses', {}, 
-            (res) => initState(res), 
+            (res: any) => initState(res), 
             () => setLoading(false)
         );
     };

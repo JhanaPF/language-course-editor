@@ -18,7 +18,7 @@ const Login = ({ signIn }) => {
         setKeepConnection(savedKeepConnection)
     }, [])
 
-    const handleChange = (event) => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.currentTarget
         if (value.length > 150) return
 
@@ -33,7 +33,7 @@ const Login = ({ signIn }) => {
         }
     }
 
-    const handleSubmit = (event) => {
+    const handleSubmit = (event: React.ChangeEvent<HTMLInputElement>) => {
         event.preventDefault()
 
         const emailInvalid = !validEmail.test(email)
@@ -54,7 +54,7 @@ const Login = ({ signIn }) => {
         signIn(email, password)
     }
 
-    const handleCheckbox = (event) => {
+    const handleCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
         setKeepConnection(event.currentTarget.checked)
     }
 

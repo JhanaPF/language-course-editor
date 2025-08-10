@@ -31,7 +31,7 @@ export default function useForm ({ addModal, levelData, inputNames = [], require
 		setFormState(prev => ({ ...prev, ...initialState }))
 	}, [])
 
-	const handleChange = (event) => {
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value, files } = event.target
 
 		// Gestion fichier

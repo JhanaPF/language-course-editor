@@ -16,7 +16,7 @@ export default class MyModal extends React.Component {
         this.openProp = typeof props.isOpen === 'boolean'
     }
 
-    handleChange = (event) => {
+    handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.currentTarget
         this.setState({ [name]: value })
     }

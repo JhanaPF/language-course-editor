@@ -20,7 +20,7 @@ const LessonForm = ({ courseId, fetchLessons }) => {
         }))
     }, [courseId, setFormState])
 
-    const submit = (event) => {
+    const submit = (event: React.ChangeEvent<HTMLInputElement>) => {
         event.preventDefault()
         if (!formState.name || !formState.description) return
         add('lessons', fetchLessons)
