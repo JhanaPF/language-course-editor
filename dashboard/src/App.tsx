@@ -43,7 +43,7 @@ function App() {
         */
     }, []);
 
-    const signIn = (mail, password) => {
+    const signIn = async (mail: string, password: string) => {
         post('auth/signin', { mail, password },
             (res) => {
                 localStorage.setItem('userId', res.data.userId);
@@ -55,7 +55,7 @@ function App() {
 
     const unlockApp = () => {
         setLoggedIn(true);
-        sessionStorage.setItem('isLoggedIn', true);
+        sessionStorage.setItem('isLoggedIn', 'true');
         navigate('/courses');
     };
 
@@ -65,8 +65,12 @@ function App() {
 
             <Route element={<Layout />}>
                 <Route path="/courses" element={<CoursesOverview />} />
-                <Route path="/lessons/:courseId" element={<LessonsOverview />} />
-                <Route path="/questions/:lessonId" element={<QuestionsOverview />} />
+                {/**
+                 * 
+                 <Route path="/lessons/:courseId" element={<LessonsOverview />} />
+                 <Route path="/questions/:lessonId" element={<QuestionsOverview />} />
+                 * 
+                 */}
             </Route>
         </Routes>
     );

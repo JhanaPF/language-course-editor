@@ -6,9 +6,10 @@ const options = [
 ]
 
 export default class Categories extends Enum {
-    static values () { return options }
+    static values() { return options }
 
-    static getName (id, values) {
-        return options.find(value => value.value === id).label
+    static getName(id: string, values: { value: string; label: string }[]) {
+        const found = values.find((value) => value.value === id);
+        return found ? found.label : ""; // ou une valeur par défaut
     }
 }

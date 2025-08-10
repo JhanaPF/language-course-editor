@@ -3,17 +3,19 @@ import MyModal from '../components/wrappers/MyModal'
 import { ModalBody } from 'reactstrap'
 import CourseForm from '../forms/CourseForm'
 
-/**
- * @param {boolean} isOpen - optionnal
- * @param {string} title
- * @param {function} closeModal
- * @param {function} fetchCourses
- */
-export default function CourseModal (props) {
+
+type CourseModalProps = {
+  isOpen?: boolean;
+  title?: string;
+  closeModal: () => void;
+  fetchCourses: () => void;
+};
+
+export default function CourseModal({ isOpen = false, title = 'Ajouter un cours', closeModal, fetchCourses }: CourseModalProps) {
     return (
-        <MyModal isOpen={props.isOpen} title="Ajouter un cours" closeModal={props.closeModal}>
+        <MyModal isOpen={isOpen} title={title} closeModal={closeModal}>
             <ModalBody>
-                <CourseForm close={props.closeModal} fetchCourses={props.fetchCourses}/>
+                <CourseForm close={closeModal} fetchCourses={fetchCourses}/>
             </ModalBody>
         </MyModal>
     )

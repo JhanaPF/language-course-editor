@@ -9,28 +9,29 @@ import ClickableCard from '../components/cards/ClickableCard';
 
 import { get } from '../api/apiRequests';
 
-/**
- * @description 
- * @returns 
- */
+type Course = {
+  _id: string;
+};
+
+
 function CoursesOverview() {
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [courseId, setCourseId] = useState(undefined);
+    const [courseId, setCourseId] = useState<string | undefined>(undefined);
     const [courseModal, setCourseModal] = useState(false);
 
     useEffect(() => {
         fetchCourses();
     }, []);
 
-    const initState = (res) => {
+    const initState = (res: any) => {
         setCourses(res.data.courses);
         setLoading(false);
     }
 
     const fetchCourses = () => {
-        get('courses', {}, 
-            (res) => initState(res), 
+        get('courses', {},
+            (res: any) => initState(res),
             () => setLoading(false)
         );
     };
@@ -39,12 +40,12 @@ function CoursesOverview() {
         setCourseModal(!courseModal);
     };
 
-    const getCourse = (id) => {
-        return courses.find((course) => course._id === id);
+    const getCourse = (id: string) => {
+        return courses.find((course: Course) => course._id === id);
     };
 
     const displayedCourses = courseId
-        ? courses.filter((course) => course._id === courseId)
+        ? courses.filter((course: Course) => course._id === courseId)
         : courses;
 
     if (loading) return null;
@@ -75,8 +76,9 @@ function CoursesOverview() {
                 <CourseModal closeModal={toggleCourseModal} fetchCourses={fetchCourses} />
             )}
 
-            {courseId && <LessonsOverview course={getCourse(courseId)} />}
-
+            {courseId && getCourse(courseId) && (
+                <LessonsOverview course={getCourse(courseId)!} />
+            )}
         </>
     );
 }

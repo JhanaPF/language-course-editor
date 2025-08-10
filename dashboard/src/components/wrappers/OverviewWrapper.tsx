@@ -1,8 +1,17 @@
 import { useState } from 'react';
-import { Row } from 'reactstrap'
-import AddButton from '../buttons/AddButton'
-import ClickableCard from '../../components/cards/ClickableCard'
+import { Row } from 'reactstrap';
+import AddButton from '../buttons/AddButton';
+import ClickableCard, { CardType } from '../../components/cards/ClickableCard';
 
+type OverviewWrapperProps = {
+    toggleModal: any;
+    elemId: any;
+    children?: React.ReactNode;
+    buttonObjName: any;
+    elements: any;
+    setElement: any;
+    objName: CardType;
+};
 
 /**
  * @description Elements list, add button to toggle form modal and will manage also order of elements
@@ -14,21 +23,22 @@ import ClickableCard from '../../components/cards/ClickableCard'
  * @param {array} props.elements
  * @param {Function} setElement
  */
-export default function OverviewWrapper({
+const OverviewWrapper: React.FC<OverviewWrapperProps> = ({
     toggleModal,
     elemId,
     children,
     buttonObjName,
     elements,
-    setElement
-}) {
+    setElement,
+    objName,
+}) => {
 
     //const handleIndexChange = (id, value) => {
     //    console.log('update index', id, value)
     //}
 
     const filteredElements = elemId
-        ? elements?.filter(elem => elem._id === elemId)
+        ? elements?.filter((elem: any) => elem._id === elemId)
         : elements;
 
     if (!elements) return null;
@@ -42,10 +52,10 @@ export default function OverviewWrapper({
             )}
 
             <Row className='clickable-card-group'>
-                {filteredElements.map((elem, i) => (
+                {filteredElements.map((elem: any, i: number) => (
                     <ClickableCard
                         key={i}
-                        type=""
+                        type={objName}
                         item={elem}
                         onClick={() => setElement(elem)}
                     />
@@ -56,3 +66,5 @@ export default function OverviewWrapper({
         </Row>
     )
 }
+
+export default OverviewWrapper;

@@ -10,12 +10,12 @@ const options = [
     { value: 7, label: 'préposition' },
     { value: 8, label: 'conjonction' },
     { value: 9, label: 'adverbe' }
-]
+];
 
 export default class Classes extends Enum {
-    static values () { return options }
+    static values() { return options }
 
-    static getName (id) {
-        return options.find(value => value.value === id).label
+    static getName(id: string) {
+        return options.find(value => value.value === Number(id))?.label ?? "Inconnu";
     }
 }

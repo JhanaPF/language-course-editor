@@ -1,4 +1,6 @@
 import React from 'react'
+import { useEffect } from 'react';
+
 import QuestionModal from '../modals/QuestionModal'
 import OverviewWrapper from '../components/wrappers/OverviewWrapper'
 import useOverview from '../common/useOverview';
@@ -7,7 +9,7 @@ import useOverview from '../common/useOverview';
  * @param lesson
  * @param courseId
  */
-function QuestionsOverview ({ lesson, courseId }) {
+function QuestionsOverview ({ lesson, courseId }: { lesson: any; courseId: string }) {
     const {
         elements,
         elemId,

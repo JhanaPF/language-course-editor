@@ -1,14 +1,19 @@
-function capitalizeFirstLetter (string) {
-    return string.charAt(0).toUpperCase() + string.slice(1)
+export function capitalizeFirstLetter(string: string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-/**
- * @param {Array} params [{key: value}]
- */
-function setUrlParams (params) {
-    let url = ''
-    params.forEach(param => { url += `?${param.key}=${param.value}` })
-    return url
-}
+type UrlParam = {
+    key: string;
+    value: string | number;
+};
 
-module.exports = { capitalizeFirstLetter, setUrlParams }
+export function setUrlParams(params: UrlParam[]): string {
+    if (params.length === 0) return "";
+
+    return (
+        "?" +
+        params
+            .map((param) => `${encodeURIComponent(param.key)}=${encodeURIComponent(String(param.value))}`)
+            .join("&")
+    );
+}

@@ -1,7 +1,14 @@
-export default class Enum {
-    values (values) { return values }
+interface EnumValue {
+    value: any;
+    label: string;
+}
 
-    getName (id, values) {
-        return values.find(value => value.value === id).label
+export default class Enum {
+    values<T extends EnumValue>(values: T[]): T[] {
+        return values;
+    }
+
+    getName(id: any, values: EnumValue[]): string | undefined {
+        return values.find(value => value.value === id)?.label;
     }
 }

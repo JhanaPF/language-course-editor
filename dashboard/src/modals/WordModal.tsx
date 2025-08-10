@@ -1,167 +1,213 @@
+// @ts-nocheck
+
 import React from 'react'
 import { Modal, ModalBody, ModalFooter, Form, FormText, FormGroup, Input, Label, Button, Row, Col } from 'reactstrap'
 import axios from 'axios'
-import Select from 'react-select'
+import Select, { SingleValue, ActionMeta } from "react-select";
 import { validString } from '../utils/regex'
 import Classes from '../enum/classes'
 import Categories from '../enum/categories'
 import Sources from '../enum/sources'
-import AudioRecorder from '../components/AudioRecorder'
+import AudioRecorder from '../components/forms/AudioRecorder'
+import WordData from '../types/word'
 
-export default class WordModal extends React.Component {
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL || "";
+interface AdditionalData {
+  story?: string;
+  sentence?: string;
+}
 
-    constructor(props) {
-        super(props)
+interface OptionType {
+  value: string;
+  label: string;
+}
 
-        this.categoriesOptions = Categories.values()
-        this.sourceOptions = Sources.values()
-        this.classOptions = Classes.values()
+interface Props {
+    addModal?: boolean;
+    editModal?: boolean;
+    wordData: WordData | null;
+    additional?: AdditionalData;
+    userId: string;
+    token: string;
+    toggleModal: (type?: string) => void;
+    reloadModal?: () => void;
+}
+
+interface State {
+    fieldError?: boolean;
+    word?: string | null;
+    class?: OptionType;
+    definition?: string | null;
+    translated_word?: string | null;
+    translated_definition?: string | null;
+    level: string;
+    categories?: OptionType[] | null;
+    source?: OptionType | null;
+    story?: string | null;
+    sentence?: string | null;
+    audioFile?: File | null;
+    vocalFile?: File | null;
+}
+
+
+
+export default class WordModal extends React.Component<Props, State> {
+    private categoriesOptions: OptionType[];
+    private sourceOptions: OptionType[];
+    private classOptions: OptionType[];
+    private type: string;
+
+    constructor(props: Props) {
+        super(props);
+
+        this.categoriesOptions = Categories.values();
+        this.sourceOptions = Sources.values();
+        this.classOptions = Classes.values();
 
         if (this.props.editModal) {
-            const categories = []
-            if (this.props.wordData && this.props.wordData.categories) {
+            const categories: OptionType[] = [];
+            if (this.props.wordData?.categories) {
                 this.props.wordData.categories.forEach(cat => {
-                    categories.push({ value: cat, label: Categories.getName(cat) })
-                })
+                    categories.push({ value: cat, label: Categories.getName(cat) });
+                });
             }
 
             if (this.props.wordData) {
                 this.state = {
                     fieldError: false,
-                    word: wordData?.word,
-                    class: wordData?.class ? { value: wordData.class, label: Classes.getName(wordData.class) } : undefined,
-                    definition: wordData?.definition,
-                    translated_word: wordData?.translated_word,
-                    translated_definition: wordData?.translated_definition,
-                    level: wordData?.level || '1',
+                    word: props.wordData.word || null,
+                    class: props.wordData.class
+                        ? { value: props.wordData.class, label: Classes.getName(props.wordData.class) }
+                        : undefined,
+                    definition: props.wordData.definition || null,
+                    translated_word: props.wordData.translated_word || null,
+                    translated_definition: props.wordData.translated_definition || null,
+                    level: props.wordData.level || "1",
                     categories,
-                    source: wordData?.source ? { value: wordData.source, label: Sources.getName(wordData.source) } : {},
-
-                    story: additional.story,
-                    sentence: additional.sentence,
-
-                    audioFile: null
+                    source: props.wordData.source
+                        ? { value: props.wordData.source, label: Sources.getName(props.wordData.source) }
+                        : {},
+                    story: props.additional?.story || null,
+                    sentence: props.additional?.sentence || null,
+                    audioFile: null,
+                    vocalFile: null,
                 };
             } else {
                 this.state = {
-                    level: '1',
+                    level: "1",
                     source: 0,
                     audioFile: null,
-                    vocalFile: null
-                }
+                    vocalFile: null,
+                };
             }
-            // console.log(this.state)
         } else {
             this.state = {
-                level: '1',
-                source: 0
-            }
+                level: "1",
+                source: 0,
+            };
         }
 
-        this.handleChange = this.handleChange.bind(this)
-        this.save = this.save.bind(this)
-
-        this.update = this.update.bind(this)
-        this.type = this.props.addModal ? 'addModal' : 'editModal'
+        this.handleChange = this.handleChange.bind(this);
+        this.save = this.save.bind(this);
+        this.update = this.update.bind(this);
+        this.type = this.props.addModal ? "addModal" : "editModal";
     }
 
-    handleChange = (event) => {
-        const { name, value } = event.currentTarget
+    handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+        const { name, value } = event.currentTarget;
 
-        if (name !== 'level' && validString.test(value[value.length - 1])) {
-            this.setState({ [name]: value })
-            // Si la chaîne de caractères contient des chiffres, ne pas enregistrer
-        } else this.setState({ [name]: null })
-
-        if (name === 'level') { return this.setState({ [name]: value }) }
-
-        console.log(name, value)
-
-        if (name === 'vocalFile') {
-            console.log(event.target.files)
-            return this.setState({ [name]: event.target.files[0] })
+        if (name === "vocalFile" && event.target instanceof HTMLInputElement && event.target.files?.length) {
+            return this.setState({ [name]: event.target.files[0] } as unknown as Pick<State, keyof State>);
         }
 
-        this.setState({ [name]: value })
-    }
+        if (name !== "level" && validString.test(value[value.length - 1])) {
+            this.setState({ [name]: value } as unknown as Pick<State, keyof State>);
+        } else if (name !== "level") {
+            this.setState({ [name]: null } as unknown as Pick<State, keyof State>);
+        }
 
-    handleSelectChange = (param, e) => {
-        this.setState({ [param]: e })
-    }
+        if (name === "level") {
+            this.setState({ [name]: value } as unknown as Pick<State, keyof State>);
+        }
+    };
+
+
+handleSelectChange = (
+  newValue: SingleValue<OptionType>,
+  _actionMeta: ActionMeta<OptionType>
+) => {
+  this.setState({ source: newValue });
+};
 
     isValid() {
-        if (!this.state.word) return false
-        else return true
+        return Boolean(this.state.word);
     }
 
     getData() {
-        const save = {
+        return {
             word_id: this.props.wordData ? this.props.wordData._id : null,
             word: {
                 word: this.state.word,
                 class: this.state.class ? this.state.class.value : null,
-                definition: this.state.definition ? this.state.definition : null,
-                translated_definition: this.state.translated_definition ? this.state.translated_definition : null,
+                definition: this.state.definition || null,
+                translated_definition: this.state.translated_definition || null,
                 level: this.state.level,
-                source: this.state.source ? this.state.source.value : null,
-                categories: this.state.categories ? this.state.categories.map(category => category.value) : null
+                source: typeof this.state.source === "object" && this.state.source !== null
+                    ? this.state.source.value
+                    : null,
+                categories: this.state.categories ? this.state.categories.map(category => category.value) : null,
             },
             additionalData: {
-                sentence: this.state.sentence ? this.state.sentence : null,
-                story: this.state.story ? this.state.story : null
+                sentence: this.state.sentence || null,
+                story: this.state.story || null,
             },
             userId: this.props.userId,
-            collection: 'french_from_french',
-            audioFile: this.state.audioFile
-        }
-
-        return save
+            collection: "french_from_french",
+            audioFile: this.state.audioFile,
+        };
     }
 
     update() {
-        if (!this.isValid()) return
+        if (!this.isValid()) return;
 
-        const save = this.getData()
-        axios.post(
-            REACT_APP_API_URL + 'word',
-            save,
-            { headers: { Authorization: this.props.token, 'Content-Type': 'multipart/form-data' } }
-        )
+        const save = this.getData();
+        axios
+            .post(`${REACT_APP_API_URL}word`, save, {
+                headers: { Authorization: this.props.token, "Content-Type": "multipart/form-data" },
+            })
             .then(() => this.props.toggleModal())
-            .catch(function (error) { console.log(error) })
+            .catch(error => console.log(error));
     }
 
-    save = (next) => {
-        if (this.isValid() === false) return
+    save = (next?: boolean) => {
+        if (!this.isValid()) return;
 
-        // const save = this.getData()
-        const formData = new FormData()
+        const formData = new FormData();
+        if (this.state.vocalFile) {
+            formData.append("audio-file", this.state.vocalFile);
+        }
 
-        formData.append('audio-file', this.state.vocalFile)
-        axios.put(
-            REACT_APP_API_URL + 'dictionaries/word',
-            formData,
-            {
+        axios
+            .put(`${REACT_APP_API_URL}dictionaries/word`, formData, {
                 headers: {
                     Authorization: this.props.token,
-                    Accept: 'application/json'
-                    // 'Content-Type': 'multipart/form-data'
-                }
-            }
-        )
+                    Accept: "application/json",
+                },
+            })
             .then(() => {
-                console.log(formData)
-                if (next) { this.props.reloadModal() } else { this.props.toggleModal() }
+                if (next) {
+                    this.props.reloadModal && this.props.reloadModal();
+                } else {
+                    this.props.toggleModal();
+                }
             })
-            .catch(function () {
-                console.error(formData)
+            .catch(() => {
+                console.error(formData);
+            });
+    };
 
-                // console.log(error);
-            })
-    }
-
-    saveAudio(file) {
-        this.setState({ audioFile: file })
+    saveAudio(file: File) {
+        this.setState({ audioFile: file });
     }
 
     render() {
@@ -288,7 +334,7 @@ export default class WordModal extends React.Component {
                                 name="categories"
                                 isMulti
                                 value={this.state.categories}
-                                onChange={this.handleSelectChange.bind(this, 'categories')}
+                                onChange={this.handleSelectChange.bind(this)}
                                 options={this.categoriesOptions}
                                 placeholder="" />
                         </FormGroup>
@@ -300,7 +346,7 @@ export default class WordModal extends React.Component {
                                 id="source"
                                 name="source"
                                 value={this.state.source}
-                                onChange={this.handleSelectChange.bind(this, 'source')}
+                                onChange={this.handleSelectChange.bind(this)}
                                 options={this.sourceOptions}
                                 placeholder="" />
                         </FormGroup>
@@ -334,7 +380,6 @@ export default class WordModal extends React.Component {
                     </Col>
                 </ModalFooter>
             </Modal>
-
-        )
+        );
     }
 }

@@ -31,6 +31,7 @@ export default tseslint.config({
         'indent': ['error', 4],
         'react/prop-types': 'off',
         'react/no-unescaped-entities': 'off',
-        'semi': ['error', 'always']
+        'semi': ['error', 'always'],
+        "@typescript-eslint/no-explicit-any": "warn"
     },
 });

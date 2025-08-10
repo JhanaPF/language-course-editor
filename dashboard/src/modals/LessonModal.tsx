@@ -18,14 +18,14 @@ interface LessonModalProps {
  * @param fetchLessons
  */
 const LessonModal: React.FC<LessonModalProps> = (props) => {
-	return (
-		<MyModal isOpen={props.isOpen} title="Ajouter une leçon" closeModal={props.closeModal}>
-			<LessonForm
-				close={props.closeModal}
-				fetchLessons={props.fetchLessons}
-				courseId={props.courseId}
-			/>
-		</MyModal>
+    return (
+        <MyModal isOpen={props.isOpen} title="Ajouter une leçon" closeModal={props.closeModal}>
+            <LessonForm
+                close={props.closeModal}
+                fetchLessons={props.fetchLessons}
+                courseId={props.courseId}
+            />
+        </MyModal>
 	);
 };
 

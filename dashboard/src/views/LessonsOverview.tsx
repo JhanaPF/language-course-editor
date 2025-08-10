@@ -8,9 +8,6 @@ type Props = {
     course: {_id: string};
 };
 
-/**
- * @param {object} course
- */
 export default function LessonsOverview({ course }: Props) {
     const {
         modal,
@@ -21,9 +18,9 @@ export default function LessonsOverview({ course }: Props) {
         elemId,
         setElement,
         getElement,
-    } = useOverview('lessons', { course_id: course._id })
+    } = useOverview('lessons', {params: { course_id: course._id }})
 
-    const selectedElement = getElement(elemId);
+    const selectedElement = getElement(elemId, elements);
 
     return (
         <>
@@ -42,9 +39,8 @@ export default function LessonsOverview({ course }: Props) {
                 />
             </OverviewWrapper>
 
-            {selectedElement && (
+            {selectedElement !== null && (
                 <QuestionsOverview
-                    isOpen={elemId}
                     courseId={course._id}
                     lesson={selectedElement}
                 />
