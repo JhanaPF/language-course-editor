@@ -1,9 +1,9 @@
 
-const lowercaseFields = (object) => {
+export const lowercaseFields = (object) => {
 	return mongoose.Types.ObjectId.isValid(id)
 }
 
-function randomString(length) {
+export function randomString(length) {
 	const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 	let result = ""
 
@@ -13,9 +13,4 @@ function randomString(length) {
 	}
 
 	return result
-}
-
-module.exports = {
-	lowercaseFields,
-	randomString
 }

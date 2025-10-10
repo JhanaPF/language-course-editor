@@ -9,6 +9,8 @@ services:
     build:
       context: back-end
       dockerfile: Dockerfile
+    volumes:
+      - ./back-end/.env:/usr/src/app/.env
     ports:
       - "7006:7006"
     depends_on:

@@ -5,27 +5,27 @@ const sanitizeHtml = require('sanitize-html');
  * @returns object with lowercased strings
  */
 const controlFields = (object) => {
-	let controlledFields = {}  
+	let controlledFields = {};  
 	Object.keys(object).forEach(field=>{ // Lowercase string object
-		if(typeof object[field] === "string") {
-			controlledFields[field] = sanitizeHtml(object[field]).toLowerCase()		
+		if(typeof object[field] === 'string') {
+			controlledFields[field] = sanitizeHtml(object[field]).toLowerCase();		
 		}
-		else controlledFields[field] = object[field]
-	}) 
-	return controlledFields
-}
+		else controlledFields[field] = object[field];
+	}); 
+	return controlledFields;
+};
 
 
 /**
  * @param {*} object 
  */
 const isObjectEmpty = (object) => {
-	return Object.keys(object).length === 0 && object.constructor === Object
-}
+	return Object.keys(object).length === 0 && object.constructor === Object;
+};
 
 const getDictionaryList = () => {
 	//require("dotenv").config()
-	return process.env.DICTIONARIES.split(", ")
-}
+	return process.env.DICTIONARIES.split(', ');
+};
 
-module.exports={controlFields, isObjectEmpty, getDictionaryList}
+module.exports={controlFields, isObjectEmpty, getDictionaryList};
