@@ -1,5 +1,5 @@
-const log = console.log
-const fs = require("fs")
+const log = console.log;
+const fs = require('fs');
 
 /**
  * @param {string} fileName 
@@ -9,14 +9,14 @@ const fs = require("fs")
 const writeFile = (fileName, filePath, tempFile, successCbk, errCbk) => {
 	fs.writeFile(`./${filePath}/${fileName}`, tempFile, (err) => {
 		if (err) {
-			log("Error writing file on system: ", err)
-			if(errCbk) return errCbk()
+			log('Error writing file on system: ', err);
+			if(errCbk) return errCbk();
 		}
 
-		log("File " + fileName + " saved with success")
-		if(successCbk) return successCbk()
-	})
-}
+		log('File ' + fileName + ' saved with success');
+		if(successCbk) return successCbk();
+	});
+};
 
 /**
  * 
@@ -28,14 +28,14 @@ const writeFile = (fileName, filePath, tempFile, successCbk, errCbk) => {
 const getFile = (res, filePath, successCbk, errorCbk) => {
 	fs.readFile(`./${filePath}`, (err, file) => {
 		if (err) {
-			log("Error reading file on system: ", err)
-			if(errorCbk) return errorCbk()
-			else return res.status(500).json()
+			log('Error reading file on system: ', err);
+			if(errorCbk) return errorCbk();
+			else return res.status(500).json();
 		}
 
-		if(successCbk) return successCbk(file)
-	})
-}
+		if(successCbk) return successCbk(file);
+	});
+};
 
 /**
  * @description Check if it's a temporary zone to store a file
@@ -43,9 +43,9 @@ const getFile = (res, filePath, successCbk, errorCbk) => {
  */
 const isBuffer = (file) => {
 	if (!Buffer.isBuffer(file)) {
-		log("File is not buffer") 
-		return false
-	} else return true
-}
+		log('File is not buffer'); 
+		return false;
+	} else return true;
+};
 
-module.exports = {writeFile, isBuffer, getFile}
+module.exports = {writeFile, isBuffer, getFile};

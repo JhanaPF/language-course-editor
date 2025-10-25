@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useState, useEffect } from 'react';
-import { Form, FormGroup, Input, Label, Button, Col } from 'reactstrap';
+import { Form, FormGroup, Input, Label, Button, Col, Row } from 'reactstrap';
 import { validEmail, validPassword } from '../utils/regex';
 
 
@@ -111,16 +111,21 @@ const Login: React.FC<LoginProps> = ({ signIn }) => {
                         </Col>
                     </FormGroup>
 
-                    {/* Restez connecté */}
-                    <FormGroup check>
-                        <Label check>
-                            <Input
-                                type="checkbox"
-                                checked={keepConnection}
-                                onChange={handleCheckbox}
-                            />{' '}
-                            Restez connecté
-                        </Label>
+                    <FormGroup check className='mb-4'>
+                        <Row>
+                            <Col className='text-right'>
+                                <Label className='ml-auto' check>
+                                    {' '} Restez connecté
+                                </Label>
+                            </Col>
+                            <Col md="5" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                <Input
+                                    type="checkbox"
+                                    checked={keepConnection}
+                                    onChange={handleCheckbox}
+                                />
+                            </Col>
+                        </Row>
                     </FormGroup>
 
                     <Col md="6" className='ml-auto'>
@@ -131,7 +136,7 @@ const Login: React.FC<LoginProps> = ({ signIn }) => {
                 </Form>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Login
+export default Login;

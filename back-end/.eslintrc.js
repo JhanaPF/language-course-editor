@@ -1,44 +1,39 @@
 module.exports = {
-	"env": {
-		"node": true,
-		"commonjs": true,
-		"es2021": true,
-		"mocha": true
+	'env': {
+		'node': true,
+		'commonjs': true,
+		'es2021': true,
+		'mocha': true
 	},
-	"extends": "eslint:recommended",
-	"overrides": [
+	'extends': 'eslint:recommended',
+	'overrides': [
 		{
-			"env": {
-				"node": true
+			'env': {
+				'node': true
 			},
-			"files": [
-				"**/*.test.js", 
-				".eslintrc.{js,cjs}"
+			'files': [
+				'**/*.test.js',
+				'.eslintrc.{js,cjs}'
 			],
-			"parserOptions": {
-				"sourceType": "script"
+			'parserOptions': {
+				'sourceType': 'script'
 			}
 		}
 	],
-	"parserOptions": {
-		"ecmaVersion": "latest"
+	'parserOptions': {
+		'ecmaVersion': 'latest'
 	},
-	"rules": {
-		"indent": [
-			"error",
-			"tab"
+	'rules': {
+		'indent': [
+			'error',
+			'tab'
 		],
-		"linebreak-style": [
-			"error",
-			"unix"
+		'quotes': [
+			'error',
+			'single'
 		],
-		"quotes": [
-			"error",
-			"double"
-		],
-		"semi": [
-			"error",
-			"never"
-		]
+		'semi': [2, 'always'],
+		'linebreak-style': ['error', process.platform === 'win32' ? 'windows' : 'unix'],
+	    '@typescript-eslint/no-explicit-any': 'off'
 	}
-}
+};

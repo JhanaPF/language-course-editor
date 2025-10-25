@@ -1,16 +1,14 @@
-const mongoose = require("mongoose")
-require("dotenv").config()
+const mongoose = require('mongoose');
+require('dotenv').config();
 //const isProduction = process.env.NODE_ENV === "production"
 const crypto = require('crypto');
-const bcrypt = require("bcryptjs");
-const { raw } = require("express");
-
+const bcrypt = require('bcryptjs');
 
 // Add admin accounts 
 
 function generateRandomPassword(length = 16) {
 	if (length < 2) {
-		throw new Error("La longueur doit être au moins 2 pour contenir majuscule et spécial");
+		throw new Error('La longueur doit être au moins 2 pour contenir majuscule et spécial');
 	}
 
 	const lowercaseChars = 'abcdefghijklmnopqrstuvwxyz';
@@ -37,49 +35,49 @@ function generateRandomPassword(length = 16) {
 	return passwordChars.join('');
 }
 
-mongoose.connect(process.env.DATABASE, { useNewUrlParser: true, useUnifiedTopology: true })
-db = mongoose.connection
+mongoose.connect(process.env.DATABASE, { useNewUrlParser: true, useUnifiedTopology: true });
+const db = mongoose.connection;
 
-db.on("error", console.error.bind(console, "Connection error:"))
-db.once("open", async function () {
-	console.log("Connecté à Mongoose")
+db.on('error', console.error.bind(console, 'Connection error:'));
+db.once('open', async function () {
+	console.log('Connecté à Mongoose');
 	
 	const saltRounds = 12;
 	const rawPassword = generateRandomPassword(30);
-	console.log(rawPassword)
+	console.log(rawPassword);
 	const hashedPassword = await bcrypt.hash(rawPassword, saltRounds);
 
 	const admin = {
-		name: "admin",
-		mail: "admin@example.com",
+		name: 'admin',
+		mail: 'admin@example.com',
 		password: hashedPassword,
-		role: "admin",
-	}
+		role: 'admin',
+	};
 
 	const superAdmin = {
-		name: "superAdmin",
-		mail: "superadmin@example.com",
+		name: 'superAdmin',
+		mail: 'superadmin@example.com',
 		password: hashedPassword,
-		role: "superAdmin",
-	}
+		role: 'superAdmin',
+	};
 
 	const addAdmins = new Promise((resolve, reject) => {
 
-		const collection = db.collection("users")
+		const collection = db.collection('users');
 
 		collection.insertMany([admin, superAdmin])
-			.then((results) => resolve({ message: "Admin and Superadmin persisted", results }))
-			.catch((err) => reject(err))
-	})
+			.then((results) => resolve({ message: 'Admin and Superadmin persisted', results }))
+			.catch((err) => reject(err));
+	});
 
 	addAdmins
 		.then((value) => {
-			console.log(value)
-			process.exit()
+			console.log(value);
+			process.exit();
 		})
 		.catch((error) => {
-			console.log("didn't persist admin, probably already exists")
-			console.log(error)
-			process.exit(1)
-		})
-})
+			console.log('didn\'t persist admin, probably already exists');
+			console.log(error);
+			process.exit(1);
+		});
+});
